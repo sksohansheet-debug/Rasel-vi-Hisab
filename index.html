@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hisab Khata</title>
+  
+ 
+<style>
+  
+  body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .menu-icon {
+      position: absolute;
+      left: 20px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .navbar h1 {
+      font-size: 25px;
+      margin: 0;
+      font-weight: 700;
+      text-align: left;
+      margin-left: -50px;
+    }
+
+        /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 65px;
+      left: -260px;
+      width: 230px;
+      height: 100%;
+      background: #9CC6ED;
+      transition: 0.3s;
+      padding-top: 20px;
+      z-index: 9;
+    }
+    
+        .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: black;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background: #87b8e0;
+    }
+
+    /* Main Dashboard Area */
+    .main-content {
+      margin-top: 90px;
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    /* Dashboard Cards Design */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 7px 5px rgba(0,0,0,0.1);
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .card-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card h3 {
+      font-size: 15px;
+      color: #777;
+      margin: 0 0 10px 0;
+      text-transform: uppercase;
+    }
+
+    .card p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+      text-align: left;
+    }
+  
+      .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      margin-left: 15px;
+    }
+
+    .red { background: #f44336; }
+    .blue { background: #2196f3; }
+    .purple { background: #9c27b0; }
+    .green { background: #4caf50; }
+    
+    
+  
+  
+</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+  
+ <div class="navbar">
+  <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
+  <h1>Dashboard</h1>
+</div>
+  
+  
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="#" onclick="goToPage('index')">🏠 Dashboard</a>
+    <a href="#" onclick="goToPage('Dollar')">💰 ডলার হিসাব</a>
+    <a href="#" onclick="goToPage('Taka')">💵 টাকার হিসাব </a>
+   </div>
+
+
+
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="card">
+      <div class="card-text">
+        <h3>সর্বমোট Dollar</h3>
+           <p id="display-dollar">0</p> 
+      </div>
+      <div class="icon red"><i class="fa-solid fa-chart-line"></i></div>
+    </div>
+
+    <div class="card">
+      <div class="card-text">
+        <h3>সর্বমোট টাকা</h3>
+        <p>0</p>
+      </div>
+      <div class="icon blue"><i class="fa-solid fa-wallet"></i></div>
+    </div>
+
+    <div class="card">
+      <div class="card-text">
+        <h3>আজকের চার্জ</h3>
+        <p>0</p>
+      </div>
+      <div class="icon purple"><i class="fa-solid fa-bag-shopping"></i></div>
+    </div>
+
+    <div class="card">
+      <div class="card-text">
+        <h3>আফ্রিদি পাবে</h3>
+        <p>0</p>
+      </div>
+      <div class="icon green"><i class="fa-solid fa-coins"></i></div>
+    </div>
+
+    <div class="card">
+      <div class="card-text">
+        <h3>Sim</h3>
+        <p>0</p>
+      </div>
+      <div class="icon green"><i class="fa-solid fa-user-group"></i></div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+<script type="module">
+    // ফায়ারবেস ফাংশন এবং ডাটাবেস ইমপোর্ট
+    import { db } from './firebase-config.js';
+    import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Sidebar খোলা/বন্ধ (গ্লোবাল ফাংশন হিসেবে সেট করা হয়েছে)
+    window.toggleSidebar = function(event) {
+        if (event) event.stopPropagation();
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('open');
+        }
+    }
+
+    // পেজ পরিবর্তন
+    window.goToPage = function(page) {
+        window.location.href = page + '.html';
+    }
+
+    // ড্যাশবোর্ড ডাটা লোড এবং ক্যালকুলেশন
+    function loadDashboardData() {
+        const transRef = ref(db, 'transactions');
+        const takaBalancesRef = ref(db, 'takaBalances');
+
+        // ট্রানজ্যাকশন ডাটা থেকে ডলার এবং ঋণের হিসাব
+        onValue(transRef, (snapshot) => {
+            const transactions = snapshot.val() || [];
+            let binance = 0;
+            let redot = 0;
+            let afridi = 0;
+
+            const transArray = Array.isArray(transactions) ? transactions : Object.values(transactions);
+
+            transArray.forEach(t => {
+                if (t.type === 'in') {
+                    if (t.dollarAccount === 'Binance') binance += t.dollarAmount;
+                    else if (t.dollarAccount === 'Redot-pay') redot += t.dollarAmount;
+                } else if (t.type === 'out') {
+                    if (t.dollarAccount === 'Binance') binance -= t.dollarAmount;
+                    else if (t.dollarAccount === 'Redot-pay') redot -= t.dollarAmount;
+                } else if (t.type === 'convert') {
+                    if (t.toAccount === 'আফ্রিদি পাবে') afridi += t.takaAmount;
+                } else if (t.type === 'transfer') {
+                    if (t.fromAccount === 'আফ্রিদি পাবে') afridi -= t.takaAmount;
+                }
+            });
+
+            const totalDollar = binance + redot;
+            updateUI(0, '$ ' + totalDollar.toFixed(2));
+            updateUI(3, afridi.toFixed(2) + ' ৳');
+        });
+
+        // টাকা পেজের ব্যালেন্স থেকে মোট ক্যাশ এবং খরচের হিসাব
+        onValue(takaBalancesRef, (snapshot) => {
+            const balances = snapshot.val();
+            if (balances) {
+                updateUI(1, balances.total.toFixed(2) + ' ৳'); // মোট টাকা
+                updateUI(2, (balances.bank || 0).toFixed(2) + ' ৳'); // আজ খরচ/ব্যাংক ট্রান্সফার
+            }
+        });
+    }
+
+    // UI আপডেট করার কমন ফাংশন
+    function updateUI(index, value) {
+        const dollarCards = document.querySelectorAll('.card p');
+        if (dollarCards[index]) {
+            dollarCards[index].innerText = value;
+        }
+    }
+
+    // পেজ লোড হলে ডাটা লোড শুরু হবে
+    document.addEventListener('DOMContentLoaded', loadDashboardData);
+
+</script>
+
+  
+  
+</body>
+</html>
