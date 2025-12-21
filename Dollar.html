@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dollar Hisab</title>
+
+<style>
+    /* আপনার পূর্বের সমস্ত CSS এখানে অপরিবর্তিত রাখা হয়েছে */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .menu-icon {
+      position: absolute;
+      left: 20px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .navbar h1 {
+      font-size: 25px;
+      margin: 0;
+      font-weight: 700;
+      text-align: left;
+      margin-left: -50px;
+    }
+
+        /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 65px;
+      left: -260px;
+      width: 230px;
+      height: 100%;
+      background: #9CC6ED;
+      transition: 0.3s;
+      padding-top: 20px;
+      z-index: 9;
+    }
+
+        .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: black;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background: #87b8e0;
+    }
+
+   /* Main content */
+    .main-content {
+      margin-top: 90px;
+      padding: 20px;
+    }
+
+    /* Grid layout */
+    .cards-container {
+      display: grid;
+      gap: 15px;
+    }
+
+  .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+     }
+.small-p {
+  font-size: 14px!important;
+  color: #f0c413!important;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.12);
+    }
+
+    .card h3 {
+      /* নতুন: হেডিং এর মার্জিন সেট করা হলো */
+      margin-top:0px;
+      font-size: 16px;
+      color: #ffff;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .card p {
+      /* নতুন: p ট্যাগের মার্জিন এবং line-height সেট করা হলো */
+      margin: 2px 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffff;
+      line-height: 1.1;
+    }
+
+/* ছোট স্ক্রিনের জন্য পরিবর্তন (Max Width: 768px) */
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    /* আপনার পূর্বের সাইজ বজায় রাখতে এটি সেট করা হয়েছে */
+    min-height: 100px;
+    max-height: 100px; /* উচ্চতা ফিক্সড করা হলো */
+    padding: 6px 6px;
+
+    /* কন্টেন্টকে উল্লম্বভাবে সাজানোর জন্য Flexbox ব্যবহার */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* কন্টেন্ট evenly স্পেস পাবে */
+  }
+
+  .card h3 {
+    font-size: 10px;
+    margin: 0;
+    order: 2; /* হেডিংকে নিচে রাখা হলো */
+  }
+
+  .card p {
+    font-size: 12px; /* দুটি লাইন ফিট করতে ফন্ট সাইজ ছোট করা হলো */
+    margin: 0;
+    order: 1; /* ডেটা লাইন উপরে রাখা হলো */
+    line-height: 1.1;
+  }
+
+  /* শুধুমাত্র Balance কার্ডের জন্য ফন্ট সাইজ ঠিক রাখা */
+  .card1 p {
+    font-size: 25px;
+    color: #f0c413;
+    line-height: 2;
+  }
+  .card1 h3 { color: #f0c413;}
+.card2 p {
+    font-size: 25px;
+    line-height: 2;
+}
+.card3 p {
+    font-size: 25px;}
+
+.card4 p {
+    font-size: 25px;}
+
+.card5 p {
+    font-size: 25px;}
+
+.card6 p {
+    font-size: 25px;}
+
+.card7 p {
+    font-size: 25px;}
+
+.card8 p {
+    font-size: 25px;}
+
+.card9 p {
+    font-size: 25px;
+    line-height: 2;
+}
+
+}
+
+    .card1 { background: linear-gradient(135deg, black, black); color: black;}
+    .card2 { background: linear-gradient(135deg, #de2a23, #c2514e); color: white; }
+    .card3 { background: linear-gradient(135deg, #a8896c, #756453); color: white; }
+    .card4 { background: linear-gradient(#343685,
+      #232457); color: white; }
+    .card5 { background: linear-gradient(135deg, #68756c, #5a615c); color: white; }
+    .card6 { background: linear-gradient(135deg, #731541, #63303f); color: white; }
+    .card7 { background: linear-gradient(135deg, #367346, #1f3b26); color: white; }
+    .card8 { background: linear-gradient(135deg, #763478, #461547); color: white; }
+    .card9 { background: linear-gradient(135deg, #284a61, #2c3f4d); color: white; }
+
+
+/* ✅ সংশোধিত CSS: বোতামগুলো সুন্দরভাবে এক লাইনে আনার জন্য */
+.cash-buttons {
+    display: flex;
+    /* বোতামগুলোর মধ্যে সমান জায়গা রাখা */
+    justify-content: space-between;
+    gap: 8px; /* বোতামগুলোর মধ্যে সামান্য ফাঁকা জায়গা */
+    margin: 15px 20px 20px 20px; /* উপরে-নিচে ও ডানে-বামে মার্জিন */
+}
+
+/* সকল বোতামের জন্য সাধারণ স্টাইল */
+.cash-buttons button {
+    border: none;
+    border-radius: 8px;
+    font-size: 10px; /* ছোট স্ক্রিনের জন্য ফন্ট সাইজ সামান্য ছোট করা হয়েছে */
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: 0.5s;
+    padding: 10px 0; /* প্যাডিং উপরে-নিচে বাড়ানো হয়েছে, ডানে-বামে অটো */
+    flex-grow: 1; /* চারটি বোতামকে সমান প্রস্থ দেওয়া হয়েছে */
+    min-width: 0; /* ফ্লেক্স আইটেম সঠিকভাবে সংকুচিত হওয়ার জন্য */
+}
+
+/* cash-in-btn এর জন্য কালার */
+.cash-in-btn {
+    background-color: #28a745;
+}
+
+.cash-in-btn:hover {
+    background-color: #218838;
+}
+
+/* cash-out-btn এর জন্য কালার */
+.cash-out-btn {
+    background-color: #dc3545;
+}
+
+.cash-out-btn:hover {
+    background-color: #b02a37;
+}
+
+/* c-convert এর জন্য কালার */
+.c-convert {
+    background-color: #17a2b8; /* নতুন রঙ যোগ করা হয়েছে */
+}
+
+.c-convert:hover {
+    background-color: #138496;
+}
+
+/* taka-transfar এর জন্য কালার */
+.taka-transfar {
+    background-color: #de901b;
+}
+
+.taka-transfar:hover {
+    background-color: #ca8018; /* হালকা হোভার ইফেক্ট */
+}
+
+/* ছোট স্ক্রিনের জন্য পরিবর্তন (Max Width: 768px) */
+@media (max-width: 768px) {
+  /* ... অন্যান্য @media স্টাইল অপরিবর্তিত ... */
+
+  /* শুধুমাত্র ফন্ট সাইজ সামান্য বড় করা হলো যাতে ভালোভাবে বোঝা যায় */
+  .cash-buttons button {
+      font-size: 11px;
+  }
+}
+
+
+ /* ✅ ঠিক করা popup form */
+    .popup-form {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 0px;
+      z-index: 9999;
+    }
+
+    .form-content {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+      animation: popupFade 0.3s ease;
+
+    }
+
+    /* formt-out এবং formConvert এর জন্য form-content এর স্টাইল ব্যবহার করা */
+    .form-contents {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+      animation: popupFade 0.3s ease;
+    }
+
+
+    @keyframes popupFade {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .form-content input,
+    .form-content select,
+    .form-contents input,
+    .form-contents select,
+    .form-content textarea,
+    .form-contents textarea { /* textarea যোগ করা হলো */
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    /* শুধুমাত্র টাকা ট্রান্সফার ফর্মের জন্য row-line-type স্টাইল ঠিক করা */
+    #formt-out .row-line-type select {
+        width: 49%;
+        display: inline-block;
+        margin: 10px 0;
+    }
+
+    /* Convert Form এর জন্য */
+    #formConvert .row-line-type select {
+        width: 49%;
+        display: inline-block;
+        margin: 10px 0;
+    }
+
+
+    .form-content button,
+    .form-contents button {
+      margin-top: 12px;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      background-color: #007bff;
+      transition: 0.3s;
+    }
+
+    .form-content h1,
+    .form-contents h1 {
+      margin-bottom: 15px;
+      font-size: 20px;
+      padding: 20px 25px;
+    }
+.dollarintext { color : green; }
+.dollarouttext { color : red; }
+.cashouttext { color : #de901b; }
+.converttext { color : #17a2b8; } /* নতুন কনভার্ট কালার */
+
+
+    .form-content button:hover,
+    .form-contents button:hover {
+      background-color: #0056b3;
+}
+
+
+/* টাইপ সিলেক্ট করা */
+.row-line-type {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  gap: 100px;
+  justify-content: center; /* কেন্দ্রে আনার জন্য */
+}
+/* ছোট select */
+.account-type-a {
+  width: 200px!important;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.account-type-b {
+width: 200px!important;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.row-line-time{
+     display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: center; /* কেন্দ্রে আনার জন্য */
+}
+
+/* Date/Time Box পজিশন ফিক্স */
+.date-box, .time-box {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* Date box */
+.date-box {
+  width: 200px!important;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-left: auto;
+  margin-right: -3px;
+  gap: 40px;
+}
+
+/* Time box */
+.time-box {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  gap: 70px;
+}
+
+/* ✅ নতুন CSS: পিকচার ইনপুট লুকানোর জন্য (ইমেজ মুছে ফেলায় এই স্টাইলগুলো আর দরকার নেই, কিন্তু ফিক্সড টাইম/ডেট এর জন্য রাখা হলো) */
+.hidden-picker {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    display: block !important;
+}
+
+.date-box .icon {
+  width: 35px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.time-box .icon {
+  width: 28px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+
+
+/* ✅ সংশোধিত .row-line-ratbox ক্লাস */
+.row-line-ratbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 15px;
+  width: 85%;
+  margin: 15px auto 0 auto;
+  justify-content: flex-start;
+}
+
+
+.row-line-ratbox label {
+  padding: 0;
+  margin-right: -2px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.row-line-ratbox label:nth-child(3) {
+    margin-left: 20px;
+}
+
+
+/* ডলার এবং রেট বক্সের জন্য নতুন ফ্লেক্স কন্টেইনার */
+.dollar-input-container,
+.rate-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dollar-box {
+  height: 65px;
+  padding: 8px 30px 8px 10px; /* ডানদিকে $ চিহ্নের জন্য জায়গা */
+  font-size: 20px !important;
+  width: 130px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.rate-box {
+  height: 65px;
+  padding: 8px 30px 8px 10px; /* ডানদিকে ৳ চিহ্নের জন্য জায়গা */
+  font-size: 20px !important;
+  width: 160px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* ইনপুট বক্সের ডানদিকে মুদ্রা চিহ্ন দেখানোর জন্য */
+.currency-symbol {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    pointer-events: none; /* যাতে ইনপুটে ক্লিক করতে সমস্যা না হয় */
+}
+
+
+/* ✅ সংশোধিত: চার্জ এবং টোটাল বক্সের জন্য স্টাইল */
+.row-line-charge-box {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 15px auto 0 auto;
+    width: 85%;
+    justify-content: flex-start;
+}
+
+.row-line-charge-box label {
+    padding: 0;
+    margin-right: -2px;
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+/* **সংশোধিত** চার্জ ইনপুট বক্সের প্রস্থ আরও ছোট করা হয়েছে */
+.charge-box {
+    height: 65px;
+    padding: 8px 10px;
+    font-size: 20px !important;
+    width: 95px!important; /* আরও ছোট প্রস্থ */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* **সংশোধিত** টোটাল লেবেলের আগে মার্জিন অ্যাডজাস্ট করা হয়েছে */
+.row-line-charge-box label:nth-child(3) {
+    margin-left: 10px; /* বামে চাপার জন্য মার্জিন অ্যাডজাস্ট করা হলো */
+}
+
+/* ✅ সংশোধিত CSS: Total Display এখন ইনপুট ফিল্ড */
+.total-box {
+    /* **সংশোধিত**: প্রস্থ ও উচ্চতা বাড়ানো হলো */
+    height: 65px;
+    padding: 8px 10px; /* ইনপুটের জন্য প্যাডিং ঠিক করা হলো */
+    font-size: 20px !important;
+    width: 170px; /* টোটাল বক্সের প্রস্থ বাড়ানো হলো */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: right;
+    font-weight: bold;
+    color: #007bff;
+    /* এখন এটি ইনপুট হওয়ায় নিচের লাইনগুলো দরকার নেই */
+    /* display: flex;
+    align-items: center;
+    line-height: 1;
+    justify-content: flex-end; */
+}
+
+/* ✅ সংশোধিত CSS: Convert Taka ফর্মের জন্য */
+.row-line-convert-taka {
+    display: flex;
+    align-items: center;
+    /* পরিমাণ ও চার্জ ইনপুটগুলোকে এক লাইনে আনার জন্য ঠিক করা হয়েছে */
+    gap: 15px;
+    width: 85%;
+    margin: 15px auto 10px auto;
+    justify-content: center;
+}
+/* পরিমাণ ও চার্জ লেবেল ঠিক করা */
+.row-line-convert-taka label {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    /* লেবেল ও ইনপুটের মধ্যে জায়গা কমানো হয়েছে */
+    margin-right: -5px;
+}
+
+/* পরিমাণ ইনপুট বক্স */
+#formConvert .tk-convert {
+    height: 65px;
+    padding: 8px 10px;
+    font-size: 20px !important;
+    width: 100px; /* প্রস্থ কমানো হয়েছে */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 0; /* মার্জিন সরানো হয়েছে */
+
+}
+
+/* চার্জ ইনপুট বক্সের প্রস্থ ঠিক করা */
+#formConvert .charge-box {
+    width: 80px !important; /* আরও ছোট প্রস্থ */
+    margin: 0; /* মার্জিন সরানো হয়েছে */
+}
+
+/* টোটাল বক্সকে মাঝে আনার জন্য নতুন স্টাইল */
+.taka-total-box {
+    height: 65px;
+    padding: 8px 10px;
+    font-size: 20px !important;
+    width: 80%; /* ইনপুটগুলির প্রস্থের সাথে মিলিয়ে */
+    max-width: 300px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: right;
+    font-weight: bold;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    justify-content: flex-end;
+    margin: 5px auto 15px auto; /* মাঝে আনা */
+}
+
+/* ✅ সংশোধিত CSS: Bank Transfer ফর্মের জন্য */
+#formt-out input[type="number"],
+#formt-out input[type="text"] {
+    width: 80%;
+    margin: 5px auto;
+}
+
+#formt-out .tk-transfer-amount {
+    /* পরিমাণ ইনপুটটিকে formt-out এর জন্য ব্যবহার করা হচ্ছে */
+    height: 65px;
+    padding: 8px 10px;
+    font-size: 20px !important;
+    width: 80%; /* সম্পূর্ণ প্রস্থে আনা হলো */
+    max-width: 300px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 10px auto; /* কেন্দ্রে আনা হলো */
+}
+
+/* ✅ নতুন CSS: Bank Transfer-এর পরিমাণ লেবেল */
+.taka-amount-label {
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin: 15px auto 0 auto; /* উপরে স্পেস ও কেন্দ্রে আনার জন্য */
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    text-align: left; /* বামে align করা হলো */
+}
+
+
+/* বিবরণ ইনপুট এর জন্য স্টাইল (অন্যান্য ইনপুটের সাথে সামঞ্জস্যপূর্ণ করতে) */
+#formIn #inDescription {
+    margin-top: 10px;
+}
+
+/* বাটন কনটেইনার */
+.button-row {
+    display: flex;
+    justify-content: space-between; /* Cancel বামে, Save ডানে */
+    width: 100%;
+    margin-top: 15px;
+}
+.cancel-btn {
+    background: #ff4d4d !important;
+    color: white;
+    padding: 12px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 35%;
+    font-weight: bold;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    margin-right: 60px;
+}
+.save-btn {
+    background: #007bff !important;
+    color: white;
+    padding: 12px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 35%;
+    font-weight: bold;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+
+}
+.cancel-btn:hover {
+    background: #e63939;
+}
+.save-btn:hover {
+    background: #0063cc;
+}
+
+
+.show-box {
+   padding: 0px;
+   height: auto;
+   width: 95%;
+   max-width: 580px;
+   margin: 15px auto 0 auto; /* ✅ নিচে স্পেস কমানো হলো */
+   border-radius: 10px;
+   background-color: #ffffff;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   font-size: 18px;
+   font-weight: bold;
+   color: #00796b;
+   text-align: center;
+
+   /* ✅ অনুভূমিক স্ক্রল এখানে হবে */
+   overflow-x: auto;
+   overflow-y: visible;
+}
+
+/* ================================
+   টেবিল ডানে স্ক্রল করার Wrapper
+================================ */
+.table-wrapper {
+    /* ✅ ফিক্স: টেবিলকে তার কন্টেন্টের মোট প্রস্থ নেওয়ার সুযোগ দিন */
+    display: block;
+    border-collapse: collapse;
+    width: 100%; /* শুরুতেই 100% প্রস্থ নেবে */
+    border-radius: 8px;
+}
+
+/* ================================
+   Header + Body Row স্টাইল
+================================ */
+.transaction-table-header,
+#transactionBody {
+    display: table-row-group;
+    height: auto !important;
+    max-height: none;
+    overflow-y: visible;
+}
+
+/* ================================
+   Header Style
+================================ */
+.transaction-table-header {
+    background-color: #1a4e69;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 9;
+    border-radius: 10px 10px 0 0;
+    /* ✅ বর্ডারটি রো-তে যাবে, এখানে দরকার নেই */
+}
+
+/* ================================
+   Header Cell এবং Body Cell স্টাইল
+================================ */
+.transaction-table-header div,
+.transaction-item div {
+    display: table-cell; /* ✅ Cell হিসাবে আচরণ করবে */
+    padding: 12px 10px;
+    white-space: nowrap;
+    vertical-align: middle;
+    height: 32px;
+}
+
+
+/* ================================
+   প্রতিটি Row (transaction-item)
+================================ */
+.transaction-item {
+    display: table-row; /* ✅ Row হিসাবে আচরণ করবে */
+    font-size: 14px;
+    color: #000;
+    border-bottom: 1px solid #ddd; /* ✅ ডোরা দাগের জন্য বর্ডার যোগ করা হলো */
+}
+
+/* ✅ নতুন CSS: জেব্রা স্ট্রাইপিং (Zebra Striping) - গাঢ় কালার */
+.transaction-item:nth-child(even) {
+    background-color: #e9ecef; /* হালকা ধূসর রঙ (আগের থেকে গাঢ়) */
+}
+
+.transaction-item:nth-child(odd) {
+    background-color: #ffffff; /* সাদা রঙ */
+}
+
+
+/* কলামের প্রস্থ নির্ধারণ এবং নমনীয়তা (Cell-এ প্রস্থ সেট করা) */
+/* Image কলামটি বাদ দেওয়া হয়েছে */
+
+.th-date, .td-date { width: 60px; min-width: 60px; font-size: 12px; }
+.th-time, .td-time { width: 50px; min-width: 50px; font-size: 12px; }
+.th-category, .td-category { width: 80px; min-width: 80px; font-size: 12px; } /* Binance/Redot */
+.th-account, .td-account { width: 80px; min-width: 80px; font-size: 12px; } /* Bkash/Nagad/Rocket */
+/* ✅ সংশোধিত: Received A/C এর জন্য প্রস্থ ঠিক করা হলো */
+.th-bank, .td-bank { width: 80px; min-width: 80px; font-size: 12px; }
+/* ✅ নতুন কলাম: Number */
+.th-number, .td-number { width: 80px; min-width: 80px; font-size: 12px; }
+.th-charge, .td-charge { width: 50px; min-width: 50px; text-align: right; font-size: 12px;}
+.th-rate, .td-rate { width: 50px; min-width: 50px; text-align: right; font-size: 12px;}
+.th-dollar, .td-dollar { width: 60px; min-width: 60px; text-align: right; font-size: 12px;}
+.th-amount, .td-amount { width: 70px; min-width: 70px; text-align: right; font-weight: bold; font-size: 12px;}
+/* ✅ Profit/Loss কলামের জন্য নতুন স্টাইল */
+.th-profit-loss, .td-profit-loss { 
+    width: 70px; 
+    min-width: 70px; 
+    text-align: right; 
+    font-weight: bold; 
+    font-size: 12px;
+}
+.th-details, .td-details { width: auto; min-width: 150px; white-space: normal; text-align: left; font-size: 12px;}
+/* .th-image, .td-image কলামগুলি মুছে ফেলা হয়েছে */
+.th-action, .td-action { width: 70px; min-width: 70px; }
+
+/* Amount color */
+.amount-in { color: green; }
+.amount-out { color: red; }
+
+/* Row hover */
+.transaction-item:hover {
+    background: #f8f8f8;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-buttons button {
+    border: none;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.edit-btn { background: #007bff; color: #fff; }
+.delete-btn { background: #dc3545; color: #fff; }
+
+/* ===================================================
+   ✅ পেজিনেশন এরিয়া (Wrapper for controls and page numbers)
+   টেবিলের সাথে যুক্ত নয়
+   =================================================== */
+
+.page-size-area {
+    /* দুটি চাইল্ড এলিমেন্টকে দুটি বিপরীত দিকে ঠেলে দেবে */
+    display: flex;
+    justify-content: space-between; 
+    
+    /* উল্লম্বভাবে কেন্দ্রে রাখতে */
+    align-items: center; 
+    
+    padding: 10px 15px; /* উপরে-নিচে প্যাডিং বাড়ানো হলো */
+    /* border-top: 1px solid #ddd; ✅ বর্ডার সরানো হলো, কারণ এটি এখন টেবিলের বাইরে */
+    margin: 10px auto 20px auto; /* উপরে-নিচে মার্জিন যোগ করা হলো */
+    
+    /* কন্টেইনার যেন পুরো প্রস্থ ব্যবহার করে */
+    width: 95%; /* ✅ .show-box এর প্রস্থের সাথে সামঞ্জস্য রাখা হলো */
+    max-width: 580px; 
+    box-sizing: border-box;
+    background-color: #ffffff; /* ✅ ব্যাকগ্রাউন্ড সাদা করা হলো */
+    border-radius: 0 0 10px 10px; /* ✅ নিচের কোণা বাঁকা করা হলো */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ✅ হালকা শ্যাডো যোগ করা হলো */
+}
+
+/* --------------------------------------------------- */
+
+/* ===================================================
+   ✅ পেজিনেশন বাটনগুলোর কন্টেইনার (.pagination-controls)
+   =================================================== */
+.pagination-controls {
+    text-align: left; /* বাম দিকে ফিক্স করা হলো */
+    padding: 0;
+    margin: 0; 
+    /* বাটনগুলিকে একসাথে রাখতে */
+    display: flex; 
+    gap: 3px;
+    flex-wrap: wrap; /* ছোট স্ক্রিনে ফ্লেক্স-র‍্যাপ করার জন্য */
+}
+
+/* পেজ লিঙ্কগুলির সাধারণ স্টাইল */
+.pagination-controls .page-link {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-width: 15px; /* ছোট বাটনগুলির জন্য প্রস্থ ঠিক রাখা */
+    text-align: center;
+}
+
+/* ✅ চূড়ান্ত ফিক্স: সক্রিয় (Active) পেজের জন্য হাইলাইট স্টাইল */
+/* JS এ ব্যবহৃত ক্লাস: '.active-page' */
+.pagination-controls .page-link.active-page {
+    /* !important ব্যবহার করা হয়েছে যাতে অন্য কোনো স্টাইল এটিকে ওভাররাইড না করে */
+    background-color: #007bff !important; /* উজ্জ্বল নীল ব্যাকগ্রাউন্ড */
+    color: white !important; /* লেখার রং সাদা */
+    border-color: #007bff !important;
+    font-weight: bold !important;
+    
+    /* হালকা বড় করতে */
+    transform: scale(1.05) !important; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    cursor: default; /* অ্যাক্টিভ পেজে কার্সর ক্লিক-অযোগ্য দেখাবে */
+}
+
+/* অ্যাক্টিভ পেজে hover ও focus স্টাইল (হাইলাইট ধরে রাখার জন্য) */
+.pagination-controls .page-link.active-page:hover,
+.pagination-controls .page-link.active-page:focus {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+/* সাধারণ পেজ লিঙ্কে hover স্টাইল (অ্যাক্টিভ না হলে) */
+.pagination-controls .page-link:hover:not(.active-page) {
+    background-color: #e9ecef;
+}
+
+/* নিষ্ক্রিয় (disabled) নেভিগেশন বাটন (<<, >> যখন প্রথম বা শেষ পেজে থাকে) */
+.pagination-controls .page-link.disabled-nav {
+    color: #ccc !important; /* লেখা হালকা করে দিন */
+    background-color: #f7f7f7 !important; /* ব্যাকগ্রাউন্ড হালকা ধূসর */
+    border-color: #ddd !important;
+    cursor: default; /* কার্সরকে ক্লিক-অযোগ্য দেখান */
+    pointer-events: none; /* সম্পূর্ণরূপে ক্লিক বন্ধ করার জন্য */
+}
+
+/* এলিপসিস (...) স্টাইল */
+.ellipsis {
+    padding: 5px 4px;
+    color: #888;
+    font-size: 14px;
+}
+
+
+
+/* ================================
+   কলাম সেটিংস মেনু স্টাইল
+================================ */
+
+.row-line-show {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  height: 70px;
+}
+
+.date-boxs {
+     height: 45px;
+     width: 80px!important;
+     background-color: #e9f542;
+     margin-left: 20px;
+     margin-right: 1px;
+     align-items: center;
+     border-radius: 4px;
+     align-items: center;
+     display: flex;
+     justify-content: center;
+}   
+
+/* ❌ বাটনটির স্টাইল */
+#clearDateBtn {
+    background: none;
+    border: 1px solid red;
+    color: red; 
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 4px 8px;
+    cursor: pointer;
+    line-height: 1; 
+    margin: 0;
+    transition: background-color 0.2s;
+}
+#clearDateBtn:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.cg-select {
+  background-color: #a5f57f;
+  margin-left: 25px;
+  border-radius: 4px;
+  font-size: 12px;
+  width: 150px!important;
+  height: 45px;
+  align-items: center;
+}
+
+.cash-select {
+  background-color: skyblue;
+  margin-left: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 45px;
+  width: 180px;
+  align-items: center;
+}
+
+.table-rejalt { 
+  background-color: #ccc297;
+  display: flex;
+  margin-left: 20px;
+  margin-right: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 45px;
+  width: 200px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold; /* ✅ ফন্ট ওয়েট যোগ করা হলো */
+}
+
+
+
+
+#toggleColumnsBtn {
+    height: 45px;
+    width: 80px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    
+    
+}
+
+.column-dropdown {
+    display: none; /* শুরুতে লুকানো থাকবে */
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 10px;
+    z-index: 1000;
+    min-width: 150px;
+    text-align: left;
+}
+
+.column-dropdown label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    padding: 5px 0;
+    cursor: pointer;
+    font-weight: normal; /* টেবিল হেডারের Bold স্টাইল ওভাররাইড করতে */
+}
+
+.column-dropdown input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* কলাম হাইড করার CSS */
+.hidden-col-1 div:nth-child(1),
+.hidden-col-2 div:nth-child(2),
+.hidden-col-3 div:nth-child(3),
+.hidden-col-4 div:nth-child(4),
+.hidden-col-5 div:nth-child(5),
+.hidden-col-6 div:nth-child(6),
+.hidden-col-7 div:nth-child(7),
+.hidden-col-8 div:nth-child(8),
+.hidden-col-9 div:nth-child(9),
+.hidden-col-10 div:nth-child(10),
+.hidden-col-11 div:nth-child(11),
+.hidden-col-12 div:nth-child(12),
+.hidden-col-13 div:nth-child(13)
+{
+    display: none !important;
+}
+
+
+
+
+
+/* --------------------------------------------------- */
+
+/* ===================================================
+   ✅ লাইন সংখ্যা কন্ট্রোল (.page-size-control)
+   =================================================== */
+   
+.page-size-control {
+    font-size: 14px;
+    color: #444;
+    margin: 0; 
+}
+
+.page-size-control select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+
+</style>
+
+</head>
+<body>
+
+   <div class="navbar">
+  <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
+  <h1>ডলার হিসাব রাসেল</h1>
+</div>
+
+  <div id="sidebar" class="sidebar">
+    <a href="Dashboard.html">🏠 Dashboard</a>
+    <a href="Dollar.html">💰 ডলার হিসা</a>
+    <a href="Taka.html">💵 টাকার হিসাব</a>
+  </div>
+
+
+<div class="main-content">
+    <div class="cards-container">
+      <div class="card card1"><p>$ 0</p><h3>Binance Dollar </h3></div>
+    <div class="card card2"><p>$ 0</p><h3>Redot-pay Dollar </h3></div>
+     <div class="card card3"><p>0 ৳</p><h3>মোট ক্যাশ </h3></div>
+    <div class="card card4"><p>0 ৳</p><h3>আফ্রিদি পাবে </h3></div>
+    <div class="card card5"><p>0 ৳</p><h3>Bank🏦Transfer Today </h3></div>
+    <div class="card card6"><p>0 ৳</p><h3> চার্জ</h3> </div>
+
+      <div class="card card7">
+          <p>$ 0</p>
+          <p class="small-p">0 ৳</p>
+          <h3>Dollar in today</h3>
+      </div>
+
+      <div class="card card8">
+        <p>$ 0</p>
+        <p class="small-p">0 ৳</p>
+        <h3>Dollar out today</h3>
+        </div>
+
+      <div class="card card9"><p>0 ৳</p><h3>today profit </div>
+
+    </div>
+</div>
+
+<div class="cash-buttons">
+    <button class="cash-in-btn" onclick="openForm('in')">💲Dollar in➕</button>
+    <button class="cash-out-btn" onclick="openForm('out')">💲Dollar Sell➖</button>
+    <button class="c-convert" onclick="openForm('c-out')">Convert💱</button>
+    <button class="taka-transfar" onclick="openForm('t-out')">Bank🏦ট্রান্সফার</button>
+</div>
+
+
+<div id="formContainer" class="popup-form" style="display:none;">
+
+   <div id="formIn" class="form-content" style="display:none;">
+    <h1 class="dollarintext">Dollar in <span id="inEditTitle" style="font-size: 14px; font-weight: normal; color: #666;"></span></h1>
+    <div class="row-line-type">
+       <select class="account-type-b" id="incategory"required>
+            <option>Binance</option>
+            <option>Redot-pay</option>
+        </select>
+
+       <select class="account-type-b" id="inperson"required>
+            <option>আফ্রিদি </option>
+            <option>বাহির থেকে</option>
+        </select>
+      </div>
+
+        <div class="row-line-time">
+<div class="time-box">
+        <span id="showTimeIn">--:-- AM</span>
+        <input type="time" id="timePickerIn" class="hidden-picker"> <img src="time.png" class="icon" onclick="openTime('In')">
+</div>
+      <div class="date-box">
+    <span id="showDateIn"></span>
+    <input type="date" id="datePickerIn" class="hidden-picker date-picker-fix"> <img src="calendar.png" class="icon" onclick="openDate('In')">
+</div>
+
+</div>
+      <div class="row-line-ratbox">
+        <label for="indollar">Dollar</label>
+        <div class="dollar-input-container">
+            <input type="number" id="indollar" class="dollar-box" placeholder="0.00">
+            <span class="currency-symbol">$</span>
+        </div>
+        <label for="inrate">Rate</label>
+        <div class="rate-input-container">
+           <input type="number" id="inrate" class="rate-box" placeholder="0.00">
+           <span class="currency-symbol">৳</span>
+        </div>
+      </div>
+
+    <input type="text" id="inDescription" placeholder="বিবরণ দিন">
+
+
+    <div class="button-row">
+        <button class="cancel-btn"
+          onclick="closeForm()">Cancel</button>
+        <button class="save-btn" onclick="saveIn()">Save</button>
+    </div>
+</div>
+
+<div id="formOut" class="form-content" style="display:none;">
+        <h1 class="dollarouttext">Dollar Out <span id="outEditTitle" style="font-size: 14px; font-weight: normal; color: #666;"></span></h1>
+
+        <div class="row-line-time">
+       <div class="time-box">
+        <span id="showTimeOut">--:-- AM</span>
+        <input type="time" id="timePickerOut" class="hidden-picker"> <img src="time.png" class="icon" onclick="openTime('Out')">
+</div>
+      <div class="date-box">
+    <span id="showDateOut"></span>
+    <input type="date" id="datePickerOut" class="hidden-picker date-picker-fix"> <img src="calendar.png" class="icon" onclick="openDate('Out')">
+</div>
+</div>
+
+        <div class="row-line-type">
+       <select class="account-type-b" id="out_dollar_source" required>
+            <option>Binance</option>
+            <option>Redot-pay</option>
+        </select>
+       </div>
+      <div class="row-line-type">
+       <select class="account-type-a" id="out_taka_destination" required>
+            <option>বিকাশ পার্সোনাল</option>
+            <option>বিকাশ এজেন্ট</option>
+            <option>বিকাশ মার্চেন্ট</option>
+            <option>নগদ পার্সোনাল</option>
+            <option>নগদ এজেন্ট</option>
+            <option>রকেট পার্সোনাল </option>
+            <option>রকেট এজেন্ট</option>
+        </select>
+
+  <input type="number" id="out_mobile_number" placeholder="মোবাইল নম্বর ">
+   </div>
+
+         <div class="row-line-ratbox">
+        <label for="out_dollar">Dollar</label>
+        <div class="dollar-input-container">
+            <input type="number" id="out_dollar" class="dollar-box" placeholder="0.00" readonly>
+            <span class="currency-symbol">$</span>
+        </div>
+        <label for="out_rate">Rate</label>
+        <div class="rate-input-container">
+           <input type="number" id="out_rate" class="rate-box" placeholder="0.00" oninput="calculateDollarAmount()">
+           <span class="currency-symbol">৳</span>
+        </div>
+      </div>
+
+       <div class="row-line-charge-box">
+          <label for="out_charge">Charge</label>
+       <input type="number" id="out_charge" class="charge-box" placeholder="0.00 ৳" oninput="calculateDollarAmount()">
+       <label for="total-L">Total</label>
+       <input type="number" id="totalOutDisplay" class="total-box" placeholder="0.00 ৳" oninput="calculateDollarAmount()">
+       </div>
+
+    <input type="text" id="outDescription" placeholder="বিবরণ দিন">
+
+      </br>
+        <div class="button-row">
+          <button class="cancel-btn"
+          onclick="closeForm()">Cancel</button>
+          <button class="save-btn" onclick="saveOut()">Save</button>
+        </div>
+    </div>
+
+ <div id="formConvert" class="form-contents" style="display:none;">
+        <h1 class="converttext">Convert Taka <span id="convertEditTitle" style="font-size: 14px; font-weight: normal; color: #666;"></span></h1>
+        <p style="color: #6c757d; font-size: 14px; margin-top: -15px;">টাকা এক অ্যাকাউন্ট থেকে অন্য অ্যাকাউন্টে স্থানান্তরিত করুন</p>
+
+      <div class="row-line-type">
+       <select class="account-type-a" id="convertFrom" required>
+            <option>বিকাশ পার্সোনাল</option>
+            <option>বিকাশ এজেন্ট</option>
+            <option>বিকাশ মার্চেন্ট</option>
+            <option>নগদ পার্সোনাল</option>
+            <option>নগদ এজেন্ট</option>
+            <option>রকেট পার্সোনাল </option>
+            <option>রকেট এজেন্ট</option>
+        </select>
+
+        <select class="account-type-a" id="convertTo" required>
+            <option>আফ্রিদি পাবে</option>
+            <option>Bank🏦Transfer</option>
+        </select>
+       </div>
+       
+     <div class="row-line-time">
+      <div class="time-box">
+        <span id="showTimeConvert">--:-- AM</span> 
+        <input type="time" id="timePickerConvert" class="hidden-picker"> <img src="time.png" class="icon" onclick="openTime('Convert')">
+</div>
+      <div class="date-box">
+    <span id="showDateConvert"></span> 
+    <input type="date" id="datePickerConvert" class="hidden-picker date-picker-fix"> <img src="calendar.png" class="icon" onclick="openDate('Convert')">
+</div>
+
+</div>
+
+      <div class="row-line-convert-taka">
+         <label for="convertTakaAmount">পরিমাণ</label>
+         <input type="number" id="convertTakaAmount" class="tk-convert" placeholder="0.00 ৳" oninput="calculateTotalConvertTaka()">
+
+         <label for="convertTakaCharge">Charge</label>
+         <input type="number" id="convertTakaCharge" class="charge-box" placeholder="0.00 ৳" oninput="calculateTotalConvertTaka()">
+      </div>
+
+      <div style="width: 80%; margin: 10px auto;">
+           <label for="convertTakaTotalDisplay" style="font-weight: 600; color: #333; font-size: 16px; display: block; margin-bottom: 5px;">Total</label>
+           <div class="taka-total-box" id="convertTakaTotalDisplay">0.00 ৳</div>
+       </div>
+
+    <input type="text" id="convertDescription" placeholder="বিবরণ দিন (ঐচ্ছিক)">
+
+        <div class="button-row">
+          <button class="cancel-btn"
+          onclick="closeForm()">Cancel</button>
+          <button class="save-btn" onclick="saveConvert()">Save</button>
+        </div>
+    </div>
+
+
+ <div id="formt-out" class="form-contents" style="display:none;">
+        <h1 class="taka-transfar">Bank Transfer <span id="takaTransferEditTitle" style="font-size: 14px; font-weight: normal; color: #666;"></span></h1>
+
+      <div class="row-line-type">
+       <select class="account-type-a" id="takaFrom" required>
+            <option>আফ্রিদি পাবে</option>
+            <option>মোট ক্যাশ</option>
+        </select>
+
+        <select class="account-type-a" id="takaTo" required>
+            <option>Brack-Bank</option>
+            <option>City-Bank</option>
+        </select>
+        </div>
+        <div class="row-line-time">
+<div class="time-box">
+        <span id="showTimeTransfer">--:-- AM</span>
+        <input type="time" id="timePickerTransfer" class="hidden-picker"> <img src="time.png" class="icon" onclick="openTime('Transfer')">
+</div>
+      <div class="date-box">
+    <span id="showDateTransfer"></span>
+    <input type="date" id="datePickerTransfer" class="hidden-picker date-picker-fix"> <img src="calendar.png" class="icon" onclick="openDate('Transfer')">
+</div>
+
+</div>
+
+        <label class="taka-amount-label" for="takaAmount">পরিমাণ</label>
+       <input type="number" id="takaAmount" class="tk-transfer-amount" placeholder="0.00 ৳" required>
+
+        <input type="text" id="takaDescription" placeholder="বিবরণ দিন">
+
+        <div class="button-row">
+          <button class="cancel-btn"
+          onclick="closeForm()">Cancel</button>
+          <button class="save-btn" onclick="saveTakaTransfer()">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row-line-show">
+
+<div class="date-boxs">
+<div id="dateFilterWrapper" class="date-filter-group">
+    <button id="dateFilterBtn" class="filter-button" onclick="openDateRangeModal()">
+        📅  </button>
+    
+    <button id="clearDateBtn" onclick="clearDateRange()" style="display: none;">❌</button>
+</div>
+</div>
+
+
+<div id="dateRangeModal" class="popup-form" style="display:none;">
+    <div class="form-content" style="max-width: 350px;">
+        <h2 style="margin-top: 0;">তারিখ রেঞ্জ নির্বাচন করুন</h2>
+        
+        <label for="startDateFilter">শুরুর তারিখ:</label>
+        <input type="date" id="startDateFilter" style="margin-bottom: 15px;">
+
+        <label for="endDateFilter">শেষ তারিখ:</label>
+        <input type="date" id="endDateFilter">
+        
+        <div class="button-row" style="margin-top: 20px;">
+            <button class="cancel-btn" onclick="document.getElementById('dateRangeModal').style.display='none'">বাতিল</button>
+            <button class="save-btn" onclick="setDateRangeAndFilter()">প্রয়োগ করুন</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <select class="cg-select" id="categoryFilter" onchange="filterByCategory()">
+        <option value="all">সব🌍</option>
+       <option value="IN_ONLY">💲Dollar in➕</option>
+       <option value="OUT_ONLY">💲Dollar Sell➖</option>
+       <option>Convert💱</option>
+       <option>Bank🏦ট্রান্সফার</option>
+        <option>Binance</option>
+        <option>Redot-pay</option>
+        <option value="Profit/Loss">Profit/Loss</option>
+        </select>
+
+
+
+
+  <div class="table-rejalt" id="tableResultDisplay">
+     0 ৳
+  </div>
+
+
+
+<div class="column-toggle-container">
+    <button id="toggleColumnsBtn">👁️⚙️</button>
+    
+    <div id="columnDropdown" class="column-dropdown">
+        <label><input type="checkbox" checked data-column="1"> Date</label>
+        <label><input type="checkbox" checked data-column="2"> Time</label>
+        <label><input type="checkbox" checked data-column="3">Category</label>
+        <label><input type="checkbox" checked data-column="4">D. A/C</label>
+        <label><input type="checkbox" checked data-column="5">Received A/C</label>
+        <label><input type="checkbox" checked data-column="6">Number</label>
+        <label><input type="checkbox" checked data-column="7">Charge</label>
+        <label><input type="checkbox" checked data-column="8">Rate</label>
+       <label><input type="checkbox" checked data-column="9">Dollar</label>
+       <label><input type="checkbox" checked data-column="10">Amount</label>
+       <label><input type="checkbox" checked data-column="11">Profit/Loss</label>
+        <label><input type="checkbox" checked data-column="12">Details</label>
+        <label><input type="checkbox" checked data-column="13">Action</label>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<div class="show-box">
+    <div class="table-wrapper">
+        <div class="transaction-table-header">
+            <div class="th-date">Date</div>
+            <div class="th-time">Time</div>
+            <div class="th-category">Category</div>
+            <div class="th-account">D. A/C</div>
+            <div class="th-bank">Received A/C</div>
+            <div class="th-number">Number</div> <div class="th-charge">Charge</div>
+            <div class="th-rate">Rate</div>
+            <div class="th-dollar">Dollar</div>
+             <div class="th-amount">Amount</div>
+             <div class="th-profit-loss">Profit/Loss</div>
+            <div class="th-details">Details</div>
+            <div class="th-action">Action</div>
+        </div>
+        <div id="transactionBody"></div>
+    </div>
+</div>
+<div class="page-size-area">
+    
+    <div class="pagination-controls">
+        </div>
+
+    <div class="page-size-control">
+        <label for="rowsPerPageSelect">লাইন সংখ্যা:</label>
+        <select id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+</div>
+
+
+<script type="module">
+    // ফায়ারবেস ফাংশন এবং ডাটাবেস ইমপোর্ট
+    import { db } from './firebase-config.js';
+    import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const transRef = ref(db, 'transactions');
+
+    // গ্লোবাল স্টেট ভ্যারিয়েবল
+    let isEditingIndex = null;
+    let binanceDollar = 0;
+    let redotDollar = 0;
+    let totalCash = 0;
+    let afridiPayable = 0;
+    let bankTransferToday = 0; 
+    let totalCharge = 0; 
+    let totalDollarInventory = 0;
+    let totalPurchaseCostInTaka = 0;
+    let dailyProfitLoss = 0; 
+
+    let dollarInToday = 0;
+    let takaInToday = 0;
+    let dollarOutToday = 0;
+    let takaOutToday = 0; 
+
+    let currentPage = 1;
+    let currentRowsPerPage = 10; 
+
+    let transactions = [];
+    let dateFilterStart = null; 
+    let dateFilterEnd = null;
+
+    // =======================================================
+    // ✅ সাইডবার ফাংশন (নতুন যুক্ত করা হয়েছে)
+    // =======================================================
+    window.toggleSidebar = function(event) {
+        if (event) event.stopPropagation();
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('open');
+        }
+    }
+
+    // =======================================================
+    // ✅ ফর্ম রিসেট ফাংশন (নতুন যুক্ত করা হয়েছে)
+    // =======================================================
+    function resetAllForms() {
+        const forms = ["formIn", "formOut", "formConvert", "formt-out"];
+        forms.forEach(formId => {
+            const formElement = document.getElementById(formId);
+            if (formElement) {
+                // সকল ইনপুট, টেক্সট এরিয়া পরিষ্কার করা
+                formElement.querySelectorAll('input').forEach(input => {
+                    if (input.type !== 'button' && input.type !== 'submit') {
+                        input.value = '';
+                    }
+                });
+                formElement.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+                formElement.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+            }
+        });
+        
+        // নির্দিষ্ট কিছু ডিসপ্লে রিসেট
+        if(document.getElementById("totalOutDisplay")) document.getElementById("totalOutDisplay").value = "0.00";
+        if(document.getElementById("convertTakaTotalDisplay")) document.getElementById("convertTakaTotalDisplay").textContent = "0.00 ৳";
+    }
+
+    function parseTime(timeStr) {
+        if (!timeStr) return 0;
+        const match = timeStr.match(/(\d+):(\d+)\s?(AM|PM)/i);
+        if (!match) return 0;
+        let hours = parseInt(match[1]);
+        const minutes = parseInt(match[2]);
+        const ampm = match[3].toUpperCase();
+        if (ampm === 'PM' && hours !== 12) hours += 12;
+        else if (ampm === 'AM' && hours === 12) hours = 0; 
+        return hours * 60 + minutes; 
+    }
+  
+    function sortTransactionsByDateTime() {
+        transactions.sort((a, b) => {
+            const dateA = a.date;
+            const dateB = b.date;
+            if (dateA < dateB) return -1;
+            if (dateA > dateB) return 1;
+            const timeValueA = parseTime(a.time);
+            const timeValueB = parseTime(b.time);
+            if (timeValueA < timeValueB) return -1;
+            if (timeValueA > timeValueB) return 1;
+            return 0;
+        });
+    }
+
+    function saveTransactions() {
+        set(transRef, transactions)
+        .then(() => console.log("Saved to Firebase"))
+        .catch((error) => alert("Error: " + error));
+    }
+
+    function loadTransactionsFromFirebase() {
+        onValue(transRef, (snapshot) => {
+            const data = snapshot.val();
+            transactions = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
+            sortTransactionsByDateTime();
+            recalculateBalances();
+            displayTransactions();
+        });
+    }
+
+    function formatDollar(amount) {
+        return '$ ' + (isNaN(amount) || !isFinite(amount) ? '0.00' : amount.toFixed(2));
+    }
+    function formatTaka(amount) {
+        return (isNaN(amount) || !isFinite(amount) ? '0.00' : amount.toFixed(2)) + ' ৳';
+    }
+
+    function recalculateBalances() {
+        binanceDollar = 0; redotDollar = 0; totalCash = 0; afridiPayable = 0;
+        bankTransferToday = 0; totalCharge = 0; totalDollarInventory = 0;
+        totalPurchaseCostInTaka = 0; dailyProfitLoss = 0; 
+        dollarInToday = 0; takaInToday = 0; dollarOutToday = 0; takaOutToday = 0;
+        
+        const today = new Date().toISOString().split('T')[0];
+
+        transactions.forEach(t => {
+            if (t.type === 'in') {
+                if (t.dollarAccount === 'Binance') binanceDollar += t.dollarAmount;
+                else if (t.dollarAccount === 'Redot-pay') redotDollar += t.dollarAmount;
+                totalDollarInventory += t.dollarAmount;
+                totalPurchaseCostInTaka += t.takaAmount; 
+                if (t.date === today) { dollarInToday += t.dollarAmount; takaInToday += t.takaAmount; }
+            } else if (t.type === 'out') {
+                const cosg = t.costOfSoldGoods || 0; 
+                if (t.dollarAccount === 'Binance') binanceDollar -= t.dollarAmount;
+                else if (t.dollarAccount === 'Redot-pay') redotDollar -= t.dollarAmount;
+                totalDollarInventory -= t.dollarAmount;
+                totalPurchaseCostInTaka -= cosg;
+                totalCash += t.totalTakaReceived;
+                totalCharge += t.charge; 
+                if (t.date === today) { dailyProfitLoss += t.profitLoss; dollarOutToday += t.dollarAmount; takaOutToday += t.totalTakaReceived; }
+            } else if (t.type === 'convert') {
+                const ded = t.takaAmount + t.charge;
+                if (t.fromAccount === 'মোট ক্যাশ' || (t.fromAccount !== 'আফ্রিদি পাবে' && t.fromAccount !== 'Bank🏦Transfer')) totalCash -= ded;
+                totalCharge -= t.charge; 
+                if (t.toAccount === 'আফ্রিদি পাবে') afridiPayable += t.takaAmount;
+            } else if (t.type === 'transfer') {
+                if (t.fromAccount === 'আফ্রিদি পাবে') afridiPayable -= t.takaAmount;
+                else if (t.fromAccount === 'মোট ক্যাশ') totalCash -= t.takaAmount;
+                if (t.date === today) bankTransferToday += t.takaAmount;
+            }
+        });
+        updateDashboardCards();
+        updateTableResultDisplay();
+    }
+
+    function getFilteredTransactions() {
+        const cat = document.getElementById('categoryFilter').value;
+        return transactions.filter(t => {
+            let categoryMatch = true;
+            if (cat !== 'all') {
+                if (cat === 'IN_ONLY') categoryMatch = t.type === 'in';
+                else if (cat === 'OUT_ONLY') categoryMatch = t.type === 'out';
+                else if (cat === 'Convert💱') categoryMatch = t.type === 'convert';
+                else if (cat === 'Bank🏦ট্রান্সফার') categoryMatch = t.type === 'transfer';
+                else if (cat === 'Binance') categoryMatch = t.dollarAccount === 'Binance';
+                else if (cat === 'Redot-pay') categoryMatch = t.dollarAccount === 'Redot-pay';
+                else if (cat === 'Profit/Loss') categoryMatch = t.type === 'out';
+                else categoryMatch = false;
+            }
+            let dateMatch = true;
+            if (dateFilterStart && dateFilterEnd) {
+                const tDate = new Date(t.date);
+                const start = new Date(dateFilterStart);
+                const end = new Date(dateFilterEnd);
+                end.setDate(end.getDate() + 1); 
+                dateMatch = tDate >= start && tDate < end;
+            }
+            return categoryMatch && dateMatch;
+        });
+    }
+  
+    function updateTableResultDisplay() {
+        const res = document.getElementById('tableResultDisplay');
+        if (!res) return;
+        const cat = document.getElementById('categoryFilter').value;
+        const filtered = getFilteredTransactions();
+        let total = 0;
+        if (cat === 'all') { res.textContent = '0 ৳'; return; }
+        if (cat === 'Profit/Loss') {
+            filtered.forEach(t => { if (t.type === 'out') total += t.profitLoss; });
+            res.textContent = formatTaka(total); return;
+        }
+        filtered.forEach(t => {
+            if (t.type === 'in') total -= t.takaAmount; 
+            else if (t.type === 'out') total += t.totalTakaReceived;
+            else if (t.type === 'convert') total -= (t.takaAmount + t.charge);
+            else if (t.type === 'transfer') total -= t.takaAmount;
+        });
+        res.textContent = formatTaka(total);
+    }
+
+    function displayTransactions() {
+        const body = document.getElementById('transactionBody');
+        if (!body) return;
+        const filtered = getFilteredTransactions();
+        const totalPages = Math.ceil(filtered.length / currentRowsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * currentRowsPerPage;
+        const end = start + currentRowsPerPage;
+        const current = [...filtered].reverse().slice(start, end);
+        
+        body.innerHTML = current.map(t => {
+            const idx = transactions.findIndex(ot => ot.date === t.date && ot.time === t.time && ot.type === t.type && ot.dollarAmount === t.dollarAmount);
+            return createTransactionRow(t, idx);
+        }).join('');
+        setupPagination();
+        updateTableResultDisplay();
+    }
+  
+    function setupPagination() {
+        const filtered = getFilteredTransactions();
+        const totalPages = Math.ceil(filtered.length / currentRowsPerPage);
+        const container = document.querySelector('.pagination-controls');
+        if (!container) return; 
+        container.innerHTML = ''; 
+        if (totalPages <= 1) return;
+        const prev = createPaginationButton('<<', currentPage - 1);
+        if (currentPage === 1) prev.classList.add('disabled-nav');
+        container.appendChild(prev);
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = createPaginationButton(i, i);
+            if (i === currentPage) btn.classList.add('active-page');
+            container.appendChild(btn);
+        }
+        const next = createPaginationButton('>>', currentPage + 1);
+        if (currentPage === totalPages) next.classList.add('disabled-nav');
+        container.appendChild(next);
+    }
+
+    function createPaginationButton(text, page) {
+        const link = document.createElement('a'); 
+        link.innerText = text; link.href = '#'; link.classList.add('page-link'); 
+        link.onclick = (e) => { e.preventDefault(); changePage(page); };
+        return link;
+    }
+
+    function changePage(page) {
+        const total = Math.ceil(getFilteredTransactions().length / currentRowsPerPage);
+        if (page >= 1 && page <= total) { currentPage = page; displayTransactions(); }
+    }
+
+    // Window Functions
+    window.editTransaction = (index) => editTransaction(index);
+    window.deleteTransaction = (index) => deleteTransaction(index);
+    window.saveIn = () => saveIn();
+    window.saveOut = () => saveOut();
+    window.saveConvert = () => saveConvert();
+    window.saveTakaTransfer = () => saveTakaTransfer();
+    window.closeForm = () => closeForm();
+    window.openForm = (type) => openForm(type);
+    window.openTime = (type) => openTime(type);
+    window.openDate = (type) => openDate(type);
+    window.setAutoTime = (type) => setAutoTime(type);
+    window.setAutoDate = (type) => setAutoDate(type);
+    window.calculateDollarAmount = () => calculateDollarAmount();
+    window.calculateTotalConvertTaka = () => calculateTotalConvertTaka();
+    window.filterByCategory = () => { currentPage = 1; displayTransactions(); };
+    window.changeRowsPerPage = (val) => { currentRowsPerPage = parseInt(val); currentPage = 1; displayTransactions(); };
+    window.setDateRangeAndFilter = () => setDateRangeAndFilter();
+    window.clearDateRange = () => clearDateRange();
+
+    function createTransactionRow(t, index) {
+        let cat = 'N/A', acc = 'N/A', recv = 'N/A', mob = 'N/A', chg = 0, rat = 0, dol = 0, amt = '0 ৳', prof = 'N/A', cls = '';
+        let dateDisp = t.date.split('-').reverse().join('/').replace(/^\d{4}/, t.date.slice(2, 4));
+        if (t.type === 'in') {
+            cat = 'Dollar In'; acc = t.dollarAccount; recv = t.person === 'আফ্রিদি ' ? 'আফ্রিদি পাবে' : 'বাহির থেকে';
+            rat = t.rate; dol = t.dollarAmount; amt = formatTaka(t.takaAmount); cls = 'amount-out';
+        } else if (t.type === 'out') {
+            cat = 'Dollar Sell'; acc = t.dollarAccount; recv = t.takaAccount || 'null'; mob = t.mobileNumber || 'N/A'; 
+            chg = t.charge; rat = t.rate; dol = t.dollarAmount; amt = formatTaka(t.totalTakaReceived); cls = 'amount-in';
+            prof = `<span style="color: ${t.profitLoss >= 0 ? 'green' : 'red'};">${formatTaka(t.profitLoss)}</span>`;
+        } else if (t.type === 'convert') {
+            cat = 'Taka Convert'; acc = t.fromAccount; recv = t.toAccount; chg = t.charge; amt = formatTaka(t.takaAmount); cls = 'amount-out';
+        } else if (t.type === 'transfer') {
+            cat = 'Bank Transfer'; acc = t.fromAccount; recv = t.toAccount; amt = formatTaka(t.takaAmount); cls = 'amount-out';
+        }
+        return `
+            <div class="transaction-item">
+                <div class="td-date">${dateDisp}</div><div class="td-time">${t.time}</div>
+                <div class="td-category">${cat}</div><div class="td-account">${acc}</div>
+                <div class="td-bank">${recv}</div><div class="td-number">${mob}</div> 
+                <div class="td-charge">${chg.toFixed(2)}</div><div class="td-rate">${rat ? rat.toFixed(2) : 'N/A'}</div>
+                <div class="td-dollar">${dol ? dol.toFixed(2) : 'N/A'}</div><div class="td-amount ${cls}">${amt}</div>
+                <div class="td-profit-loss">${prof}</div><div class="td-details">${t.description || 'Null'}</div>
+                <div class="td-action action-buttons">
+                    <button class="edit-btn" onclick="editTransaction(${index})">✏️</button>
+                    <button class="delete-btn" onclick="deleteTransaction(${index})">🗑️</button>
+                </div>
+            </div>`;
+    }
+
+    function deleteTransaction(index) {
+        if (confirm("লেনদেনটি ডিলিট করতে চান?")) { transactions.splice(index, 1); saveTransactions(); }
+    }
+  
+    function editTransaction(index) {
+        isEditingIndex = index;
+        const t = transactions[index];
+        resetAllForms(); // এডিট করার আগে ফর্ম পরিষ্কার করা
+        if (t.type === 'in') {
+            openForm('in'); document.getElementById('incategory').value = t.dollarAccount;
+            document.getElementById('inperson').value = t.person; document.getElementById('indollar').value = t.dollarAmount;
+            document.getElementById('inrate').value = t.rate; document.getElementById('inDescription').value = t.description || '';
+            document.getElementById('showTimeIn').textContent = t.time; document.getElementById('showDateIn').textContent = t.date; 
+            document.getElementById('datePickerIn').value = t.date;
+        } else if (t.type === 'out') {
+            openForm('out'); document.getElementById('out_dollar_source').value = t.dollarAccount;
+            document.getElementById('out_taka_destination').value = t.takaAccount; document.getElementById('out_mobile_number').value = t.mobileNumber;
+            document.getElementById('out_dollar').value = t.dollarAmount; document.getElementById('out_rate').value = t.rate;
+            document.getElementById('out_charge').value = t.charge; document.getElementById('totalOutDisplay').value = t.totalTakaReceived;
+            document.getElementById('outDescription').value = t.description || '';
+            document.getElementById('showTimeOut').textContent = t.time; document.getElementById('showDateOut').textContent = t.date; 
+            document.getElementById('datePickerOut').value = t.date;
+        } else if (t.type === 'convert') {
+            openForm('c-out'); document.getElementById('convertFrom').value = t.fromAccount;
+            document.getElementById('convertTo').value = t.toAccount; document.getElementById('convertTakaAmount').value = t.takaAmount;
+            document.getElementById('convertTakaCharge').value = t.charge; calculateTotalConvertTaka();
+        } else if (t.type === 'transfer') {
+            openForm('t-out'); document.getElementById('takaFrom').value = t.fromAccount;
+            document.getElementById('takaTo').value = t.toAccount; document.getElementById('takaAmount').value = t.takaAmount;
+        }
+    }
+
+    function saveIn() {
+        const dol = parseFloat(document.getElementById('indollar').value) || 0;
+        const rat = parseFloat(document.getElementById('inrate').value) || 0;
+        if (dol <= 0 || rat <= 0) return alert("মান দিন");
+        const nt = { type: 'in', date: document.getElementById('datePickerIn').value, time: document.getElementById('showTimeIn').textContent, dollarAccount: document.getElementById('incategory').value, person: document.getElementById('inperson').value, dollarAmount: dol, rate: rat, takaAmount: dol * rat, description: document.getElementById('inDescription').value.trim() };
+        if (isEditingIndex !== null) transactions[isEditingIndex] = nt; else transactions.push(nt);
+        saveTransactions(); closeForm();
+    }
+
+    function saveOut() {
+        const dol = parseFloat(document.getElementById('out_dollar').value) || 0;
+        const rat = parseFloat(document.getElementById('out_rate').value) || 0;
+        const tot = parseFloat(document.getElementById('totalOutDisplay').value) || 0;
+        const chg = parseFloat(document.getElementById('out_charge').value) || 0;
+        if (dol <= 0 || rat <= 0) return alert("মান দিন");
+        let tDol = totalDollarInventory, tCos = totalPurchaseCostInTaka;
+        if (isEditingIndex !== null && transactions[isEditingIndex].type === 'out') { tCos += transactions[isEditingIndex].costOfSoldGoods; tDol += transactions[isEditingIndex].dollarAmount; }
+        const avg = tDol > 0 ? tCos / tDol : 0;
+        const cosg = dol * avg;
+        const nt = { type: 'out', date: document.getElementById('datePickerOut').value, time: document.getElementById('showTimeOut').textContent, dollarAccount: document.getElementById('out_dollar_source').value, takaAccount: document.getElementById('out_taka_destination').value, mobileNumber: document.getElementById('out_mobile_number').value, dollarAmount: dol, rate: rat, charge: chg, totalTakaReceived: tot, profitLoss: (tot - chg) - cosg, costOfSoldGoods: cosg, description: document.getElementById('outDescription').value.trim() };
+        if (isEditingIndex !== null) transactions[isEditingIndex] = nt; else transactions.push(nt);
+        saveTransactions(); closeForm();
+    }
+
+    function saveConvert() {
+        const amt = parseFloat(document.getElementById('convertTakaAmount').value) || 0;
+        const nt = { type: 'convert', date: document.getElementById('datePickerConvert').value, time: document.getElementById('showTimeConvert').textContent, fromAccount: document.getElementById('convertFrom').value, toAccount: document.getElementById('convertTo').value, takaAmount: amt, charge: parseFloat(document.getElementById('convertTakaCharge').value) || 0, description: document.getElementById('convertDescription').value.trim() };
+        if (isEditingIndex !== null) transactions[isEditingIndex] = nt; else transactions.push(nt);
+        saveTransactions(); closeForm();
+    }
+
+    function saveTakaTransfer() {
+        const amt = parseFloat(document.getElementById('takaAmount').value) || 0;
+        const nt = { type: 'transfer', date: document.getElementById('datePickerTransfer').value, time: document.getElementById('showTimeTransfer').textContent, fromAccount: document.getElementById('takaFrom').value, toAccount: document.getElementById('takaTo').value, takaAmount: amt, description: document.getElementById('takaDescription').value.trim() };
+        if (isEditingIndex !== null) transactions[isEditingIndex] = nt; else transactions.push(nt);
+        saveTransactions(); closeForm();
+    }
+
+    function updateDashboardCards() {
+        const cards = ['.card1 p', '.card2 p', '.card3 p', '.card4 p', '.card5 p', '.card6 p', '.card9 p'];
+        const vals = [formatDollar(binanceDollar), formatDollar(redotDollar), formatTaka(totalCash), formatTaka(afridiPayable), formatTaka(bankTransferToday), formatTaka(totalCharge), formatTaka(dailyProfitLoss)];
+        cards.forEach((c, i) => { const el = document.querySelector(c); if(el) el.textContent = vals[i]; });
+        const c7 = document.querySelector('.card7'); if(c7){ c7.querySelectorAll('p')[0].textContent = formatDollar(dollarInToday); c7.querySelectorAll('p')[1].textContent = formatTaka(takaInToday); }
+        const c8 = document.querySelector('.card8'); if(c8){ c8.querySelectorAll('p')[0].textContent = formatDollar(dollarOutToday); c8.querySelectorAll('p')[1].textContent = formatTaka(takaOutToday); }
+    }
+  
+    function setAutoTime(type) {
+        const now = new Date();
+        let h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0'), ampm = h >= 12 ? 'PM' : 'AM';
+        document.getElementById('showTime' + type).textContent = `${h % 12 || 12}:${m} ${ampm}`;
+        document.getElementById('timePicker' + type).value = `${String(h).padStart(2, '0')}:${m}`;
+    }
+
+    function setAutoDate(type) {
+        const d = new Date().toISOString().split('T')[0];
+        document.getElementById('datePicker' + type).value = d;
+        document.getElementById('showDate' + type).textContent = d; 
+    }
+
+    function openTime(type) {
+        const inp = document.getElementById('timePicker' + type); inp.click();
+        inp.onchange = () => { let [h, m] = inp.value.split(':'), hh = parseInt(h); document.getElementById('showTime' + type).textContent = `${hh % 12 || 12}:${m} ${hh >= 12 ? 'PM' : 'AM'}`; };
+    }
+  
+    function openDate(type) {
+        const inp = document.getElementById('datePicker' + type); inp.click();
+        inp.onchange = () => document.getElementById('showDate' + type).textContent = inp.value;
+    }
+  
+    function calculateDollarAmount() {
+        const tot = parseFloat(document.getElementById('totalOutDisplay').value) || 0, rat = parseFloat(document.getElementById('out_rate').value) || 0, chg = parseFloat(document.getElementById('out_charge').value) || 0;
+        document.getElementById('out_dollar').value = (rat > 0 ? (tot - chg) / rat : 0).toFixed(2);
+    }
+
+    function calculateTotalConvertTaka() {
+        const a = parseFloat(document.getElementById('convertTakaAmount').value) || 0, c = parseFloat(document.getElementById('convertTakaCharge').value) || 0;
+        document.getElementById('convertTakaTotalDisplay').textContent = (a + c).toFixed(2) + ' ৳';
+    }
+
+    function openForm(type) {
+        resetAllForms(); // ফর্ম খোলার আগে পরিষ্কার করা
+        document.getElementById("formContainer").style.display = "flex";
+        ["formIn", "formOut", "formConvert", "formt-out"].forEach(id => document.getElementById(id).style.display = "none");
+        if (type === "in") { document.getElementById("formIn").style.display = "block"; setAutoTime('In'); setAutoDate('In'); }
+        else if (type === "out") { document.getElementById("formOut").style.display = "block"; setAutoTime('Out'); setAutoDate('Out'); }
+        else if (type === "c-out") { document.getElementById("formConvert").style.display = "block"; setAutoTime('Convert'); setAutoDate('Convert'); }
+        else if (type === "t-out") { document.getElementById("formt-out").style.display = "block"; setAutoTime('Transfer'); setAutoDate('Transfer'); }
+    }
+
+    function closeForm() {
+        document.getElementById("formContainer").style.display = "none";
+        resetAllForms(); // ফর্ম বন্ধ করার সময় পরিষ্কার করা
+        isEditingIndex = null;
+    }
+  
+    function setDateRangeAndFilter() {
+        dateFilterStart = document.getElementById('startDateFilter').value;
+        dateFilterEnd = document.getElementById('endDateFilter').value;
+        currentPage = 1; displayTransactions();
+    }
+
+    function clearDateRange() {
+        dateFilterStart = dateFilterEnd = null;
+        currentPage = 1; displayTransactions();
+    }
+  
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTransactionsFromFirebase();
+    });
+
+</script>
+
+</body>
+</html>
