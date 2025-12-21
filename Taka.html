@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taka Hisab</title>
+  
+<style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .menu-icon {
+      position: absolute;
+      left: 20px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .navbar h1 {
+      font-size: 25px;
+      margin: 0;
+      font-weight: 700;
+      text-align: left;
+      margin-left: -50px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 65px;
+      left: -260px;
+      width: 230px;
+      height: 100%;
+      background: #9CC6ED;
+      transition: 0.3s;
+      padding-top: 20px;
+      z-index: 9;
+    }
+    
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: black;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background: #87b8e0;
+    }
+    
+    /* Main content */
+    .main-content {
+      margin-top: 90px;
+      padding: 20px;
+    }
+
+    /* Grid layout */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.12);
+    }
+
+    .card h3 {
+      margin: -8px;
+      font-size: 16px;
+      color: #ffff;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .card p {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffff;
+    }
+
+    @media (max-width: 768px) {
+      .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .card {
+        min-height: 20px;
+        max-height: 80px;
+        padding: 8px 10px;
+      }
+      .card h3 { font-size: 10px; }
+      .card p { font-size: 22px; }
+    }
+
+    .card1 { background: linear-gradient(135deg, #594e4d, #363332); color: white; }
+    .card2 { background: linear-gradient(135deg, #1f2edb, #1a1b26); color: white; }
+    .card3 { background: linear-gradient(135deg, #18daf0, #192729); color: white; }
+    .card4 { background: linear-gradient(135deg, #038231, #2d4034); color: white; }
+    .card5 { background: linear-gradient(135deg, #ed1a64, #c91252); color: white; }
+    .card6 { background: linear-gradient(135deg, #f05a29, #ff6633); color: white; }
+    .card7 { background: linear-gradient(135deg, #a623de, #312536); color: white; }
+    .card8 { background: linear-gradient(135deg, #a1c447, #2d331f); color: white; }
+      
+    .cash-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin: 15px 20px 20px 20px;
+    }
+
+    .cash-buttons button {
+        border: none;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        transition: 0.5s;
+        padding: 10px 0;
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .cash-in-btn { background-color: #28a745; }
+    .cash-out-btn { background-color: #dc3545; }
+    .c-convert { background-color: #c47025; }
+    .t-b2b { background-color: #138496; }   
+
+    /* Popup Form */
+    .popup-form {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .form-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .takad-text {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    .row-line-time {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .time-box, .date-box {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #ccc;
+        padding: 8px 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .hidden-picker {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        cursor: pointer;
+    }
+
+    .time-box span, .date-box span {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+    }
+
+    .row-line-type {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .account-type-a, .account-type-b {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: #f9f9f9;
+    }
+
+    .amount-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .taka-input {
+        width: 100%;
+        max-width: 250px;
+    }
+     .charge-input {
+       width: 100%;
+      max-width: 180px;
+     }
+
+
+    .taka-input input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+  .charge-input input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid red;
+        border-radius: 8px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #inDescription, #outDescription, #cDescription, #b2bDescription {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .button-row button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .cancel-btn { background-color: red; color: white; }
+    .save-btn { background-color: #007bff; color: white; }
+    
+    
+ .show-box {
+   padding: 0px;
+   height: auto;
+   width: 95%;
+   max-width: 580px;
+   margin: 15px auto 0 auto; 
+   border-radius: 10px;
+   background-color: #ffffff;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   font-size: 18px;
+   font-weight: bold;
+   color: #00796b;
+   text-align: center;
+   overflow-x: auto;
+   overflow-y: visible;
+}
+
+.table-wrapper {
+    display: block;
+    border-collapse: collapse;
+    width: 100%; 
+    border-radius: 8px;
+}
+
+#transactionBody {
+    display: table-row-group;
+    height: auto !important;
+    max-height: none;
+    overflow-y: visible;
+}
+
+.transaction-table-header {
+    display: table-row;
+    background-color: #1a4e69;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 9;
+}
+
+.transaction-table-header div,
+.transaction-item div {
+    display: table-cell; 
+    padding: 18px 15px; 
+    white-space: nowrap;
+    vertical-align: middle;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction-item {
+    display: table-row; 
+    font-size: 14px;
+    color: #000;
+}
+
+.transaction-item:nth-child(even) { background-color: #e9ecef; }
+.transaction-item:nth-child(odd) { background-color: #ffffff; }
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-buttons button {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-btn { background: #007bff; color: #fff; }
+.delete-btn { background: #dc3545; color: #fff; }
+
+.page-size-area {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 15px; 
+    margin: 10px auto 20px auto; 
+    width: 95%; 
+    max-width: 580px; 
+    box-sizing: border-box;
+    background-color: #ffffff; 
+    border-radius: 0 0 10px 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.pagination-controls {
+    text-align: left; 
+    padding: 0;
+    margin: 0; 
+    display: flex; 
+    gap: 3px;
+    flex-wrap: wrap; 
+}
+
+.pagination-controls .page-link {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-width: 15px; 
+    text-align: center;
+}
+
+.pagination-controls .page-link.active-page {
+    background-color: #007bff !important; 
+    color: white !important; 
+    border-color: #007bff !important;
+    font-weight: bold !important;
+    transform: scale(1.05) !important; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    cursor: default; 
+}
+
+.pagination-controls .page-link.disabled-nav {
+    color: #ccc !important; 
+    background-color: #f7f7f7 !important; 
+    border-color: #ddd !important;
+    cursor: default; 
+    pointer-events: none; 
+}
+</style>
+</head>
+<body onload="initializeData()">
+  
+<div class="navbar">
+    <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
+    <h1>টাকার হিসাব</h1>
+</div>
+  
+
+  <div id="sidebar" class="sidebar">
+    <a href="Dashboard.html">🏠 Dashboard</a>
+    <a href="Dollar.html">💰 ডলার হিসা</a>
+    <a href="Taka.html">💵 টাকার হিসাব</a>
+  </div>
+
+
+<div class="main-content">
+    <div class="cards-container">
+        <div class="card card1"><p id="val-1">৳ 0</p><h3>মোট ব্যালেন্স</h3></div>
+        <div class="card card2"><p id="val-2">৳ 0</p><h3>Bank🏛️Transfer </h3></div>
+        <div class="card card3"><p id="val-3">৳ 0</p><h3>B2B</h3></div>
+        <div class="card card4"><p id="val-4">৳ 0</p><h3>আজকে ডুকছে</h3></div>
+        <div class="card card5"><p id="val-5">৳ 0</p><h3>বিকাশ</h3></div>
+        <div class="card card6"><p id="val-6">৳ 0</p><h3>নগদ</h3></div>
+        <div class="card card7"><p id="val-7">৳ 0</p><h3>রকেট</h3></div>
+        <div class="card card8"><p id="val-8">৳ 0</p><h3>Today Charge</h3></div>
+    </div>
+</div>
+
+<div class="cash-buttons">
+    <button class="cash-in-btn" onclick="openForm('in')">টাকা ডুকানো➕</button>
+    <button class="cash-out-btn" onclick="openForm('out')">ট্রান্সফার 🏢</button>
+    <button class="c-convert" onclick="openForm('c-out')">Convert💱</button>
+    <button class="t-b2b" onclick="openForm('b2b')">B2B-করা</button>
+</div>
+
+<div id="formContainer" class="popup-form" style="display:none;">
+    <div id="formIn" class="form-content" style="display:none;">
+        <h1 class="takad-text">টাকা ডুকানো</h1>
+        <div class="row-line-time">
+            <div class="time-box">
+                <span id="showTimeIn">--:-- AM</span>
+                <input type="time" id="timePickerIn" class="hidden-picker" onchange="updateTime('In')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
+            </div>
+            <div class="date-box">
+                <span id="showDateIn">--/--/----</span>
+                <input type="date" id="datePickerIn" class="hidden-picker" onchange="updateDate('In')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
+            </div>
+        </div>
+        <div class="row-line-type">
+            <select class="account-type-a" id="incategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+            <select class="account-type-b" id="type-ac"><option>পার্সোনাল</option><option>এজেন্ট B2B</option><option>মার্চেন্ট</option></select>
+        </div>
+        <div class="amount-section">
+            <label>পরিমান</label>
+            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f"></div>
+        </div>
+        <input type="text" id="inDescription" placeholder="বিবরণ দিন">
+        <div class="button-row">
+            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+            <button class="save-btn" onclick="saveIn()">Save</button>
+        </div>
+    </div>
+
+    <div id="formOut" class="form-content" style="display:none;">
+        <h1 class="takad-text">ট্রান্সফার 🏢</h1>
+        <div class="row-line-time">
+            <div class="time-box">
+                <span id="showTimeOut">--:-- AM</span>
+                <input type="time" id="timePickerOut" class="hidden-picker" onchange="updateTime('Out')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
+            </div>
+            <div class="date-box">
+                <span id="showDateOut">--/--/----</span>
+                <input type="date" id="datePickerOut" class="hidden-picker" onchange="updateDate('Out')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
+            </div>
+        </div>
+        <div class="row-line-type">
+            <select class="account-type-a" id="outcategory"><option>Bank Transfer</option><option>হেন্ড ক্যাশ</option></select>
+            <select class="account-type-b" id="type-ac-out"><option>Brack Bank</option><option>City Bank</option><option>Hand Cash</option></select>
+        </div>
+        <div class="amount-section">
+            <label>পরিমান</label>
+            <div class="taka-input"><input type="number" placeholder="৳0.00" id="outtaka-f"></div>
+        </div>
+        <input type="text" id="outDescription" placeholder="বিবরণ দিন">
+        <div class="button-row">
+            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+            <button class="save-btn" onclick="saveOut()">Save</button>
+        </div>
+    </div>
+    
+    <div id="formCOut" class="form-content" style="display:none;">
+        <h1 class="takad-text">Convert💱</h1>
+        <div class="row-line-time">
+            <div class="time-box">
+                <span id="showTimeCOut">--:-- AM</span>
+                <input type="time" id="timePickerCOut" class="hidden-picker" onchange="updateTime('COut')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
+            </div>
+            <div class="date-box">
+                <span id="showDateCOut">--/--/----</span>
+                <input type="date" id="datePickerCOut" class="hidden-picker" onchange="updateDate('COut')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
+            </div>
+        </div>
+        <div class="row-line-type">
+            <select class="account-type-a" id="ccategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+            <select class="account-type-b" id="type-ac-c"><option>মোট ব্যালেন্স</option></select>
+        </div>
+        <div class="amount-section">
+            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-c"></div>
+            <div class="charge-section" style="margin-top:10px;">
+                <div class="charge-input"><input type="number" placeholder="charge 0" id="charge-c"></div>
+            </div>
+        </div>
+        <input type="text" id="cDescription" placeholder="বিবরণ দিন">
+        <div class="button-row">
+            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+            <button class="save-btn" onclick="saveCOut()">Save</button>
+        </div>
+    </div>
+
+    <div id="formB2B" class="form-content" style="display:none;">
+        <h1 class="takad-text">B2B-করা</h1>
+        <div class="row-line-time">
+            <div class="time-box">
+                <span id="showTimeB2B">--:-- AM</span>
+                <input type="time" id="timePickerB2B" class="hidden-picker" onchange="updateTime('B2B')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
+            </div>
+            <div class="date-box">
+                <span id="showDateB2B">--/--/----</span>
+                <input type="date" id="datePickerB2B" class="hidden-picker" onchange="updateDate('B2B')"> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
+            </div>
+        </div>
+        <div class="row-line-type">
+            <select class="account-type-a" id="b2bcategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+            <select class="account-type-b" id="type-ac-b2b"><option>টাকা In</option><option>টাকা Out</option></select>
+        </div>
+        <div class="amount-section">
+            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-b2b"></div>
+        </div>
+        <input type="text" id="b2bDescription" placeholder="বিবরণ দিন">
+        <div class="button-row">
+            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+            <button class="save-btn" onclick="saveB2B()">Save</button>
+        </div>
+    </div>
+</div>
+
+<div class="show-box">
+    <div class="table-wrapper">
+        <div class="transaction-table-header">
+            <div>Date</div>
+            <div>Time</div>
+            <div>Category</div>
+            <div>D. A/C</div>
+            <div>Amount</div>
+            <div>Details</div>
+            <div>Action</div>
+        </div>
+        <div id="transactionBody"></div>
+    </div>
+</div>
+
+<div class="page-size-area">
+    <div class="pagination-controls"></div>
+    <div class="page-size-control">
+        <label for="rowsPerPageSelect">লাইন সংখ্যা:</label>
+        <select id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+</div>
+
+
+
+<script type="module">
+    // ফায়ারবেস ফাংশন এবং ডাটাবেস ইমপোর্ট
+    import { db } from './firebase-config.js';
+    import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // ফায়ারবেস রেফারেন্স
+    const balancesRef = ref(db, 'takaBalances');
+    const transactionsRef = ref(db, 'takaTransactions');
+
+    // গ্লোবাল স্টেট
+    let balances = {
+        total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US')
+    };
+    let transactions = [];
+    
+    let currentPage = 1;
+    let currentRowsPerPage = 10;
+    let currentEditId = null;
+
+    // ==========================================
+    // ✅ ফায়ারবেস থেকে ডাটা লোড করা
+    // ==========================================
+    function loadDataFromFirebase() {
+        // ব্যালেন্স লোড
+        onValue(balancesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                balances = data;
+                checkDailyReset();
+                refreshUI();
+            }
+        });
+
+        // ট্রানজ্যাকশন লোড
+        onValue(transactionsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                transactions = Array.isArray(data) ? data : Object.values(data);
+            } else {
+                transactions = [];
+            }
+            sortTransactions();
+            displayTransactions();
+            setupPagination();
+        });
+    }
+
+    // ফায়ারবেসে ডাটা সেভ করার ফাংশন
+    function updateFirebase() {
+        set(balancesRef, balances);
+        set(transactionsRef, transactions);
+    }
+
+    // ==========================================
+    // ✅ আপনার আগের ফাংশনগুলো (অপরিবর্তিত)
+    // ==========================================
+
+    window.toggleSidebar = function(event) {
+        if (event) event.stopPropagation();
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function checkDailyReset() {
+        const today = new Date().toLocaleDateString('en-US');
+        if (balances.lastUpdateDate !== today) {
+            balances.bank = 0;
+            balances.todayIn = 0;
+            balances.todayCharge = 0;
+            balances.lastUpdateDate = today;
+            updateFirebase();
+        }
+    }
+
+    function initializeDateTime() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const hh = String(today.getHours()).padStart(2, '0');
+        const min = String(today.getMinutes()).padStart(2, '0');
+        ['In', 'Out', 'COut', 'B2B'].forEach(type => {
+            const dp = document.getElementById(`datePicker${type}`);
+            const tp = document.getElementById(`timePicker${type}`);
+            if(dp) dp.value = `${yyyy}-${mm}-${dd}`;
+            if(tp) tp.value = `${hh}:${min}`;
+            updateDate(type); updateTime(type);
+        });
+    }
+
+    function refreshUI() {
+        document.getElementById('val-1').innerText = `৳ ${balances.total}`;
+        document.getElementById('val-2').innerText = `৳ ${balances.bank}`;
+        document.getElementById('val-3').innerText = `৳ ${balances.b2b}`;
+        document.getElementById('val-4').innerText = `৳ ${balances.todayIn}`;
+        document.getElementById('val-5').innerText = `৳ ${balances.bkash}`;
+        document.getElementById('val-6').innerText = `৳ ${balances.nagad}`;
+        document.getElementById('val-7').innerText = `৳ ${balances.rocket}`;
+        document.getElementById('val-8').innerText = `৳ ${balances.todayCharge || 0}`;
+    }
+
+    function sortTransactions() {
+        transactions.sort((a, b) => {
+            const dateA = a.date.split('/').reverse().join('-');
+            const dateB = b.date.split('/').reverse().join('-');
+            if (dateA > dateB) return -1;
+            if (dateA < dateB) return 1;
+            const timeA = convertTo24Hour(a.time);
+            const timeB = convertTo24Hour(b.time);
+            return timeB.localeCompare(timeA);
+        });
+    }
+
+    function convertTo24Hour(timeStr) {
+        if(!timeStr) return "00:00";
+        const [time, modifier] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (hours === '12') hours = '00';
+        if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
+        return `${String(hours).padStart(2, '0')}:${minutes}`;
+    }
+
+    function resetFormFields() {
+        document.querySelectorAll('#formContainer input[type="number"], #formContainer input[type="text"]').forEach(i => i.value = "");
+        document.querySelectorAll('#formContainer select').forEach(s => {
+            if(s.id !== 'rowsPerPageSelect') s.selectedIndex = 0;
+        });
+        initializeDateTime();
+    }
+
+    window.openForm = function(type) {
+        currentEditId = null; 
+        resetFormFields();
+        document.querySelectorAll('.form-content').forEach(f => f.style.display = 'none');
+        document.getElementById('formContainer').style.display = 'flex';
+        
+        if (type === 'in') document.getElementById('formIn').style.display = 'block';
+        else if (type === 'out') document.getElementById('formOut').style.display = 'block';
+        else if (type === 'c-out') document.getElementById('formCOut').style.display = 'block';
+        else if (type === 'b2b') document.getElementById('formB2B').style.display = 'block';
+    }
+
+    window.closeForm = function() { 
+        document.getElementById('formContainer').style.display = 'none'; 
+        currentEditId = null;
+    }
+
+    window.updateDate = function(type) {
+        const val = document.getElementById(`datePicker${type}`).value;
+        if (val) {
+            const d = new Date(val);
+            const formattedDate = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+            document.getElementById(`showDate${type}`).textContent = formattedDate;
+        }
+    }
+
+    window.updateTime = function(type) {
+        const val = document.getElementById(`timePicker${type}`).value;
+        if (val) {
+            const [h, m] = val.split(':');
+            const d = new Date(); d.setHours(h); d.setMinutes(m);
+            document.getElementById(`showTime${type}`).textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+    }
+
+    function adjustBalances(t, reverse = false) {
+        const factor = reverse ? -1 : 1;
+        const amount = t.amount;
+        const charge = t.charge || 0;
+        const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '/'); 
+        const isToday = (t.date === today);
+
+        if (t.type === 'in') {
+            if (t.account === "পার্সোনাল") {
+                if (t.cat === "বিকাশ") balances.bkash += (amount * factor);
+                else if (t.cat === "নগদ") balances.nagad += (amount * factor);
+                else if (t.cat === "রকেট") balances.rocket += (amount * factor);
+            } else { balances.total += (amount * factor); }
+            if(isToday) balances.todayIn += (amount * factor);
+        } 
+        else if (t.type === 'out') {
+            const absAmt = Math.abs(amount);
+            balances.total -= (absAmt * factor); 
+            if (t.cat === "Bank Transfer" && isToday) balances.bank += (absAmt * factor); 
+        } 
+        else if (t.type === 'convert') {
+            const totalOut = amount + charge;
+            if (t.cat === "বিকাশ") balances.bkash -= (totalOut * factor);
+            else if (t.cat === "নগদ") balances.nagad -= (totalOut * factor);
+            else if (t.cat === "রকেট") balances.rocket -= (totalOut * factor);
+            balances.total += (amount * factor);
+            if(isToday) balances.todayCharge += (charge * factor);
+        } 
+        else if (t.type === 'b2b') {
+            balances.b2b += (amount * factor);
+        }
+    }
+
+    function saveTransaction(type, data) {
+        if(currentEditId) {
+            const oldIdx = transactions.findIndex(t => t.id === currentEditId);
+            if (oldIdx !== -1) {
+                adjustBalances(transactions[oldIdx], true);
+                transactions.splice(oldIdx, 1);
+            }
+        }
+        
+        const entry = { id: currentEditId || Date.now(), ...data, type };
+        adjustBalances(entry, false);
+        transactions.push(entry);
+        
+        sortTransactions();
+        updateFirebase(); // ফায়ারবেসে আপডেট
+        closeForm();
+    }
+
+    window.saveIn = function() {
+        saveTransaction('in', {
+            date: document.getElementById('showDateIn').textContent,
+            time: document.getElementById('showTimeIn').textContent,
+            cat: document.getElementById('incategory').value,
+            account: document.getElementById('type-ac').value,
+            amount: parseFloat(document.getElementById('intaka-f').value) || 0,
+            details: document.getElementById('inDescription').value
+        });
+    }
+
+    window.saveOut = function() {
+        saveTransaction('out', {
+            date: document.getElementById('showDateOut').textContent,
+            time: document.getElementById('showTimeOut').textContent,
+            cat: document.getElementById('outcategory').value,
+            account: document.getElementById('type-ac-out').value,
+            amount: -(parseFloat(document.getElementById('outtaka-f').value) || 0),
+            details: document.getElementById('outDescription').value
+        });
+    }
+
+    window.saveCOut = function() {
+        saveTransaction('convert', {
+            date: document.getElementById('showDateCOut').textContent,
+            time: document.getElementById('showTimeCOut').textContent,
+            cat: document.getElementById('ccategory').value,
+            account: "Convert",
+            amount: parseFloat(document.getElementById('intaka-f-c').value) || 0,
+            charge: parseFloat(document.getElementById('charge-c').value) || 0,
+            details: document.getElementById('cDescription').value
+        });
+    }
+
+    window.saveB2B = function() {
+        const amt = parseFloat(document.getElementById('intaka-f-b2b').value) || 0;
+        const bType = document.getElementById('type-ac-b2b').value;
+        saveTransaction('b2b', {
+            date: document.getElementById('showDateB2B').textContent,
+            time: document.getElementById('showTimeB2B').textContent,
+            cat: document.getElementById('b2bcategory').value,
+            account: "B2B " + bType,
+            amount: bType === "টাকা In" ? amt : -amt,
+            details: document.getElementById('b2bDescription').value
+        });
+    }
+
+    function displayTransactions() {
+        const body = document.getElementById('transactionBody');
+        if(!body) return;
+        body.innerHTML = "";
+        const start = (currentPage - 1) * currentRowsPerPage;
+        const end = start + currentRowsPerPage;
+        const paginated = transactions.slice(start, end);
+
+        paginated.forEach(t => {
+            const row = document.createElement('div');
+            row.className = "transaction-item";
+            row.innerHTML = `
+                <div>${t.date}</div>
+                <div>${t.time}</div>
+                <div>${t.cat}</div>
+                <div>${t.account}</div>
+                <div style="color: ${t.amount >= 0 ? 'green' : 'red'}">${t.amount}</div>
+                <div>${t.details || ''}</div>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="editTransaction(${t.id})">✏️</button>
+                    <button class="delete-btn" onclick="deleteTransaction(${t.id})">🗑️</button>
+                </div>
+            `;
+            body.appendChild(row);
+        });
+    }
+
+    window.deleteTransaction = function(id) {
+        if(confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) {
+            const idx = transactions.findIndex(t => t.id === id);
+            if (idx > -1) {
+                adjustBalances(transactions[idx], true);
+                transactions.splice(idx, 1);
+                updateFirebase();
+            }
+        }
+    }
+
+    window.editTransaction = function(id) {
+        const t = transactions.find(x => x.id === id);
+        if(!t) return;
+        currentEditId = id;
+
+        const dateParts = t.date.split('/');
+        const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
+        if(t.type === 'in') {
+            window.openForm('in');
+            document.getElementById('datePickerIn').value = formattedDate;
+            window.updateDate('In');
+            document.getElementById('incategory').value = t.cat;
+            document.getElementById('type-ac').value = t.account;
+            document.getElementById('intaka-f').value = t.amount;
+            document.getElementById('inDescription').value = t.details;
+        } else if(t.type === 'out') {
+            window.openForm('out');
+            document.getElementById('datePickerOut').value = formattedDate;
+            window.updateDate('Out');
+            document.getElementById('outcategory').value = t.cat;
+            document.getElementById('type-ac-out').value = t.account;
+            document.getElementById('outtaka-f').value = Math.abs(t.amount);
+            document.getElementById('outDescription').value = t.details;
+        } else if(t.type === 'convert') {
+            window.openForm('c-out');
+            document.getElementById('datePickerCOut').value = formattedDate;
+            window.updateDate('COut');
+            document.getElementById('ccategory').value = t.cat;
+            document.getElementById('intaka-f-c').value = t.amount;
+            document.getElementById('charge-c').value = t.charge;
+            document.getElementById('cDescription').value = t.details;
+        } else if(t.type === 'b2b') {
+            window.openForm('b2b');
+            document.getElementById('datePickerB2B').value = formattedDate;
+            window.updateDate('B2B');
+            document.getElementById('b2bcategory').value = t.cat;
+            document.getElementById('intaka-f-b2b').value = Math.abs(t.amount);
+            document.getElementById('type-ac-b2b').value = t.amount >= 0 ? "টাকা In" : "টাকা Out";
+            document.getElementById('b2bDescription').value = t.details;
+        }
+        currentEditId = id;
+    }
+
+    function setupPagination() {
+        const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
+        const container = document.querySelector('.pagination-controls');
+        if (!container) return;
+        container.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        const maxPages = 5;
+        let start = Math.max(1, currentPage - 2);
+        let end = Math.min(totalPages, start + maxPages - 1);
+
+        const prev = createPaginationButton('<<', currentPage - 1);
+        if (currentPage === 1) prev.classList.add('disabled-nav');
+        container.appendChild(prev);
+
+        for (let i = start; i <= end; i++) {
+            const btn = createPaginationButton(i, i);
+            if (i === currentPage) btn.classList.add('active-page');
+            container.appendChild(btn);
+        }
+
+        const next = createPaginationButton('>>', currentPage + 1);
+        if (currentPage === totalPages) next.classList.add('disabled-nav');
+        container.appendChild(next);
+    }
+
+    function createPaginationButton(text, page) {
+        const link = document.createElement('a');
+        link.innerText = text; link.href = '#'; link.className = 'page-link';
+        link.onclick = (e) => { e.preventDefault(); changePage(page); };
+        return link;
+    }
+
+    function changePage(page) {
+        const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
+        if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+            displayTransactions();
+            setupPagination();
+        }
+    }
+
+    window.changeRowsPerPage = function(val) {
+        currentRowsPerPage = parseInt(val);
+        currentPage = 1;
+        displayTransactions();
+        setupPagination();
+    }
+
+    // শুরুতে ডাটা লোড করা
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDataFromFirebase();
+        initializeDateTime();
+    });
+</script>
+
+
+
+</body>
+</html>
