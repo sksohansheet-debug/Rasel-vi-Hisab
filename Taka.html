@@ -446,6 +446,25 @@
     cursor: default; 
     pointer-events: none; 
 }
+
+
+/* লোডিং স্পিনার ডিজাইন */
+.loader-small {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 </style>
 </head>
 <body onload="initializeData()">
@@ -463,18 +482,20 @@
   </div>
 
 
-<div class="main-content">
+
+  <div class="main-content">
     <div class="cards-container">
-        <div class="card card1"><p id="val-1">৳ 0</p><h3>মোট ব্যালেন্স</h3></div>
-        <div class="card card2"><p id="val-2">৳ 0</p><h3>Bank🏛️Transfer </h3></div>
-        <div class="card card3"><p id="val-3">৳ 0</p><h3>B2B</h3></div>
-        <div class="card card4"><p id="val-4">৳ 0</p><h3>আজকে ডুকছে</h3></div>
-        <div class="card card5"><p id="val-5">৳ 0</p><h3>বিকাশ</h3></div>
-        <div class="card card6"><p id="val-6">৳ 0</p><h3>নগদ</h3></div>
-        <div class="card card7"><p id="val-7">৳ 0</p><h3>রকেট</h3></div>
-        <div class="card card8"><p id="val-8">৳ 0</p><h3>Today Charge</h3></div>
+        <div class="card card1"><p id="val-1"><span class="loader-small"></span></p><h3>মোট ব্যালেন্স</h3></div>
+        <div class="card card2"><p id="val-2"><span class="loader-small"></span></p><h3>Bank🏛️Transfer </h3></div>
+        <div class="card card3"><p id="val-3"><span class="loader-small"></span></p><h3>B2B</h3></div>
+        <div class="card card4"><p id="val-4"><span class="loader-small"></span></p><h3>আজকে ডুকছে</h3></div>
+        <div class="card card5"><p id="val-5"><span class="loader-small"></span></p><h3>বিকাশ</h3></div>
+        <div class="card card6"><p id="val-6"><span class="loader-small"></span></p><h3>নগদ</h3></div>
+        <div class="card card7"><p id="val-7"><span class="loader-small"></span></p><h3>রকেট</h3></div>
+        <div class="card card8"><p id="val-8"><span class="loader-small"></span></p><h3>Today Charge</h3></div>
     </div>
 </div>
+
 
 <div class="cash-buttons">
     <button class="cash-in-btn" onclick="openForm('in')">টাকা ডুকানো➕</button>
@@ -613,7 +634,17 @@
             <div>Details</div>
             <div>Action</div>
         </div>
-        <div id="transactionBody"></div>
+
+<div id="transactionBody">
+    <div style="text-align:center; padding:20px;">
+        <div class="loader"></div>
+        <p class="loading-text">ডাটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</p>
+    </div>
+</div>
+
+
+
+
     </div>
 </div>
 
