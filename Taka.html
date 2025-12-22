@@ -448,7 +448,7 @@
 }
 </style>
 </head>
-<body onload="initializeData()">
+<body>
   
 <div class="navbar">
     <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
@@ -621,7 +621,7 @@
     <div class="pagination-controls"></div>
     <div class="page-size-control">
         <label for="rowsPerPageSelect">লাইন সংখ্যা:</label>
-        <select id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
+        <select id="rowsPerPageSelect" onchange="window.changeRowsPerPage(this.value)">
             <option value="10" selected>10</option>
             <option value="20">20</option>
             <option value="50">50</option>
@@ -669,6 +669,7 @@
         onValue(transactionsRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                // অবজেক্ট বা অ্যারে যাই আসুক তাকে অ্যারেতে রূপান্তর করা
                 transactions = Array.isArray(data) ? data : Object.values(data);
             } else {
                 transactions = [];
@@ -686,7 +687,7 @@
     }
 
     // ==========================================
-    // ✅ আপনার আগের ফাংশনগুলো (অপরিবর্তিত)
+    // ✅ ফাংশন গুলো উইন্ডো অবজেক্টে সেট করা (যাতে HTML থেকে কল করা যায়)
     // ==========================================
 
     window.toggleSidebar = function(event) {
@@ -717,7 +718,8 @@
             const tp = document.getElementById(`timePicker${type}`);
             if(dp) dp.value = `${yyyy}-${mm}-${dd}`;
             if(tp) tp.value = `${hh}:${min}`;
-            updateDate(type); updateTime(type);
+            window.updateDate(type); 
+            window.updateTime(type);
         });
     }
 
@@ -783,7 +785,8 @@
         if (val) {
             const d = new Date(val);
             const formattedDate = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
-            document.getElementById(`showDate${type}`).textContent = formattedDate;
+            const showElement = document.getElementById(`showDate${type}`);
+            if(showElement) showElement.textContent = formattedDate;
         }
     }
 
@@ -792,7 +795,8 @@
         if (val) {
             const [h, m] = val.split(':');
             const d = new Date(); d.setHours(h); d.setMinutes(m);
-            document.getElementById(`showTime${type}`).textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            const showElement = document.getElementById(`showTime${type}`);
+            if(showElement) showElement.textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
         }
     }
 
@@ -843,7 +847,7 @@
         transactions.push(entry);
         
         sortTransactions();
-        updateFirebase(); // ফায়ারবেসে আপডেট
+        updateFirebase(); 
         closeForm();
     }
 
@@ -913,8 +917,8 @@
                 <div style="color: ${t.amount >= 0 ? 'green' : 'red'}">${t.amount}</div>
                 <div>${t.details || ''}</div>
                 <div class="action-buttons">
-                    <button class="edit-btn" onclick="editTransaction(${t.id})">✏️</button>
-                    <button class="delete-btn" onclick="deleteTransaction(${t.id})">🗑️</button>
+                    <button class="edit-btn" onclick="window.editTransaction(${t.id})">✏️</button>
+                    <button class="delete-btn" onclick="window.deleteTransaction(${t.id})">🗑️</button>
                 </div>
             `;
             body.appendChild(row);
@@ -1005,11 +1009,11 @@
     function createPaginationButton(text, page) {
         const link = document.createElement('a');
         link.innerText = text; link.href = '#'; link.className = 'page-link';
-        link.onclick = (e) => { e.preventDefault(); changePage(page); };
+        link.onclick = (e) => { e.preventDefault(); window.changePage(page); };
         return link;
     }
 
-    function changePage(page) {
+    window.changePage = function(page) {
         const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
         if (page >= 1 && page <= totalPages) {
             currentPage = page;
@@ -1032,7 +1036,6 @@
     });
 </script>
 
-
-
 </body>
 </html>
+
