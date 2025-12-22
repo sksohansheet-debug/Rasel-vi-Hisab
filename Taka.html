@@ -678,7 +678,7 @@
     let currentRowsPerPage = 10;
     let currentEditId = null;
 
-    // --- গ্লোবাল ফাংশন সেটআপ (onclick এর জন্য) ---
+    // --- গ্লোবাল ফাংশন সেটআপ ---
     window.initializeData = function() {
         loadDataFromFirebase();
         initializeDateTime();
@@ -690,8 +690,7 @@
     };
 
     window.openForm = function(type) {
-        currentEditId = null; 
-        resetFormFields();
+        // Form খোলার সময় currentEditId যদি null থাকে তবে এটি নতুন এন্ট্রি
         document.querySelectorAll('.form-content').forEach(f => f.style.display = 'none');
         document.getElementById('formContainer').style.display = 'flex';
         
@@ -703,7 +702,8 @@
 
     window.closeForm = function() { 
         document.getElementById('formContainer').style.display = 'none'; 
-        currentEditId = null;
+        currentEditId = null; // ফর্ম বন্ধ করলে আইডি রিসেট হবে
+        resetFormFields();
     };
 
     window.updateDate = function(type) {
@@ -785,9 +785,10 @@
     window.editTransaction = function(id) {
         const t = transactions.find(x => x.id == id);
         if(!t) return;
-        currentEditId = id;
+        currentEditId = id; // এখানে আইডি সেট করা হচ্ছে যেন সেভ করার সময় এটি আপডেট হয়
         const dateParts = t.date.split('/');
         const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+        
         if(t.type === 'in') {
             window.openForm('in');
             document.getElementById('datePickerIn').value = formattedDate;
@@ -843,7 +844,15 @@
     function loadDataFromFirebase() {
         onValue(balancesRef, (snapshot) => {
             const data = snapshot.val();
-            if (data) { balances = data; checkDailyReset(); refreshUI(); }
+            if (data) { 
+                balances = data; 
+                checkDailyReset(); 
+                refreshUI(); 
+            } else {
+                // ডাটা না থাকলে জিরো সেট করবে
+                balances = { total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US') };
+                refreshUI();
+            }
         });
         onValue(transactionsRef, (snapshot) => {
             const data = snapshot.val();
@@ -865,7 +874,8 @@
         const today = new Date().toLocaleDateString('en-US');
         if (balances.lastUpdateDate !== today) {
             balances.bank = 0; balances.todayIn = 0; balances.todayCharge = 0;
-            balances.lastUpdateDate = today; updateFirebase();
+            balances.lastUpdateDate = today; 
+            updateFirebase();
         }
     }
 
@@ -886,13 +896,13 @@
     }
 
     function refreshUI() {
-        document.getElementById('val-1').innerText = `৳ ${balances.total}`;
-        document.getElementById('val-2').innerText = `৳ ${balances.bank}`;
-        document.getElementById('val-3').innerText = `৳ ${balances.b2b}`;
-        document.getElementById('val-4').innerText = `৳ ${balances.todayIn}`;
-        document.getElementById('val-5').innerText = `৳ ${balances.bkash}`;
-        document.getElementById('val-6').innerText = `৳ ${balances.nagad}`;
-        document.getElementById('val-7').innerText = `৳ ${balances.rocket}`;
+        document.getElementById('val-1').innerText = `৳ ${balances.total || 0}`;
+        document.getElementById('val-2').innerText = `৳ ${balances.bank || 0}`;
+        document.getElementById('val-3').innerText = `৳ ${balances.b2b || 0}`;
+        document.getElementById('val-4').innerText = `৳ ${balances.todayIn || 0}`;
+        document.getElementById('val-5').innerText = `৳ ${balances.bkash || 0}`;
+        document.getElementById('val-6').innerText = `৳ ${balances.nagad || 0}`;
+        document.getElementById('val-7').innerText = `৳ ${balances.rocket || 0}`;
         document.getElementById('val-8').innerText = `৳ ${balances.todayCharge || 0}`;
     }
 
@@ -954,13 +964,20 @@
 
     function saveTransaction(type, data) {
         if(currentEditId) {
+            // যদি এডিট মোড হয়, তবে পুরনো ট্রানজ্যাকশনটি খুঁজে বের করে ব্যালেন্স রিভার্স করে মুছে ফেলুন
             const oldIdx = transactions.findIndex(t => t.id == currentEditId);
-            if (oldIdx !== -1) { adjustBalances(transactions[oldIdx], true); transactions.splice(oldIdx, 1); }
+            if (oldIdx !== -1) { 
+                adjustBalances(transactions[oldIdx], true); 
+                transactions.splice(oldIdx, 1); 
+            }
         }
+        // নতুন আইডি বা আগের এডিট করা আইডি ব্যবহার করে ট্রানজ্যাকশন পুশ করুন
         const entry = { id: currentEditId || Date.now(), ...data, type };
         adjustBalances(entry, false);
         transactions.push(entry);
-        sortTransactions(); updateFirebase(); closeForm();
+        sortTransactions(); 
+        updateFirebase(); 
+        closeForm();
     }
 
     function displayTransactions() {
@@ -970,6 +987,12 @@
         const start = (currentPage - 1) * currentRowsPerPage;
         const end = start + currentRowsPerPage;
         const paginated = transactions.slice(start, end);
+        
+        if(paginated.length === 0) {
+            body.innerHTML = "<div></div><div></div><div></div><div>কোন তথ্য নেই</div>";
+            return;
+        }
+
         paginated.forEach(t => {
             const row = document.createElement('div');
             row.className = "transaction-item";
@@ -1013,7 +1036,6 @@
         return link;
     }
 
-    // শুরুতে ডাটা লোড করা
     document.addEventListener('DOMContentLoaded', () => {
         window.initializeData();
     });
@@ -1021,3 +1043,4 @@
 
 </body>
 </html>
+
