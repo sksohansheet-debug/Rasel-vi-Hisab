@@ -1119,6 +1119,27 @@ width: 200px!important;
     font-size: 14px;
 }
 
+.loader-small {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.small-p {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+  
 
 </style>
 
@@ -1137,31 +1158,7 @@ width: 200px!important;
   </div>
 
 
-<div class="main-content">
-    <div class="cards-container">
-      <div class="card card1"><p>$ 0</p><h3>Binance Dollar </h3></div>
-    <div class="card card2"><p>$ 0</p><h3>Redot-pay Dollar </h3></div>
-     <div class="card card3"><p>0 ৳</p><h3>মোট ক্যাশ </h3></div>
-    <div class="card card4"><p>0 ৳</p><h3>আফ্রিদি পাবে </h3></div>
-    <div class="card card5"><p>0 ৳</p><h3>Bank🏦Transfer Today </h3></div>
-    <div class="card card6"><p>0 ৳</p><h3> চার্জ</h3> </div>
 
-      <div class="card card7">
-          <p>$ 0</p>
-          <p class="small-p">0 ৳</p>
-          <h3>Dollar in today</h3>
-      </div>
-
-      <div class="card card8">
-        <p>$ 0</p>
-        <p class="small-p">0 ৳</p>
-        <h3>Dollar out today</h3>
-        </div>
-
-      <div class="card card9"><p>0 ৳</p><h3>today profit </div>
-
-    </div>
-</div>
 
 <div class="cash-buttons">
     <button class="cash-in-btn" onclick="openForm('in')">💲Dollar in➕</button>
@@ -1170,6 +1167,59 @@ width: 200px!important;
     <button class="taka-transfar" onclick="openForm('t-out')">Bank🏦ট্রান্সফার</button>
 </div>
 
+<div class="main-content">
+    <div class="cards-container">
+        <div class="card card1">
+            <p id="binance-dollar"><span class="loader-small"></span></p>
+            <h3>Binance Dollar</h3>
+        </div>
+
+        <div class="card card2">
+            <p id="redot-dollar"><span class="loader-small"></span></p>
+            <h3>Redot-pay Dollar</h3>
+        </div>
+
+        <div class="card card3">
+            <p id="total-cash"><span class="loader-small"></span></p>
+            <h3>মোট ক্যাশ</h3>
+        </div>
+
+        <div class="card card4">
+            <p id="afridi-due"><span class="loader-small"></span></p>
+            <h3>আফ্রিদি পাবে</h3>
+        </div>
+
+        <div class="card card5">
+            <p id="bank-transfer"><span class="loader-small"></span></p>
+            <h3>Bank🏦Transfer Today</h3>
+        </div>
+
+        <div class="card card6">
+            <p id="today-charge"><span class="loader-small"></span></p>
+            <h3>চার্জ</h3>
+        </div>
+
+        <div class="card card7">
+            <p id="dollar-in-val"><span class="loader-small"></span></p>
+            <p class="small-p" id="dollar-in-taka"><span class="loader-small"></span></p>
+            <h3>Dollar in today</h3>
+        </div>
+
+        <div class="card card8">
+            <p id="dollar-out-val"><span class="loader-small"></span></p>
+            <p class="small-p" id="dollar-out-taka"><span class="loader-small"></span></p>
+            <h3>Dollar out today</h3>
+        </div>
+
+        <div class="card card9">
+            <p id="today-profit"><span class="loader-small"></span></p>
+            <h3>today profit</h3>
+        </div>
+    </div>
+</div>
+
+
+  
 
 <div id="formContainer" class="popup-form" style="display:none;">
 
@@ -1474,7 +1524,17 @@ width: 200px!important;
             <div class="th-details">Details</div>
             <div class="th-action">Action</div>
         </div>
-        <div id="transactionBody"></div>
+
+
+<div id="transactionBody">
+    <div style="text-align:center; padding:20px;">
+        <div class="loader"></div>
+        <p class="loading-text">ডাটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</p>
+    </div>
+</div>
+
+      
+      
     </div>
 </div>
 <div class="page-size-area">
