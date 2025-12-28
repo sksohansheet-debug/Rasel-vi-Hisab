@@ -4,273 +4,916 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hisab Khata</title>
-  
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#9CC6ED">
   <link rel="apple-touch-icon" href="icon-192.png">
-  
-<style>
-  body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f5f7fa;
+
+  <style>
+    :root{
+      /* ✅ LIGHT + COLORFUL THEME */
+      --bg:#f7f9ff;
+      --bg2:#ffffff;
+
+      --surface:#ffffff;
+      --surface2:#f3f6ff;
+
+      --line: rgba(15,23,42,.10);
+      --line2: rgba(15,23,42,.14);
+
+      --text: #0f172a;
+      --muted: rgba(15,23,42,.62);
+
+      --brand:#4f46e5;     /* indigo */
+      --brand2:#22c55e;    /* green */
+      --pink:#ec4899;
+      --violet:#8b5cf6;
+      --orange:#f59e0b;
+      --cyan:#06b6d4;
+      --sky:#38bdf8;
+      --bad:#ef4444;
+
+      --r14:14px;
+      --r18:18px;
+
+      --topbar-h: 74px;
+      --sb-w: 288px;
+
+      --shadow: 0 18px 55px rgba(15,23,42,.12);
+      --shadow2: 0 10px 26px rgba(15,23,42,.10);
+
+      --glass: rgba(255,255,255,.72);
+      --glass2: rgba(255,255,255,.92);
     }
 
-    /* Navbar */
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 15px 20px;
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    /* ✅ NEW: keep same text sizing across devices */
+    html{
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body{
+      margin:0;
+      font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 520px at 12% 0%, rgba(79,70,229,.20), transparent 58%),
+        radial-gradient(900px 520px at 95% 18%, rgba(56,189,248,.20), transparent 55%),
+        radial-gradient(950px 620px at 60% 100%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 520px at 10% 92%, rgba(236,72,153,.12), transparent 60%),
+        linear-gradient(180deg, #fbfcff, #eef2ff 55%, #f9fbff);
+      overflow-x:hidden;
+    }
+
+    /* subtle noise */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.045;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    /* ===== Navbar ===== */
+    .navbar{
+      height: var(--topbar-h);
       position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 10;
+      inset: 0 0 auto 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 14px;
+      z-index: 80;
+      backdrop-filter: blur(16px);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.70));
+      border-bottom: 1px solid var(--line);
     }
 
-    .menu-icon {
-      position: absolute;
-      left: 20px;
-      font-size: 22px;
-      cursor: pointer;
+    .nav-inner{
+      width: min(1040px, 100%);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
     }
 
-    .navbar h1 {
-      font-size: 25px;
-      margin: 0;
-      font-weight: 700;
-      text-align: left;
-      margin-left: -50px;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 65px;
-      left: -260px;
-      width: 230px;
-      height: 100%;
-      background: #9CC6ED;
-      transition: 0.3s;
-      padding-top: 20px;
-      z-index: 9;
-    }
-    
-    .sidebar.open {
-      left: 0;
-    }
-
-    .sidebar a {
-      display: block;
-      padding: 15px 20px;
-      color: black;
-      text-decoration: none;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-
-    .sidebar a:hover {
-      background: #87b8e0;
-    }
-
-    /* Main Dashboard Area */
-    .main-content {
-      margin-top: 90px;
-      padding: 20px;
-      transition: 0.3s;
-    }
-
-    /* Dashboard Cards Design */
-    .dashboard {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-      margin-top: 5px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 5px;
-      box-shadow: 0 7px 5px rgba(0,0,0,0.1);
-      padding: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-
-    .card-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .card h3 {
-      font-size: 15px;
-      color: #777;
-      margin: 0 0 10px 0;
-      text-transform: uppercase;
-    }
-
-    .card p {
+    .menu-icon{
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow2);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
       font-size: 20px;
-      font-weight: 600;
-      color: #333;
-      margin: 0;
-      text-align: left;
+      color: #0f172a;
+      position: relative;
+      overflow:hidden;
     }
-  
-    .icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
+    .menu-icon::after{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(79,70,229,.25), rgba(56,189,248,.18), rgba(34,197,94,.18));
+      transform: rotate(18deg);
+      opacity:.9;
+    }
+    .menu-icon > *{ position:relative; z-index:1; }
+    .menu-icon:hover{
+      background: #ffffff;
+      border-color: rgba(79,70,229,.25);
+      transform: translateY(-1px);
+    }
+    .menu-icon:active{ transform: scale(.98); }
+
+    .nav-title{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      line-height:1.1;
+      gap: 2px;
+    }
+    .nav-title h1{
+      margin:0;
       font-size: 18px;
-      margin-left: 15px;
+      font-weight: 900;
+      letter-spacing: .3px;
+      background: linear-gradient(90deg, #4f46e5, #06b6d4, #22c55e);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .nav-title small{
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 11px;
     }
 
-    .red { background: #f44336; }
-    .blue { background: #2196f3; }
-    .purple { background: #9c27b0; }
-    .green { background: #4caf50; }
-</style>
+    .nav-badge{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow2);
+      font-size: 12px;
+      color: rgba(15,23,42,.72);
+      white-space: nowrap;
+      position: relative;
+      overflow:hidden;
+    }
+    .nav-badge::before{
+      content:"";
+      position:absolute;
+      inset:auto -30px -30px auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(236,72,153,.18), rgba(245,158,11,.16), rgba(79,70,229,.14));
+      opacity:.9;
+    }
+    .nav-badge > *{ position:relative; z-index:1; }
+
+    .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--brand2);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.14);
+    }
+
+    /* ===== Sidebar (colorful) ===== */
+    .sidebar{
+      position: fixed;
+      top: var(--topbar-h);
+      left: calc(-1 * var(--sb-w));
+      width: var(--sb-w);
+      height: calc(100% - var(--topbar-h));
+      padding: 14px 12px;
+      z-index: 70;
+      transition: .28s ease;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,247,255,.92));
+      border-right: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 18px 60px rgba(15,23,42,.14);
+      backdrop-filter: blur(14px);
+    }
+    .sidebar.open{ left: 0; }
+
+    .sb-card{
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(79,70,229,.14), rgba(56,189,248,.12), rgba(34,197,94,.10));
+      border: 1px solid rgba(79,70,229,.16);
+      box-shadow: var(--shadow2);
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sb-card::after{
+      content:"";
+      position:absolute;
+      right:-60px; top:-60px;
+      width:160px; height:160px;
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), rgba(255,255,255,0));
+    }
+    .sb-card h3{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      position:relative;
+      z-index:1;
+    }
+
+    .sidebar a{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 12px;
+      margin: 8px 2px;
+      border-radius: 16px;
+      color: #0f172a;
+      text-decoration:none;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 18px rgba(15,23,42,.08);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      position: relative;
+      overflow:hidden;
+    }
+    .sidebar a::before{
+      content:"";
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width: 4px;
+      background: linear-gradient(180deg, #4f46e5, #06b6d4, #22c55e);
+      opacity:.85;
+    }
+    .sidebar a::after{
+      content:"";
+      position:absolute;
+      inset:auto -70px -70px auto;
+      width:160px;height:160px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(236,72,153,.14), rgba(245,158,11,.12), rgba(79,70,229,.10));
+      opacity:.9;
+      transform: rotate(-10deg);
+    }
+    .sidebar a > *{ position:relative; z-index:1; }
+    .sidebar a:hover{
+      background: #ffffff;
+      border-color: rgba(79,70,229,.22);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Main ===== */
+    .main-content{
+      margin-top: 90px;
+      padding: 18px;
+      transition: 0.3s;
+    }
+
+    /* ✅ Full Color Cards (NO LEFT STRIP) */
+    .dashboard{
+      width: min(1040px, 100%);
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding-bottom: 24px;
+    }
+    @media (min-width: 720px){
+      .dashboard{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .kpi{
+      position: relative;
+      border-radius: 26px;
+      padding: 18px 18px;
+      overflow:hidden;
+      min-height: 112px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+
+      border: 1px solid rgba(255,255,255,.30);
+      box-shadow: 0 22px 48px rgba(15,23,42,.14);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      color: #ffffff; /* default white text on colorful bg */
+    }
+    .kpi:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 30px 70px rgba(15,23,42,.18);
+      filter: saturate(1.08);
+    }
+    .kpi:active{ transform: translateY(-1px) scale(.995); }
+
+    /* ✅ Remove left accent strip */
+    .kpi .accent{ display:none; }
+
+    /* ✅ Card specific full backgrounds */
+    #card-total-balance{
+      background:
+        radial-gradient(900px 220px at 10% 0%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, #4f46e5, #06b6d4, #22c55e);
+    }
+    #card-total-dollar{
+      background:
+        radial-gradient(900px 220px at 10% 0%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, #06b6d4, #4f46e5);
+    }
+    #card-bank-total{
+      background:
+        radial-gradient(900px 220px at 10% 0%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, #f59e0b, #ec4899);
+    }
+    #card-profit-today{
+      background:
+        radial-gradient(900px 220px at 10% 0%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, #22c55e, #06b6d4);
+    }
+
+    /* shine blob */
+    .kpi::after{
+      content:"";
+      position:absolute;
+      right:-140px; top:-140px;
+      width:320px; height:320px;
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.36), rgba(255,255,255,0) 65%);
+      opacity:.9;
+      z-index:0;
+    }
+    .kpi > *{ position:relative; z-index:1; }
+
+    .kpi-left{
+      display:flex;
+      flex-direction:column;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .kpi-label{
+      margin:0;
+      font-size: 12px;
+      letter-spacing:.24px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.92);
+    }
+
+    .kpi-value{
+      margin:0;
+      font-size: 28px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      line-height: 1.05;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      color: #ffffff;
+      text-shadow: 0 16px 30px rgba(0,0,0,.18);
+    }
+
+    .kpi-sub{
+      margin:0;
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 10px 18px rgba(0,0,0,.14);
+    }
+
+    .kpi-ic{
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 14px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow:hidden;
+    }
+    .kpi-ic i{
+      font-size: 22px;
+      color: #ffffff;
+      text-shadow: 0 12px 18px rgba(0,0,0,.18);
+    }
+
+    /* ✅ Loading Overlay */
+    .loading{
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 22px;
+      background: rgba(247,249,255,.72);
+      backdrop-filter: blur(12px);
+    }
+    .loading.show{ display:flex; }
+
+    .loading-card{
+      width: min(520px, 92vw);
+      border-radius: 22px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow:hidden;
+    }
+    .loading-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(135deg, rgba(79,70,229,.22), rgba(56,189,248,.18), rgba(34,197,94,.14), rgba(236,72,153,.10));
+      filter: blur(18px);
+      opacity:.85;
+    }
+    .loading-card > *{ position:relative; z-index:1; }
+
+    .spinner{
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      border: 4px solid rgba(15,23,42,.12);
+      border-top-color: rgba(79,70,229,.95);
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg);} }
+
+    .loading-title{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 1000;
+      color:#0f172a;
+      letter-spacing:.2px;
+      text-align:center;
+    }
+    .loading-sub{
+      margin: 6px 0 0 0;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(15,23,42,.62);
+      text-align:center;
+    }
+
+    /* small skeleton lines */
+    .skeletons{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .sk{
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(15,23,42,.06),
+        rgba(15,23,42,.10),
+        rgba(15,23,42,.06)
+      );
+      background-size: 220% 100%;
+      animation: shimmer 1.25s ease-in-out infinite;
+    }
+    .sk.w2{ width: 72%; }
+    .sk.w3{ width: 54%; }
+    @keyframes shimmer{
+      0%{ background-position: 0% 0; }
+      100%{ background-position: 220% 0; }
+    }
+  </style>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-  
- <div class="navbar">
-  <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
-  <h1>Dashboard</h1>
-</div>
-  
-  <div id="sidebar" class="sidebar">
-    <a href="#" onclick="goToPage('index')">🏠 Dashboard</a>
-    <a href="#" onclick="goToPage('Dollar')">💰 ডলার হিসাব</a>
-    <a href="#" onclick="goToPage('Taka')">💵 টাকার হিসাব </a>
-   </div>
-
-  <div class="main-content">
-    <div class="card">
-      <div class="card-text">
-        <h3>সর্বমোট Dollar</h3>
-           <p id="display-dollar">0</p> 
+  <!-- ✅ Loading -->
+  <div id="loading" class="loading show">
+    <div class="loading-card">
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div class="spinner"></div>
+        <p class="loading-title">ডাটা লোড হচ্ছে…</p>
+        <p class="loading-sub">Firebase থেকে হিসাব আনা হচ্ছে</p>
       </div>
-      <div class="icon red"><i class="fa-solid fa-chart-line"></i></div>
-    </div>
-
-    <div class="card">
-      <div class="card-text">
-        <h3>সর্বমোট টাকা</h3>
-        <p>0</p>
+      <div class="skeletons">
+        <div class="sk"></div>
+        <div class="sk w2"></div>
+        <div class="sk w3"></div>
       </div>
-      <div class="icon blue"><i class="fa-solid fa-wallet"></i></div>
-    </div>
-
-    <div class="card">
-      <div class="card-text">
-        <h3>আজকের চার্জ</h3>
-        <p>0</p>
-      </div>
-      <div class="icon purple"><i class="fa-solid fa-bag-shopping"></i></div>
-    </div>
-
-    <div class="card">
-      <div class="card-text">
-        <h3>আফ্রিদি পাবে</h3>
-        <p>0</p>
-      </div>
-      <div class="icon green"><i class="fa-solid fa-coins"></i></div>
-    </div>
-
-    <div class="card">
-      <div class="card-text">
-        <h3>Sim</h3>
-        <p>0</p>
-      </div>
-      <div class="icon green"><i class="fa-solid fa-user-group"></i></div>
     </div>
   </div>
-  
-<script type="module">
+
+  <div class="navbar">
+    <div class="nav-inner">
+      <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
+
+      <div class="nav-title">
+        <h1>টাকার হিসাব</h1>
+        <small>Balance & Transactions</small>
+      </div>
+
+      <div class="nav-badge">
+        <span class="dot"></span>
+        <span>Realtime Firebase</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sb-card">
+      <h3>📌 Quick Menu</h3>
+    </div>
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="Dollar.html">💰 ডলার হিসাব</a>
+    <a href="Taka.html">💵 টাকার হিসাব</a>
+  </div>
+
+  <div class="main-content">
+    <div class="dashboard">
+      <!-- 1) মোট ব্যালেন্স -->
+      <div class="kpi" id="card-total-balance">
+        <span class="accent a1"></span>
+        <div class="kpi-left">
+          <p class="kpi-label">মোট ব্যালেন্স</p>
+          <p class="kpi-value" id="v-total-balance">0 ৳</p>
+        </div>
+        <div class="kpi-ic"><i class="fa-solid fa-layer-group"></i></div>
+      </div>
+
+      <!-- 2) ডলার -->
+      <div class="kpi" id="card-total-dollar">
+        <span class="accent a2"></span>
+        <div class="kpi-left">
+          <p class="kpi-label">সর্বমোট Dollar</p>
+          <p class="kpi-value" id="v-total-dollar">$ 0.00</p>
+        </div>
+        <div class="kpi-ic"><i class="fa-solid fa-dollar-sign"></i></div>
+      </div>
+
+      <!-- 3) মোট ব্যাংক ট্রান্সফার -->
+      <div class="kpi" id="card-bank-total">
+        <span class="accent a3"></span>
+        <div class="kpi-left">
+          <p class="kpi-label">মোট ব্যাংক ট্রান্সফার</p>
+          <p class="kpi-value" id="v-bank-total">0 ৳</p>
+        </div>
+        <div class="kpi-ic"><i class="fa-solid fa-building-columns"></i></div>
+      </div>
+
+      <!-- 4) আজকের প্রফিট (দুই পেজ মিলিয়ে) -->
+      <div class="kpi" id="card-profit-today">
+        <span class="accent a4"></span>
+        <div class="kpi-left">
+          <p class="kpi-label">আজকের প্রফিট</p>
+          <p class="kpi-value" id="v-profit-today">0 ৳</p>
+        </div>
+        <div class="kpi-ic"><i class="fa-solid fa-chart-line"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
     import { db } from './firebase-config.js';
-    import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import {
+      ref,
+      onValue,
+      get
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+    // ===== Sidebar =====
     window.toggleSidebar = function(event) {
-        if (event) event.stopPropagation();
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar) {
-            sidebar.classList.toggle('open');
+      if (event) event.stopPropagation();
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar) sidebar.classList.toggle('open');
+    };
+
+    // ===== Helpers =====
+    function showLoading(show){
+      const el = document.getElementById('loading');
+      if (!el) return;
+      el.classList.toggle('show', !!show);
+    }
+
+    /* ✅ FIXED: supports "৳ 1,200", "1,200 ৳", "$ 12.50", etc */
+    function toNumber(v){
+      if (v === null || v === undefined) return 0;
+
+      if (typeof v === 'number') {
+        return Number.isFinite(v) ? v : 0;
+      }
+
+      if (typeof v === 'string') {
+        // keep digits, dot, minus
+        const cleaned = v
+          .trim()
+          .replace(/,/g, '')
+          .replace(/[^\d.\-]/g, '');
+        const n = Number(cleaned);
+        return Number.isFinite(n) ? n : 0;
+      }
+
+      // if someone stored {value:123} type objects (rare), try common fields
+      if (typeof v === 'object') {
+        const tryKeys = ['value','amount','profit','total'];
+        for (const k of tryKeys) {
+          if (v && v[k] !== undefined) return toNumber(v[k]);
         }
+      }
+
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 0;
     }
 
-    window.goToPage = function(page) {
-        window.location.href = page + '.html';
+    // ✅ Number format: 5,000 style
+    const BDT_FMT = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+    const USD_FMT = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function formatBDT(amount){
+      const v = Math.round(toNumber(amount));
+      return BDT_FMT.format(v) + ' ৳';
     }
 
-    function loadDashboardData() {
-        const transRef = ref(db, 'transactions');
-        const takaBalancesRef = ref(db, 'takaBalances');
-
-        onValue(transRef, (snapshot) => {
-            const transactions = snapshot.val() || [];
-            let binance = 0;
-            let redot = 0;
-            let afridi = 0;
-
-            const transArray = Array.isArray(transactions) ? transactions : Object.values(transactions);
-
-            transArray.forEach(t => {
-                if (t.type === 'in') {
-                    if (t.dollarAccount === 'Binance') binance += t.dollarAmount;
-                    else if (t.dollarAccount === 'Redot-pay') redot += t.dollarAmount;
-                } else if (t.type === 'out') {
-                    if (t.dollarAccount === 'Binance') binance -= t.dollarAmount;
-                    else if (t.dollarAccount === 'Redot-pay') redot -= t.dollarAmount;
-                } else if (t.type === 'convert') {
-                    if (t.toAccount === 'আফ্রিদি পাবে') afridi += t.takaAmount;
-                } else if (t.type === 'transfer') {
-                    if (t.fromAccount === 'আফ্রিদি পাবে') afridi -= t.takaAmount;
-                }
-            });
-
-            const totalDollar = binance + redot;
-            updateUI(0, '$ ' + totalDollar.toFixed(2));
-            updateUI(3, afridi.toFixed(2) + ' ৳');
-        });
-
-        onValue(takaBalancesRef, (snapshot) => {
-            const balances = snapshot.val();
-            if (balances) {
-                updateUI(1, balances.total.toFixed(2) + ' ৳');
-                updateUI(2, (balances.bank || 0).toFixed(2) + ' ৳');
-            }
-        });
+    function formatUSD(amount){
+      const v = toNumber(amount);
+      return '$ ' + USD_FMT.format(v);
     }
 
-    function updateUI(index, value) {
-        const dollarCards = document.querySelectorAll('.card p');
-        if (dollarCards[index]) {
-            dollarCards[index].innerText = value;
+    // BD local yyyy-mm-dd (so "আজকের" ঠিক থাকে)
+    function todayKeyBD(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    }
+
+    // ✅ NEW: any date string -> yyyy-mm-dd (supports dd/mm/yyyy and yyyy-mm-dd)
+    function toYMD(dateStr){
+      if(!dateStr) return "";
+      const s = String(dateStr).trim();
+
+      // yyyy-mm-dd...
+      const m1 = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m1) return `${m1[1]}-${m1[2]}-${m1[3]}`;
+
+      // dd/mm/yyyy or d/m/yyyy
+      const m2 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (m2){
+        const dd = String(m2[1]).padStart(2,'0');
+        const mm = String(m2[2]).padStart(2,'0');
+        const yyyy = m2[3];
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      // fallback: try first 10
+      const first10 = s.slice(0,10);
+      const m3 = first10.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m3) return first10;
+
+      return "";
+    }
+
+    // onValue first time Promise (for nice loader)
+    function onValueFirst(refPath){
+      return new Promise((resolve) => {
+        const unsub = onValue(refPath, (snap) => {
+          resolve(snap.val());
+          unsub();
+        }, { onlyOnce: true });
+      });
+    }
+
+    // ===== Main Dashboard Logic =====
+    async function initializeDashboard(){
+      showLoading(true);
+
+      // NOTE: অন্য দুই পেজে কোন পরিবর্তন লাগবে না—শুধু এখানে read করা হচ্ছে।
+      const transRef = ref(db, 'transactions');
+      const takaBalancesRef = ref(db, 'takaBalances');
+
+      // Optional nodes (থাকলে নেবে, না থাকলে 0 ধরবে)
+      const dollarBalancesRef = ref(db, 'dollarBalances');
+      const takaTransRef = ref(db, 'takaTransactions');
+      const dollarTransRef = ref(db, 'dollarTransactions');
+
+      const [
+        baseTrans,
+        takaBalances,
+        dollarBalances,
+        takaTrans,
+        dollarTrans
+      ] = await Promise.all([
+        onValueFirst(transRef),
+        onValueFirst(takaBalancesRef),
+        onValueFirst(dollarBalancesRef).catch(() => null),
+        onValueFirst(takaTransRef).catch(() => null),
+        onValueFirst(dollarTransRef).catch(() => null)
+      ]);
+
+      onValue(transRef, (snap) => computeAndRender(snap.val(), null, null, null, null));
+      onValue(takaBalancesRef, (snap) => computeAndRender(null, snap.val(), null, null, null));
+      onValue(dollarBalancesRef, (snap) => computeAndRender(null, null, snap.val(), null, null));
+      onValue(takaTransRef, (snap) => computeAndRender(null, null, null, snap.val(), null));
+      onValue(dollarTransRef, (snap) => computeAndRender(null, null, null, null, snap.val()));
+
+      computeAndRender(baseTrans, takaBalances, dollarBalances, takaTrans, dollarTrans);
+
+      showLoading(false);
+    }
+
+    const cache = {
+      transactions: null,
+      takaBalances: null,
+      dollarBalances: null,
+      takaTransactions: null,
+      dollarTransactions: null,
+    };
+
+    function normalizeToArray(data){
+      if (!data) return [];
+      if (Array.isArray(data)) return data.filter(Boolean);
+      if (typeof data === 'object') return Object.values(data).filter(Boolean);
+      return [];
+    }
+
+    function computeAndRender(transactionsNew, takaBalancesNew, dollarBalancesNew, takaTransNew, dollarTransNew){
+      if (transactionsNew !== null) cache.transactions = transactionsNew;
+      if (takaBalancesNew !== null) cache.takaBalances = takaBalancesNew;
+      if (dollarBalancesNew !== null) cache.dollarBalances = dollarBalancesNew;
+      if (takaTransNew !== null) cache.takaTransactions = takaTransNew;
+      if (dollarTransNew !== null) cache.dollarTransactions = dollarTransNew;
+
+      const allBase = normalizeToArray(cache.transactions);
+      const takaArr = normalizeToArray(cache.takaTransactions);
+      const dollarArr = normalizeToArray(cache.dollarTransactions);
+
+      const allTx = [...allBase, ...takaArr, ...dollarArr];
+
+      // ===== 2) Total Dollar =====
+      let binance = 0;
+      let redot = 0;
+
+      allBase.forEach(t => {
+        const amt = toNumber(t.dollarAmount);
+        if (t.type === 'in') {
+          if (t.dollarAccount === 'Binance') binance += amt;
+          else if (t.dollarAccount === 'Redot-pay') redot += amt;
+        } else if (t.type === 'out') {
+          if (t.dollarAccount === 'Binance') binance -= amt;
+          else if (t.dollarAccount === 'Redot-pay') redot -= amt;
         }
+      });
+
+      const totalDollar = binance + redot;
+
+      // ===== 1) Total Balance =====
+      let afridi = 0;
+      allBase.forEach(t => {
+        const tk = toNumber(t.takaAmount);
+        if (t.type === 'convert') {
+          if (t.toAccount === 'আফ্রিদি পাবে') afridi += tk;
+        } else if (t.type === 'transfer') {
+          if (t.fromAccount === 'আফ্রিদি পাবে') afridi -= tk;
+        }
+      });
+
+      const dBal = cache.dollarBalances || {};
+      const dollarCashTaka =
+        toNumber(dBal.cashTaka) ||
+        toNumber(dBal.cash) ||
+        toNumber(dBal.totalCash) ||
+        0;
+
+      const tBal = cache.takaBalances || {};
+      const takaTotalBalance =
+        toNumber(tBal.total) ||
+        toNumber(tBal.balance) ||
+        0;
+
+      const totalBalance = afridi + dollarCashTaka + takaTotalBalance;
+
+      // ===== 3) ✅ TODAY Bank Transfer Total (Dollar + Taka) =====
+      const today = todayKeyBD();
+
+      const bankTransferTodayTotal = allTx.reduce((sum, t) => {
+        const dk = toYMD(t?.date || t?.createdAt || t?.day || t?.txDate);
+        if (dk !== today) return sum;
+
+        const cat = String(t?.cat || t?.category || "").toLowerCase();
+        const acc = String(t?.account || t?.toAccount || t?.fromAccount || "").toLowerCase();
+        const method = String(t?.method || t?.paymentMethod || t?.payType || "").toLowerCase();
+        const type = String(t?.type || "").toLowerCase();
+
+        const isTakaBank = (type === "out" && (cat.includes("bank") || cat.includes("transfer")));
+        const isDollarBank = (
+          cat.includes("bank") || acc.includes("bank") || method.includes("bank") ||
+          (type.includes("bank") || (type.includes("transfer") && (cat.includes("bank") || acc.includes("bank") || method.includes("bank"))))
+        );
+
+        if (!isTakaBank && !isDollarBank) return sum;
+
+        const rawAmt =
+          (t?.amount !== undefined ? toNumber(t.amount) :
+          (t?.takaAmount !== undefined ? toNumber(t.takaAmount) :
+          (t?.money !== undefined ? toNumber(t.money) : 0)));
+
+        return sum + Math.abs(rawAmt);
+      }, 0);
+
+      // ===== 4) ✅ TODAY Profit (Dollar + Taka) =====
+      // ✅ Dollar profit: আগে dollarBalances থেকে try করবে, না পেলে dollarTransactions থেকে আজকের profit ফিল্ডগুলো sum করবে
+      const dollarTodayProfitFromBalances =
+        toNumber(dBal.todayProfit) ||
+        toNumber(dBal.profitToday) ||
+        toNumber(dBal.today_profit) ||
+        toNumber(dBal.todayProfitTaka) ||
+        toNumber(dBal.profit) ||
+        0;
+
+      const dollarTodayProfitFromTx = dollarArr.reduce((sum, t) => {
+        const dk = toYMD(t?.date || t?.createdAt || t?.day || t?.txDate);
+        if (dk !== today) return sum;
+
+        const p =
+          toNumber(t?.profit) ||
+          toNumber(t?.profitTaka) ||
+          toNumber(t?.profitBDT) ||
+          toNumber(t?.profitAmount) ||
+          toNumber(t?.todaysProfit) ||
+          toNumber(t?.todayProfit) ||
+          0;
+
+        // কিছু ডাটায় type="profit" হলে amount কে profit ধরবে
+        const type = String(t?.type || "").toLowerCase();
+        const profitAsAmount = (type === "profit") ? toNumber(t?.amount ?? t?.takaAmount ?? 0) : 0;
+
+        const value = p || profitAsAmount;
+        if (value > 0) return sum + value;
+        return sum;
+      }, 0);
+
+      const dollarTodayProfit = (dollarTodayProfitFromBalances > 0)
+        ? dollarTodayProfitFromBalances
+        : dollarTodayProfitFromTx;
+
+      // ✅ Taka profit+: b2b + amount positive + today
+      const takaProfitPlusToday = takaArr.reduce((sum, t) => {
+        const dk = toYMD(t?.date);
+        if (dk !== today) return sum;
+        if (String(t?.type || "").toLowerCase() !== "b2b") return sum;
+        const amt = toNumber(t?.amount);
+        if (amt > 0) return sum + amt;
+        return sum;
+      }, 0);
+
+      const profitTodayTotal = dollarTodayProfit + takaProfitPlusToday;
+
+      // ===== Render =====
+      const elTotalBalance = document.getElementById('v-total-balance');
+      const elTotalDollar = document.getElementById('v-total-dollar');
+      const elBankTotal = document.getElementById('v-bank-total');
+      const elProfitToday = document.getElementById('v-profit-today');
+
+      if (elTotalBalance) elTotalBalance.textContent = formatBDT(totalBalance);
+      if (elTotalDollar) elTotalDollar.textContent = formatUSD(totalDollar);
+      if (elBankTotal) elBankTotal.textContent = formatBDT(bankTransferTodayTotal);
+      if (elProfitToday) elProfitToday.textContent = formatBDT(profitTodayTotal);
     }
 
-    document.addEventListener('DOMContentLoaded', loadDashboardData);
+    document.addEventListener('DOMContentLoaded', initializeDashboard);
 
-    // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('Service Worker Registered'))
+          .then(() => console.log('Service Worker Registered'))
           .catch(err => console.log('Service Worker Registration Failed', err));
       });
     }
-</script>
-
+  </script>
 </body>
 </html>
-
