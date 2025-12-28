@@ -122,7 +122,6 @@
       width:120px;height:120px;
       border-radius:999px;
       background: linear-gradient(135deg, rgba(79,70,229,.25), rgba(56,189,248,.18), rgba(34,197,94,.18));
-      filter: blur(0px);
       transform: rotate(18deg);
       opacity:.9;
     }
@@ -305,7 +304,7 @@
     .card{
       border-radius: 20px;
       padding: 14px 14px;
-      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.16);
       background: rgba(255,255,255,.92);
       box-shadow: var(--shadow2);
       position: relative;
@@ -315,7 +314,7 @@
     }
     .card:hover{
       transform: translateY(-2px);
-      border-color: rgba(15,23,42,.26); /* ✅ darker */
+      border-color: rgba(15,23,42,.26);
       background: #ffffff;
     }
 
@@ -343,7 +342,7 @@
       font-size: 12px;
       letter-spacing: .25px;
       font-weight: 900;
-      color: rgba(15,23,42,.84); /* ✅ darker */
+      color: rgba(15,23,42,.84);
       position:relative;
       z-index:1;
     }
@@ -354,10 +353,9 @@
       letter-spacing: .3px;
       position:relative;
       z-index:1;
-      color:#0b1220; /* ✅ darker */
+      color:#0b1220;
     }
 
-    /* ✅ MORE COLORFUL card gradients */
     .card1{ background: linear-gradient(135deg, rgba(79,70,229,.22), rgba(255,255,255,.92)); }
     .card2{ background: linear-gradient(135deg, rgba(56,189,248,.22), rgba(255,255,255,.92)); }
     .card3{ background: linear-gradient(135deg, rgba(34,197,94,.20), rgba(255,255,255,.92)); }
@@ -597,6 +595,90 @@
     .cancel-btn{ background: linear-gradient(135deg, #ef4444, #b91c1c); color:#fff; }
     .save-btn{ background: linear-gradient(135deg, #2563eb, #4f46e5); color:#fff; }
 
+    /* ✅ Save disable look */
+    .save-btn[disabled]{
+      opacity: .65;
+      cursor: not-allowed;
+      filter: grayscale(.25);
+      transform: none !important;
+    }
+
+    /* ✅ NEW: Image uploader UI (optional) */
+    .img-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(79,70,229,.03);
+      margin-bottom: 12px;
+    }
+    .img-row .img-left{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .img-row .img-left b{
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.78);
+    }
+    .img-row .img-left small{
+      font-size: 11px;
+      font-weight: 800;
+      color: rgba(15,23,42,.58);
+    }
+    .img-row .pick-btn{
+      border:none;
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      color:#fff;
+      background: linear-gradient(135deg, #06b6d4, #4f46e5);
+      box-shadow: 0 10px 18px rgba(15,23,42,.10);
+      white-space:nowrap;
+    }
+    .img-row .pick-btn:active{ transform: scale(.99); }
+    .img-preview{
+      display:none;
+      width: 100%;
+      margin-top: -2px;
+      margin-bottom: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,.12);
+      overflow:hidden;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 10px 22px rgba(15,23,42,.08);
+    }
+    .img-preview img{
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display:block;
+    }
+    .img-preview .cap{
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      color: rgba(15,23,42,.70);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .img-preview .remove{
+      border:none;
+      cursor:pointer;
+      font-weight: 900;
+      border-radius: 12px;
+      padding: 8px 10px;
+      color:#fff;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+    }
+
     /* ✅ Table container */
     .show-box{
       width: min(1040px, 100%);
@@ -604,25 +686,25 @@
       padding: 0;
       border-radius: 20px;
       background: rgba(255,255,255,.94);
-      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.16);
       box-shadow: var(--shadow2);
       overflow-x:auto;
     }
 
     /* ✅ UPDATED: extra column */
-    .table-wrapper{ width:100%; min-width: 940px; }
+    .table-wrapper{ width:100%; min-width: 1020px; }
 
     .transaction-table-header{
       display: table;
       width: 100%;
       table-layout: fixed;
-      background: linear-gradient(90deg, rgba(79,70,229,.28), rgba(6,182,212,.22), rgba(34,197,94,.22), rgba(245,158,11,.20), rgba(236,72,153,.20)); /* ✅ stronger */
-      color: #0b1220; /* ✅ darker */
+      background: linear-gradient(90deg, rgba(79,70,229,.28), rgba(6,182,212,.22), rgba(34,197,94,.22), rgba(245,158,11,.20), rgba(236,72,153,.20));
+      color: #0b1220;
       font-size: 13px;
       font-weight: 900;
       position: relative;
       overflow:hidden;
-      border-bottom: 1px solid rgba(15,23,42,.18); /* ✅ darker */
+      border-bottom: 1px solid rgba(15,23,42,.18);
     }
     .transaction-table-header::after{
       content:"";
@@ -636,16 +718,15 @@
     }
     .transaction-table-header > div{ position:relative; z-index:1; }
 
-    /* ✅ more spacing (height কমানো) */
     .transaction-table-header div,
     .transaction-item div{
       display: table-cell;
-      padding: 10px 14px; /* ✅ reduced height + slightly less padding */
+      padding: 10px 14px;
       white-space: nowrap;
       vertical-align: middle;
-      border-bottom: 1px solid rgba(15,23,42,.18); /* ✅ darker */
-      color: rgba(11,18,32,.92); /* ✅ darker text */
-      font-weight: 800; /* ✅ stronger */
+      border-bottom: 1px solid rgba(15,23,42,.18);
+      color: rgba(11,18,32,.92);
+      font-weight: 800;
     }
 
     /* ✅ column widths */
@@ -656,6 +737,10 @@
     .col-ac{ width: 140px; }
     .col-amt{ width: 120px; }
     .col-det{ width: 220px; }
+
+    /* ✅ NEW image column */
+    .col-img{ width: 90px; text-align:center; }
+
     .col-act{ width: 120px; }
 
     #transactionBody{
@@ -670,12 +755,11 @@
       width:100%;
       table-layout: fixed;
       font-size: 13px;
-      color: rgba(11,18,32,.95); /* ✅ darker */
+      color: rgba(11,18,32,.95);
       background: #ffffff;
       transition: background .18s ease;
     }
 
-    /* ✅ Zebra (stronger) */
     .transaction-item:nth-child(odd){
       background: linear-gradient(90deg, rgba(79,70,229,.08), rgba(56,189,248,.05), rgba(34,197,94,.05), rgba(255,255,255,0));
     }
@@ -699,7 +783,7 @@
       cursor:pointer;
       font-size: 15px;
       font-weight: 900;
-      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.14);
       box-shadow: 0 10px 18px rgba(15,23,42,.10);
       transition: transform .16s ease, filter .16s ease;
       background: #fff;
@@ -709,6 +793,27 @@
 
     .edit-btn{ background: linear-gradient(135deg, #2563eb, #4f46e5); color:#fff; border-color: rgba(79,70,229,.22); }
     .delete-btn{ background: linear-gradient(135deg, #ef4444, #b91c1c); color:#fff; border-color: rgba(239,68,68,.22); }
+
+    /* ✅ NEW: Image button */
+    .img-btn{
+      border:none;
+      padding: 8px 10px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-size: 16px;
+      font-weight: 900;
+      border: 1px solid rgba(15,23,42,.14);
+      box-shadow: 0 10px 18px rgba(15,23,42,.08);
+      background: rgba(255,255,255,.95);
+      transition: transform .16s ease, filter .16s ease;
+    }
+    .img-btn:hover{ filter: brightness(1.04); transform: translateY(-1px); }
+    .img-btn:active{ transform: scale(.99); }
+    .img-btn.noimg{
+      opacity:.55;
+      cursor: default;
+      pointer-events:none;
+    }
 
     /* Pagination */
     .page-size-area{
@@ -721,7 +826,7 @@
       gap: 12px;
       border-radius: 20px;
       background: rgba(255,255,255,.94);
-      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.16);
       box-shadow: var(--shadow2);
       position: relative;
       overflow:hidden;
@@ -745,10 +850,10 @@
     .pagination-controls .page-link{
       display:inline-block;
       padding: 8px 10px;
-      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.14);
       border-radius: 14px;
       text-decoration:none;
-      color: rgba(11,18,32,.82); /* ✅ darker */
+      color: rgba(11,18,32,.82);
       font-size: 13px;
       font-weight: 900;
       background: rgba(255,255,255,.96);
@@ -773,7 +878,7 @@
     .pagination-controls .page-link:hover{
       transform: translateY(-1px);
       background: #ffffff;
-      border-color: rgba(15,23,42,.24); /* ✅ darker */
+      border-color: rgba(15,23,42,.24);
     }
     .pagination-controls .page-link.active-page{
       background: linear-gradient(135deg, rgba(37,99,235,.95), rgba(79,70,229,.92)) !important;
@@ -792,7 +897,7 @@
       display:flex;
       align-items:center;
       gap: 8px;
-      color: rgba(11,18,32,.72); /* ✅ darker */
+      color: rgba(11,18,32,.72);
       font-size: 12px;
       font-weight: 900;
       white-space: nowrap;
@@ -800,9 +905,9 @@
     #rowsPerPageSelect{
       padding: 8px 10px;
       border-radius: 14px;
-      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      border: 1px solid rgba(15,23,42,.14);
       background: rgba(255,255,255,.96);
-      color: rgba(11,18,32,.90); /* ✅ darker */
+      color: rgba(11,18,32,.90);
       font-weight: 900;
       outline:none;
     }
@@ -820,6 +925,93 @@
     }
     @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
 
+    /* ✅ NEW: Image Viewer Modal */
+    .img-modal{
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 2000;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .img-modal.open{ display:flex; }
+
+    /* ✅ CHANGED: fixed height বাদ, এখন max-height + auto */
+    .img-modal-card{
+      width: min(820px, 92vw);
+      max-height: 92vh;                /* ✅ viewport এর মধ্যে থাকবে */
+      border-radius: 20px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(15,23,42,.12);
+      box-shadow: 0 20px 80px rgba(15,23,42,.24);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .img-modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(15,23,42,.10);
+      background: linear-gradient(90deg, rgba(79,70,229,.10), rgba(6,182,212,.08), rgba(34,197,94,.08));
+      flex: 0 0 auto;
+    }
+    .img-modal-top b{
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.80);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .img-modal-close{
+      border:none;
+      cursor:pointer;
+      font-weight: 900;
+      border-radius: 14px;
+      padding: 8px 10px;
+      color:#fff;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      box-shadow: 0 10px 18px rgba(15,23,42,.10);
+    }
+
+    /* ✅ CHANGED: body scrollable, তাই লম্বা ছবি কাটবে না */
+    .img-modal-body{
+      flex: 1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px;
+      background: rgba(255,255,255,.95);
+      overflow:auto;                   /* ✅ tall image হলে scroll হবে */
+    }
+
+    /* ✅ CHANGED: img container-fit */
+    .img-modal-body img{
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 14px 40px rgba(15,23,42,.16);
+      background:#fff;
+      display:block;
+    }
+
+    .img-modal-loading{
+      font-weight: 900;
+      color: rgba(15,23,42,.70);
+      font-size: 12px;
+    }
+
     /* Responsive */
     @media (max-width: 980px){
       .cards-container{ grid-template-columns: repeat(2, 1fr); }
@@ -832,6 +1024,7 @@
       .card p{ font-size: 18px; }
       .cash-buttons{ gap: 8px; }
       .cash-buttons button{ font-size: 10px; padding: 12px 8px; border-radius: 14px; }
+      .img-preview img{ height: 130px; }
     }
   </style>
 </head>
@@ -907,10 +1100,28 @@
         <label>পরিমান</label>
         <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f"></div>
       </div>
+
+      <!-- ✅ NEW optional image -->
+      <div class="img-row">
+        <div class="img-left">
+          <b>ছবি (Optional)</b>
+          <small>চাইলে যুক্ত করবেন</small>
+        </div>
+        <button class="pick-btn" type="button" onclick="document.getElementById('inImageFile').click()">Pick</button>
+        <input id="inImageFile" type="file" accept="image/*" style="display:none" onchange="handleImagePick('in')">
+      </div>
+      <div id="inImagePreview" class="img-preview">
+        <img id="inImagePreviewImg" src="" alt="preview">
+        <div class="cap">
+          <span id="inImagePreviewName">image</span>
+          <button class="remove" type="button" onclick="removePickedImage('in')">Remove</button>
+        </div>
+      </div>
+
       <input type="text" id="inDescription" placeholder="বিবরণ দিন">
       <div class="button-row">
         <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-        <button class="save-btn" onclick="saveIn()">Save</button>
+        <button class="save-btn" id="saveBtnIn" onclick="saveIn()">Save</button>
       </div>
     </div>
 
@@ -936,10 +1147,28 @@
         <label>পরিমান</label>
         <div class="taka-input"><input type="number" placeholder="৳0.00" id="outtaka-f"></div>
       </div>
+
+      <!-- ✅ NEW optional image -->
+      <div class="img-row">
+        <div class="img-left">
+          <b>ছবি (Optional)</b>
+          <small>চাইলে যুক্ত করবেন</small>
+        </div>
+        <button class="pick-btn" type="button" onclick="document.getElementById('outImageFile').click()">Pick</button>
+        <input id="outImageFile" type="file" accept="image/*" style="display:none" onchange="handleImagePick('out')">
+      </div>
+      <div id="outImagePreview" class="img-preview">
+        <img id="outImagePreviewImg" src="" alt="preview">
+        <div class="cap">
+          <span id="outImagePreviewName">image</span>
+          <button class="remove" type="button" onclick="removePickedImage('out')">Remove</button>
+        </div>
+      </div>
+
       <input type="text" id="outDescription" placeholder="বিবরণ দিন">
       <div class="button-row">
         <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-        <button class="save-btn" onclick="saveOut()">Save</button>
+        <button class="save-btn" id="saveBtnOut" onclick="saveOut()">Save</button>
       </div>
     </div>
 
@@ -967,10 +1196,28 @@
           <div class="charge-input"><input type="number" placeholder="charge 0" id="charge-c"></div>
         </div>
       </div>
+
+      <!-- ✅ NEW optional image -->
+      <div class="img-row">
+        <div class="img-left">
+          <b>ছবি (Optional)</b>
+          <small>চাইলে যুক্ত করবেন</small>
+        </div>
+        <button class="pick-btn" type="button" onclick="document.getElementById('cImageFile').click()">Pick</button>
+        <input id="cImageFile" type="file" accept="image/*" style="display:none" onchange="handleImagePick('c')">
+      </div>
+      <div id="cImagePreview" class="img-preview">
+        <img id="cImagePreviewImg" src="" alt="preview">
+        <div class="cap">
+          <span id="cImagePreviewName">image</span>
+          <button class="remove" type="button" onclick="removePickedImage('c')">Remove</button>
+        </div>
+      </div>
+
       <input type="text" id="cDescription" placeholder="বিবরণ দিন">
       <div class="button-row">
         <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-        <button class="save-btn" onclick="saveCOut()">Save</button>
+        <button class="save-btn" id="saveBtnC" onclick="saveCOut()">Save</button>
       </div>
     </div>
 
@@ -995,10 +1242,28 @@
       <div class="amount-section">
         <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-b2b"></div>
       </div>
+
+      <!-- ✅ NEW optional image -->
+      <div class="img-row">
+        <div class="img-left">
+          <b>ছবি (Optional)</b>
+          <small>চাইলে যুক্ত করবেন</small>
+        </div>
+        <button class="pick-btn" type="button" onclick="document.getElementById('b2bImageFile').click()">Pick</button>
+        <input id="b2bImageFile" type="file" accept="image/*" style="display:none" onchange="handleImagePick('b2b')">
+      </div>
+      <div id="b2bImagePreview" class="img-preview">
+        <img id="b2bImagePreviewImg" src="" alt="preview">
+        <div class="cap">
+          <span id="b2bImagePreviewName">image</span>
+          <button class="remove" type="button" onclick="removePickedImage('b2b')">Remove</button>
+        </div>
+      </div>
+
       <input type="text" id="b2bDescription" placeholder="বিবরণ দিন">
       <div class="button-row">
         <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-        <button class="save-btn" onclick="saveB2B()">Save</button>
+        <button class="save-btn" id="saveBtnB2B" onclick="saveB2B()">Save</button>
       </div>
     </div>
   </div>
@@ -1013,6 +1278,7 @@
         <div class="col-ac">D. A/C</div>
         <div class="col-amt">Amount</div>
         <div class="col-det">Details</div>
+        <div class="col-img">Image</div>
         <div class="col-act">Action</div>
       </div>
 
@@ -1039,12 +1305,29 @@
     </div>
   </div>
 
+  <!-- ✅ NEW: Image Viewer Modal -->
+  <div id="imgModal" class="img-modal" onclick="closeImageModalByBackdrop(event)">
+    <div class="img-modal-card">
+      <div class="img-modal-top">
+        <b id="imgModalTitle">Image View</b>
+        <button class="img-modal-close" type="button" onclick="closeImageModal()">Close ✕</button>
+      </div>
+      <div class="img-modal-body">
+        <div id="imgModalLoading" class="img-modal-loading" style="display:none;">ছবি লোড হচ্ছে...</div>
+        <img id="imgModalImg" src="" alt="full" style="display:none;">
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { db } from './firebase-config.js';
     import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const balancesRef = ref(db, 'takaBalances');
     const transactionsRef = ref(db, 'takaTransactions');
+
+    // ✅ আপনার Worker URL (আপনারটা ঠিক থাকলে বদলাবেন না)
+    const TELEGRAM_WORKER_BASE = "https://cold-leaf-38d2.sksohansheet.workers.dev";
 
     let balances = {
       total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US')
@@ -1054,14 +1337,195 @@
     let currentRowsPerPage = 10;
     let currentEditId = null;
 
-    // ✅ NEW: ট্রানজ্যাকশন লোড হয়েছে কিনা (কার্ডে ভুল ডাটা দেখানো বন্ধ করার জন্য)
+    // ✅ NEW: ট্রানজ্যাকশন লোড হয়েছে কিনা
     let transactionsLoaded = false;
 
-    // ✅ NEW: card money formatter (comma system only for cards)
+    // ✅ NEW: multi-save lock
+    let isSaving = false;
+
+    // ✅ NEW: edit mode এ existing image ধরে রাখার জন্য
+    const existingImageByKind = { in:null, out:null, c:null, b2b:null };
+
+    // ✅ NEW: card money formatter
     function formatCardMoney(n) {
       const num = Number(n || 0);
       return num.toLocaleString('en-US');
     }
+
+    // --- ✅ NEW: Image Pick/Preview helpers (Optional) ---
+    const IMG_MAP = {
+      in:   { input: 'inImageFile',   box: 'inImagePreview',   img: 'inImagePreviewImg',   name: 'inImagePreviewName' },
+      out:  { input: 'outImageFile',  box: 'outImagePreview',  img: 'outImagePreviewImg',  name: 'outImagePreviewName' },
+      c:    { input: 'cImageFile',    box: 'cImagePreview',    img: 'cImagePreviewImg',    name: 'cImagePreviewName' },
+      b2b:  { input: 'b2bImageFile',  box: 'b2bImagePreview',  img: 'b2bImagePreviewImg',  name: 'b2bImagePreviewName' }
+    };
+
+    function setSavingUI(on){
+      const form = document.getElementById('formContainer');
+      if(!form) return;
+      const saveBtns = form.querySelectorAll('.save-btn');
+      saveBtns.forEach(btn => {
+        if(on){
+          if(!btn.dataset.origText) btn.dataset.origText = btn.textContent;
+          btn.textContent = "Saving...";
+          btn.disabled = true;
+        }else{
+          btn.textContent = btn.dataset.origText || "Save";
+          btn.disabled = false;
+        }
+      });
+    }
+
+    function clearExistingImageMeta(){
+      existingImageByKind.in = null;
+      existingImageByKind.out = null;
+      existingImageByKind.c = null;
+      existingImageByKind.b2b = null;
+    }
+
+    function showExistingImage(kind, imageMeta){
+      const m = IMG_MAP[kind];
+      if(!m) return;
+
+      const box = document.getElementById(m.box);
+      const img = document.getElementById(m.img);
+      const nm  = document.getElementById(m.name);
+
+      if(!box || !img || !nm) return;
+
+      if(imageMeta && imageMeta.file_id){
+        existingImageByKind[kind] = imageMeta;
+
+        const url = `${TELEGRAM_WORKER_BASE}/file?file_id=${encodeURIComponent(imageMeta.file_id)}`;
+        img.src = url;
+        nm.textContent = "Saved Image";
+        box.style.display = "block";
+      } else {
+        existingImageByKind[kind] = null;
+        img.src = "";
+        box.style.display = "none";
+      }
+    }
+
+    window.handleImagePick = function(kind){
+      const m = IMG_MAP[kind];
+      if(!m) return;
+
+      // নতুন ছবি pick করলে existing image আর রাখা হবে না
+      existingImageByKind[kind] = null;
+
+      const inp = document.getElementById(m.input);
+      const file = inp?.files?.[0];
+      const box = document.getElementById(m.box);
+      const img = document.getElementById(m.img);
+      const nm  = document.getElementById(m.name);
+      if(!file){
+        if(box) box.style.display = "none";
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      img.src = url;
+      nm.textContent = (file.name || "image").slice(0, 22);
+      box.style.display = "block";
+    };
+
+    window.removePickedImage = function(kind){
+      const m = IMG_MAP[kind];
+      if(!m) return;
+
+      // ✅ remove চাপলে existing image ও clear হবে
+      existingImageByKind[kind] = null;
+
+      const inp = document.getElementById(m.input);
+      const box = document.getElementById(m.box);
+      const img = document.getElementById(m.img);
+      const nm  = document.getElementById(m.name);
+
+      if(inp) inp.value = "";
+      if(img) img.src = "";
+      if(nm) nm.textContent = "image";
+      if(box) box.style.display = "none";
+    };
+
+    function getPickedFile(kind){
+      const m = IMG_MAP[kind];
+      if(!m) return null;
+      const inp = document.getElementById(m.input);
+      return inp?.files?.[0] || null;
+    }
+
+    function clearAllPickedImages(){
+      ['in','out','c','b2b'].forEach(k => window.removePickedImage(k));
+    }
+
+    // ✅ NEW: Telegram upload via Worker (no token in frontend)
+    async function postImageToTelegram(file, caption){
+      const fd = new FormData();
+      fd.append('photo', file);
+      fd.append('caption', caption || '');
+
+      const res = await fetch(`${TELEGRAM_WORKER_BASE}/sendPhoto`, {
+        method: 'POST',
+        body: fd
+      });
+
+      if(!res.ok){
+        throw new Error("Worker upload failed: " + res.status);
+      }
+      const data = await res.json();
+      if(!data || data.ok !== true || !data.file_id){
+        throw new Error("Worker response invalid");
+      }
+      return data; // { ok:true, file_id, message_id }
+    }
+
+    // ✅ NEW: Modal viewer
+    window.openImageModal = async function(t){
+      try{
+        const modal = document.getElementById('imgModal');
+        const title = document.getElementById('imgModalTitle');
+        const img = document.getElementById('imgModalImg');
+        const loading = document.getElementById('imgModalLoading');
+
+        title.textContent = `Image • ${t?.date || ''} ${t?.time || ''}`;
+        img.style.display = "none";
+        loading.style.display = "block";
+        modal.classList.add('open');
+
+        const fileId = t?.image?.file_id;
+        if(!fileId){
+          loading.textContent = "কোন ছবি নেই";
+          return;
+        }
+
+        const url = `${TELEGRAM_WORKER_BASE}/file?file_id=${encodeURIComponent(fileId)}`;
+        img.onload = () => {
+          loading.style.display = "none";
+          img.style.display = "block";
+        };
+        img.onerror = () => {
+          loading.textContent = "ছবি লোড হয়নি (Worker/Telegram check করুন)";
+        };
+        img.src = url;
+      }catch(e){
+        alert("Image open error");
+      }
+    };
+
+    window.closeImageModal = function(){
+      const modal = document.getElementById('imgModal');
+      const img = document.getElementById('imgModalImg');
+      const loading = document.getElementById('imgModalLoading');
+      modal.classList.remove('open');
+      img.src = "";
+      img.style.display = "none";
+      loading.style.display = "none";
+      loading.textContent = "ছবি লোড হচ্ছে...";
+    };
+
+    window.closeImageModalByBackdrop = function(e){
+      if(e?.target?.id === "imgModal") window.closeImageModal();
+    };
 
     // --- গ্লোবাল ফাংশন সেটআপ ---
     window.initializeData = function() {
@@ -1084,7 +1548,11 @@
       else if (type === 'b2b') document.getElementById('formB2B').style.display = 'block';
     };
 
-    window.closeForm = function() {
+    /* ✅ CHANGED: force parameter যোগ */
+    window.closeForm = function(force=false) {
+      // ✅ saving চলাকালীন close prevent (কিন্তু force=true হলে বন্ধ হবে)
+      if(isSaving && !force) return;
+
       document.getElementById('formContainer').style.display = 'none';
       currentEditId = null;
       resetFormFields();
@@ -1108,51 +1576,80 @@
       }
     };
 
-    window.saveIn = function() {
-      saveTransaction('in', {
-        date: document.getElementById('showDateIn').textContent,
-        time: document.getElementById('showTimeIn').textContent,
-        cat: document.getElementById('incategory').value,
-        account: document.getElementById('type-ac').value,
-        amount: parseFloat(document.getElementById('intaka-f').value) || 0,
-        details: document.getElementById('inDescription').value
-      });
+    // ✅ Save buttons (আগের লজিক অপরিবর্তিত, শুধু multi-click prevent)
+    window.saveIn = async function() {
+      if(isSaving) return;
+      isSaving = true; setSavingUI(true);
+
+      try{
+        await saveTransaction('in', {
+          date: document.getElementById('showDateIn').textContent,
+          time: document.getElementById('showTimeIn').textContent,
+          cat: document.getElementById('incategory').value,
+          account: document.getElementById('type-ac').value,
+          amount: parseFloat(document.getElementById('intaka-f').value) || 0,
+          details: document.getElementById('inDescription').value
+        }, 'in');
+      } finally {
+        isSaving = false; setSavingUI(false);
+      }
     };
 
-    window.saveOut = function() {
-      saveTransaction('out', {
-        date: document.getElementById('showDateOut').textContent,
-        time: document.getElementById('showTimeOut').textContent,
-        cat: document.getElementById('outcategory').value,
-        account: document.getElementById('type-ac-out').value,
-        amount: -(parseFloat(document.getElementById('outtaka-f').value) || 0),
-        details: document.getElementById('outDescription').value
-      });
+    window.saveOut = async function() {
+      if(isSaving) return;
+      isSaving = true; setSavingUI(true);
+
+      try{
+        await saveTransaction('out', {
+          date: document.getElementById('showDateOut').textContent,
+          time: document.getElementById('showTimeOut').textContent,
+          cat: document.getElementById('outcategory').value,
+          account: document.getElementById('type-ac-out').value,
+          amount: -(parseFloat(document.getElementById('outtaka-f').value) || 0),
+          details: document.getElementById('outDescription').value
+        }, 'out');
+      } finally {
+        isSaving = false; setSavingUI(false);
+      }
     };
 
-    window.saveCOut = function() {
-      saveTransaction('convert', {
-        date: document.getElementById('showDateCOut').textContent,
-        time: document.getElementById('showTimeCOut').textContent,
-        cat: document.getElementById('ccategory').value,
-        account: "Convert",
-        amount: parseFloat(document.getElementById('intaka-f-c').value) || 0,
-        charge: parseFloat(document.getElementById('charge-c').value) || 0,
-        details: document.getElementById('cDescription').value
-      });
+    window.saveCOut = async function() {
+      if(isSaving) return;
+      isSaving = true; setSavingUI(true);
+
+      try{
+        await saveTransaction('convert', {
+          date: document.getElementById('showDateCOut').textContent,
+          time: document.getElementById('showTimeCOut').textContent,
+          cat: document.getElementById('ccategory').value,
+          account: "Convert",
+          amount: parseFloat(document.getElementById('intaka-f-c').value) || 0,
+          charge: parseFloat(document.getElementById('charge-c').value) || 0,
+          details: document.getElementById('cDescription').value
+        }, 'c');
+      } finally {
+        isSaving = false; setSavingUI(false);
+      }
     };
 
-    window.saveB2B = function() {
-      const amt = parseFloat(document.getElementById('intaka-f-b2b').value) || 0;
-      const bType = document.getElementById('type-ac-b2b').value;
-      saveTransaction('b2b', {
-        date: document.getElementById('showDateB2B').textContent,
-        time: document.getElementById('showTimeB2B').textContent,
-        cat: document.getElementById('b2bcategory').value,
-        account: "B2B " + bType,
-        amount: bType === "টাকা In" ? amt : -amt,
-        details: document.getElementById('b2bDescription').value
-      });
+    window.saveB2B = async function() {
+      if(isSaving) return;
+      isSaving = true; setSavingUI(true);
+
+      try{
+        const amt = parseFloat(document.getElementById('intaka-f-b2b').value) || 0;
+        const bType = document.getElementById('type-ac-b2b').value;
+        await saveTransaction('b2b', {
+          date: document.getElementById('showDateB2B').textContent,
+          time: document.getElementById('showTimeB2B').textContent,
+          cat: document.getElementById('b2bcategory').value,
+          account: "B2B " + bType,
+          amount: bType === "টাকা In" ? amt : -amt,
+          details: document.getElementById('b2bDescription').value
+        }, 'b2b');
+      } finally {
+        isSaving = false; setSavingUI(false);
+      }
     };
 
     window.deleteTransaction = function(id) {
@@ -1171,6 +1668,11 @@
       if(!t) return;
       currentEditId = id;
 
+      // ✅ edit open হলে picked file clear (নতুন সিলেক্ট করতে পারবেন)
+      clearAllPickedImages();
+      // ✅ existing meta reset
+      clearExistingImageMeta();
+
       const safeDate = (t.date || "").includes('/') ? t.date : "01/01/1970";
       const dateParts = safeDate.split('/');
       const formattedDate = `${dateParts[2] || "1970"}-${(dateParts[1] || "01")}-${(dateParts[0] || "01")}`;
@@ -1183,6 +1685,10 @@
         document.getElementById('type-ac').value = t.account;
         document.getElementById('intaka-f').value = t.amount;
         document.getElementById('inDescription').value = t.details;
+
+        // ✅ edit এ আগের ছবি শো
+        showExistingImage('in', t.image || null);
+
       } else if(t.type === 'out') {
         window.openForm('out');
         document.getElementById('datePickerOut').value = formattedDate;
@@ -1191,6 +1697,9 @@
         document.getElementById('type-ac-out').value = t.account;
         document.getElementById('outtaka-f').value = Math.abs(t.amount);
         document.getElementById('outDescription').value = t.details;
+
+        showExistingImage('out', t.image || null);
+
       } else if(t.type === 'convert') {
         window.openForm('c-out');
         document.getElementById('datePickerCOut').value = formattedDate;
@@ -1199,6 +1708,9 @@
         document.getElementById('intaka-f-c').value = t.amount;
         document.getElementById('charge-c').value = t.charge;
         document.getElementById('cDescription').value = t.details;
+
+        showExistingImage('c', t.image || null);
+
       } else if(t.type === 'b2b') {
         window.openForm('b2b');
         document.getElementById('datePickerB2B').value = formattedDate;
@@ -1207,6 +1719,8 @@
         document.getElementById('intaka-f-b2b').value = Math.abs(t.amount);
         document.getElementById('type-ac-b2b').value = t.amount >= 0 ? "টাকা In" : "টাকা Out";
         document.getElementById('b2bDescription').value = t.details;
+
+        showExistingImage('b2b', t.image || null);
       }
     };
 
@@ -1226,7 +1740,7 @@
       }
     };
 
-    // --- ✅ NEW: এই পেজের টাকার হিসাব থেকে শুধু "ব্যালেন্স (val-1)" হিসাব ---
+    // --- ✅ এই পেজের টাকার হিসাব থেকে শুধু "ব্যালেন্স (val-1)" হিসাব ---
     function computeTakaOnlyTotal() {
       let total = 0;
       for (const t of transactions) {
@@ -1235,14 +1749,12 @@
         const amt = Number(t.amount || 0);
 
         if (type === 'in') {
-          // আগের লজিক অনুযায়ী: "পার্সোনাল" হলে total এ যোগ হয় না
           if (t.account !== "পার্সোনাল") total += amt;
         } else if (type === 'out') {
           total -= Math.abs(amt);
         } else if (type === 'convert') {
           total += amt;
         }
-        // b2b -> total এ ধরা হয় না (আগের মতোই)
       }
       return total;
     }
@@ -1281,7 +1793,6 @@
         const totalPages = Math.max(1, Math.ceil(transactions.length / currentRowsPerPage));
         if (currentPage > totalPages) currentPage = totalPages;
 
-        // ✅ NEW: এই পেজের ট্রানজ্যাকশন থেকে total re-sync (Dollar.html মিশবে না)
         balances.total = computeTakaOnlyTotal();
 
         displayTransactions();
@@ -1322,7 +1833,6 @@
       });
     }
 
-    // ✅ CHANGED: কার্ডে শুধু comma system (টেবিলে নয়)
     function refreshUI() {
       if (!transactionsLoaded) return;
 
@@ -1338,11 +1848,9 @@
         return;
       }
 
-      // ✅ Only this page total (no Dollar.html mix)
       const takaOnlyTotal = computeTakaOnlyTotal();
       document.getElementById('val-1').innerText = `৳ ${formatCardMoney(takaOnlyTotal || 0)}`;
 
-      // বাকিগুলো আগের মতোই থাকবে (শুধু কার্ডে comma)
       document.getElementById('val-2').innerText = `৳ ${formatCardMoney(balances.bank || 0)}`;
       document.getElementById('val-3').innerText = `৳ ${formatCardMoney(balances.b2b || 0)}`;
       document.getElementById('val-4').innerText = `৳ ${formatCardMoney(balances.todayIn || 0)}`;
@@ -1383,6 +1891,10 @@
     function resetFormFields() {
       document.querySelectorAll('#formContainer input[type="number"], #formContainer input[type="text"]').forEach(i => i.value = "");
       document.querySelectorAll('#formContainer select').forEach(s => { if(s.id !== 'rowsPerPageSelect') s.selectedIndex = 0; });
+
+      clearExistingImageMeta();
+      clearAllPickedImages();
+
       initializeDateTime();
     }
 
@@ -1416,24 +1928,63 @@
       }
     }
 
-    function saveTransaction(type, data) {
-      if(currentEditId) {
+    // ✅ IMPORTANT: পুরনো saveTransaction লজিক একই থাকবে
+    // শুধু image থাকলে আগে worker এ upload করে file_id store করবে
+    async function saveTransaction(type, data, imageKind) {
+
+      // ---- keep old balances behavior
+      if(currentEditId){
         const oldIdx = transactions.findIndex(t => t.id == currentEditId);
-        if (oldIdx !== -1) {
+        if(oldIdx !== -1){
           adjustBalances(transactions[oldIdx], true);
           transactions.splice(oldIdx, 1);
         }
       }
+
+      // ✅ NEW: optional image upload
+      let imageMeta = null;
+      const pickedFile = getPickedFile(imageKind);
+
+      if(pickedFile){
+        const caption =
+`📌 Taka Hisab
+🗓️ ${data.date || ''} ⏰ ${data.time || ''}
+🏷️ ${data.cat || ''} | ${data.account || ''}
+💰 Amount: ${data.amount ?? 0}
+📝 ${data.details || ''}`.slice(0, 900);
+
+        try{
+          const resp = await postImageToTelegram(pickedFile, caption);
+          imageMeta = {
+            file_id: resp.file_id,
+            message_id: resp.message_id || null,
+            posted_at: Date.now()
+          };
+        }catch(e){
+          // upload fail হলে—transaction save হবে কিন্তু image ছাড়া
+          alert("ছবি Telegram এ পাঠানো যায়নি। ট্রানজ্যাকশন সেভ হবে (ছবি ছাড়া)।");
+          imageMeta = null;
+        }
+      } else {
+        // ✅ edit mode: নতুন file না দিলে existing image থাকবে (remove করলে null)
+        imageMeta = existingImageByKind[imageKind] || null;
+      }
+
       const entry = { id: currentEditId || Date.now(), ...data, type };
+
+      // ✅ attach image meta (if any)
+      if(imageMeta) entry.image = imageMeta;
+
       adjustBalances(entry, false);
       transactions.push(entry);
       sortTransactions();
 
-      // ✅ NEW: save করার পরেও total এই পেজের ট্রানজ্যাকশন থেকে sync
       balances.total = computeTakaOnlyTotal();
 
       updateFirebase();
-      closeForm();
+
+      /* ✅ CHANGED: saving চললেও ফর্ম force করে বন্ধ হবে */
+      closeForm(true);
     }
 
     function displayTransactions() {
@@ -1455,22 +2006,22 @@
             <div class="col-ac">—</div>
             <div class="col-amt" style="color:rgba(15,23,42,.65)">কোন তথ্য নেই</div>
             <div class="col-det">—</div>
+            <div class="col-img">—</div>
             <div class="col-act">—</div>
           </div>`;
         return;
       }
 
-      /* ✅ FIX: Serial number should always increase based on full list (oldest=1, newest=last) */
       const totalLen = transactions.length;
 
       paginated.forEach((t, idx) => {
         const row = document.createElement('div');
         row.className = "transaction-item";
 
-        // transactions array is sorted newest first.
-        // So serial = totalLen - (index_in_full_sorted_list)
-        const fullIndex = start + idx; 
+        const fullIndex = start + idx;
         const serial = totalLen - fullIndex;
+
+        const hasImg = !!(t?.image?.file_id);
 
         row.innerHTML = `
           <div class="col-serial">${serial}</div>
@@ -1482,6 +2033,14 @@
             ${t.amount ?? 0}
           </div>
           <div class="col-det">${t.details || ''}</div>
+
+          <div class="col-img">
+            <button class="img-btn ${hasImg ? '' : 'noimg'}" title="${hasImg ? 'View Image' : 'No Image'}"
+              onclick='${hasImg ? `window.openImageModal(${JSON.stringify(t).replace(/'/g,"\\'")})` : "return false;"}'>
+              ${hasImg ? '💾' : '⁉️'}
+            </button>
+          </div>
+
           <div class="col-act">
             <div class="action-buttons">
               <button class="edit-btn" onclick="window.editTransaction('${t.id}')">✏️</button>
