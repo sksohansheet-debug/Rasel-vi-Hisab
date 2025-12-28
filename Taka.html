@@ -1,669 +1,1045 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Taka Hisab</title>
-  
-<style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f5f7fa;
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* ✅ LIGHT + COLORFUL THEME */
+      --bg:#f7f9ff;
+      --bg2:#ffffff;
+
+      --surface:#ffffff;
+      --surface2:#f3f6ff;
+
+      --line: rgba(15,23,42,.10);
+      --line2: rgba(15,23,42,.14);
+
+      --text: #0f172a;
+      --muted: rgba(15,23,42,.62);
+
+      --brand:#4f46e5;     /* indigo */
+      --brand2:#22c55e;    /* green */
+      --pink:#ec4899;
+      --violet:#8b5cf6;
+      --orange:#f59e0b;
+      --cyan:#06b6d4;
+      --sky:#38bdf8;
+      --bad:#ef4444;
+
+      --r14:14px;
+      --r18:18px;
+
+      --topbar-h: 74px;
+      --sb-w: 288px;
+
+      --shadow: 0 18px 55px rgba(15,23,42,.12);
+      --shadow2: 0 10px 26px rgba(15,23,42,.10);
+
+      --glass: rgba(255,255,255,.72);
+      --glass2: rgba(255,255,255,.92);
     }
 
-    /* Navbar */
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 15px 20px;
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 520px at 12% 0%, rgba(79,70,229,.20), transparent 58%),
+        radial-gradient(900px 520px at 95% 18%, rgba(56,189,248,.20), transparent 55%),
+        radial-gradient(950px 620px at 60% 100%, rgba(34,197,94,.16), transparent 55%),
+        radial-gradient(900px 520px at 10% 92%, rgba(236,72,153,.12), transparent 60%),
+        linear-gradient(180deg, #fbfcff, #eef2ff 55%, #f9fbff);
+      overflow-x:hidden;
+    }
+
+    /* subtle noise */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.045;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    /* ===== Navbar ===== */
+    .navbar{
+      height: var(--topbar-h);
       position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 10;
+      inset: 0 0 auto 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 14px;
+      z-index: 80;
+      backdrop-filter: blur(16px);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.70));
+      border-bottom: 1px solid var(--line);
     }
 
-    .menu-icon {
-      position: absolute;
-      left: 20px;
-      font-size: 22px;
-      cursor: pointer;
+    .nav-inner{
+      width: min(1040px, 100%);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
     }
 
-    .navbar h1 {
-      font-size: 25px;
-      margin: 0;
-      font-weight: 700;
-      text-align: left;
-      margin-left: -50px;
+    .menu-icon{
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow2);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      font-size: 20px;
+      color: #0f172a;
+      position: relative;
+      overflow:hidden;
     }
+    .menu-icon::after{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(79,70,229,.25), rgba(56,189,248,.18), rgba(34,197,94,.18));
+      filter: blur(0px);
+      transform: rotate(18deg);
+      opacity:.9;
+    }
+    .menu-icon > *{ position:relative; z-index:1; }
+    .menu-icon:hover{
+      background: #ffffff;
+      border-color: rgba(79,70,229,.25);
+      transform: translateY(-1px);
+    }
+    .menu-icon:active{ transform: scale(.98); }
 
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 65px;
-      left: -260px;
-      width: 230px;
-      height: 100%;
-      background: #9CC6ED;
-      transition: 0.3s;
-      padding-top: 20px;
-      z-index: 9;
+    .nav-title{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      line-height:1.1;
+      gap: 2px;
     }
-    
-    .sidebar.open {
-      left: 0;
-    }
-
-    .sidebar a {
-      display: block;
-      padding: 15px 20px;
-      color: black;
-      text-decoration: none;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-
-    .sidebar a:hover {
-      background: #87b8e0;
-    }
-    
-    /* Main content */
-    .main-content {
-      margin-top: 70px;
-      padding: 20px;
-    }
-
-    /* Grid layout */
-    .cards-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.12);
-    }
-
-    .card h3 {
-      margin: -8px;
-      font-size: 16px;
-      color: #ffff;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .card p {
-      margin-top: 18px;
+    .nav-title h1{
+      margin:0;
       font-size: 18px;
-      font-weight: bold;
-      color: #ffff;
+      font-weight: 900;
+      letter-spacing: .3px;
+      background: linear-gradient(90deg, #4f46e5, #06b6d4, #22c55e);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .nav-title small{
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 11px;
     }
 
-    @media (max-width: 768px) {
-      .cards-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .card {
-        min-height: 20px;
-        max-height: 80px;
-        padding: 8px 10px;
-      }
-      .card h3 { font-size: 14px; }
-      .card p { font-size: 22px; }
+    .nav-badge{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow2);
+      font-size: 12px;
+      color: rgba(15,23,42,.72);
+      white-space: nowrap;
+      position: relative;
+      overflow:hidden;
+    }
+    .nav-badge::before{
+      content:"";
+      position:absolute;
+      inset:auto -30px -30px auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(236,72,153,.18), rgba(245,158,11,.16), rgba(79,70,229,.14));
+      opacity:.9;
+    }
+    .nav-badge > *{ position:relative; z-index:1; }
+
+    .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--brand2);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.14);
     }
 
-    .card1 { background: linear-gradient(135deg, #594e4d, #363332); color: white; }
-    .card2 { background: linear-gradient(135deg, #1f2edb, #1a1b26); color: white; }
-    .card3 { background: linear-gradient(135deg, #18daf0, #192729); color: white; }
-    .card4 { background: linear-gradient(135deg, #038231, #2d4034); color: white; }
-    .card5 { background: linear-gradient(135deg, #ed1a64, #c91252); color: white; }
-    .card6 { background: linear-gradient(135deg, #f05a29, #ff6633); color: white; }
-    .card7 { background: linear-gradient(135deg, #a623de, #312536); color: white; }
-    .card8 { background: linear-gradient(135deg, #a1c447, #2d331f); color: white; }
-      
-    .cash-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 8px;
-        margin: 15px 20px 20px 20px;
+    /* ===== Sidebar (colorful) ===== */
+    .sidebar{
+      position: fixed;
+      top: var(--topbar-h);
+      left: calc(-1 * var(--sb-w));
+      width: var(--sb-w);
+      height: calc(100% - var(--topbar-h));
+      padding: 14px 12px;
+      z-index: 70;
+      transition: .28s ease;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,247,255,.92));
+      border-right: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 18px 60px rgba(15,23,42,.14);
+      backdrop-filter: blur(14px);
+    }
+    .sidebar.open{ left: 0; }
+
+    .sb-card{
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(79,70,229,.14), rgba(56,189,248,.12), rgba(34,197,94,.10));
+      border: 1px solid rgba(79,70,229,.16);
+      box-shadow: var(--shadow2);
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sb-card::after{
+      content:"";
+      position:absolute;
+      right:-60px; top:-60px;
+      width:160px; height:160px;
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), rgba(255,255,255,0));
+    }
+    .sb-card h3{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      position:relative;
+      z-index:1;
+    }
+    .sb-card p{
+      margin:6px 0 0 0;
+      color: rgba(15,23,42,.70);
+      font-size: 12px;
+      line-height:1.4;
+      position:relative;
+      z-index:1;
+      font-weight: 700;
     }
 
-    .cash-buttons button {
-        border: none;
-        border-radius: 8px;
-        font-size: 10px;
-        font-weight: bold;
-        cursor: pointer;
-        color: white;
-        transition: 0.5s;
-        padding: 10px 0;
-        flex-grow: 1;
-        min-width: 0;
+    .sidebar a{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 12px;
+      margin: 8px 2px;
+      border-radius: 16px;
+      color: #0f172a;
+      text-decoration:none;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 18px rgba(15,23,42,.08);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      position: relative;
+      overflow:hidden;
+    }
+    .sidebar a::before{
+      content:"";
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width: 4px;
+      background: linear-gradient(180deg, #4f46e5, #06b6d4, #22c55e);
+      opacity:.85;
+    }
+    .sidebar a::after{
+      content:"";
+      position:absolute;
+      inset:auto -70px -70px auto;
+      width:160px;height:160px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(236,72,153,.14), rgba(245,158,11,.12), rgba(79,70,229,.10));
+      opacity:.9;
+      transform: rotate(-10deg);
+    }
+    .sidebar a > *{ position:relative; z-index:1; }
+    .sidebar a:hover{
+      background: #ffffff;
+      border-color: rgba(79,70,229,.22);
+      transform: translateY(-1px);
     }
 
-    .cash-in-btn { background-color: #28a745; }
-    .cash-out-btn { background-color: #dc3545; }
-    .c-convert { background-color: #c47025; }
-    .t-b2b { background-color: #138496; }   
-
-    /* Popup Form */
-    .popup-form {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
+    /* ===== Main ===== */
+    .main-content{
+      margin-top: calc(var(--topbar-h) + 10px);
+      padding: 18px 14px 6px 14px;
+      width: min(1040px, 100%);
+      margin-left:auto;
+      margin-right:auto;
     }
 
-    .form-content {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 90%;
-        max-width: 400px;
+    /* Cards */
+    .cards-container{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
-    .takad-text {
-        font-size: 20px;
-        margin-bottom: 20px;
-        color: #333;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+    .card{
+      border-radius: 20px;
+      padding: 14px 14px;
+      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      background: rgba(255,255,255,.92);
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow:hidden;
+      min-height: 92px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(15,23,42,.26); /* ✅ darker */
+      background: #ffffff;
     }
 
-    .row-line-time {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 15px;
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-70px -70px auto auto;
+      width: 150px; height: 150px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.70);
+      transform: rotate(18deg);
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:auto -90px -90px auto;
+      width: 190px; height: 190px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.06);
+      transform: rotate(-8deg);
     }
 
-    .time-box, .date-box {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border: 1px solid #ccc;
-        padding: 8px 10px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        cursor: pointer;
-        position: relative;
+    .card h3{
+      margin:0;
+      font-size: 12px;
+      letter-spacing: .25px;
+      font-weight: 900;
+      color: rgba(15,23,42,.84); /* ✅ darker */
+      position:relative;
+      z-index:1;
+    }
+    .card p{
+      margin: 6px 0 0 0;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: .3px;
+      position:relative;
+      z-index:1;
+      color:#0b1220; /* ✅ darker */
     }
 
-    .hidden-picker {
-        position: absolute;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        cursor: pointer;
+    /* ✅ MORE COLORFUL card gradients */
+    .card1{ background: linear-gradient(135deg, rgba(79,70,229,.22), rgba(255,255,255,.92)); }
+    .card2{ background: linear-gradient(135deg, rgba(56,189,248,.22), rgba(255,255,255,.92)); }
+    .card3{ background: linear-gradient(135deg, rgba(34,197,94,.20), rgba(255,255,255,.92)); }
+    .card4{ background: linear-gradient(135deg, rgba(245,158,11,.22), rgba(255,255,255,.92)); }
+    .card5{ background: linear-gradient(135deg, rgba(236,72,153,.20), rgba(255,255,255,.92)); }
+    .card6{ background: linear-gradient(135deg, rgba(249,115,22,.20), rgba(255,255,255,.92)); }
+    .card7{ background: linear-gradient(135deg, rgba(139,92,246,.18), rgba(255,255,255,.92)); }
+    .card8{ background: linear-gradient(135deg, rgba(6,182,212,.18), rgba(255,255,255,.92)); }
+
+    /* Buttons bar */
+    .cash-buttons{
+      width: min(1040px, 100%);
+      margin: 12px auto 0 auto;
+      padding: 0 14px;
+      display:flex;
+      gap: 10px;
+    }
+    .cash-buttons button{
+      flex: 1;
+      border: none;
+      border-radius: 16px;
+      padding: 12px 10px;
+      cursor:pointer;
+      color: #fff;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing:.25px;
+      box-shadow: var(--shadow2);
+      transition: transform .18s ease, filter .18s ease;
+      border: 1px solid rgba(255,255,255,.70);
+      position: relative;
+      overflow:hidden;
+    }
+    .cash-buttons button::after{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:140px;height:140px;
+      border-radius:999px;
+      background: rgba(255,255,255,.26);
+      transform: rotate(20deg);
+    }
+    .cash-buttons button > *{ position:relative; z-index:1; }
+    .cash-buttons button:hover{ filter: brightness(1.05); transform: translateY(-1px); }
+    .cash-buttons button:active{ transform: scale(.99); }
+
+    .cash-in-btn{ background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .cash-out-btn{ background: linear-gradient(135deg, #dc2626, #ef4444); }
+    .c-convert{ background: linear-gradient(135deg, #c2410c, #f59e0b); }
+    .t-b2b{ background: linear-gradient(135deg, #0ea5e9, #4f46e5); }
+
+    /* Popup */
+    .popup-form{
+      position: fixed;
+      inset: 0;
+      background-color: rgba(2, 6, 23, 0.38);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .form-content{
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      color: #0f172a;
+      padding: 18px;
+      border-radius: 20px;
+      box-shadow: 0 18px 65px rgba(15,23,42,.22);
+      width: 100%;
+      max-width: 440px;
+      border: 1px solid rgba(15,23,42,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .form-content::before{
+      content:"";
+      position:absolute;
+      inset:-80px -80px auto auto;
+      width:180px;height:180px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(79,70,229,.14), rgba(56,189,248,.12), rgba(236,72,153,.10));
+      transform: rotate(18deg);
+      opacity:.9;
+    }
+    .form-content > *{ position:relative; z-index:1; }
+
+    .takad-text{
+      font-size: 18px;
+      margin: 0 0 14px 0;
+      text-align:center;
+      font-weight: 900;
+      letter-spacing:.2px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(15,23,42,.10);
+      background: linear-gradient(90deg, #4f46e5, #06b6d4, #22c55e);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
     }
 
-    .time-box span, .date-box span {
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
+    .row-line-time, .row-line-type{
+      display:flex;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .icon {
-        width: 20px;
-        height: 20px;
-        pointer-events: none;
+    .time-box, .date-box{
+      flex: 1;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      border: 1px solid rgba(15,23,42,.12);
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(79,70,229,.03);
+      cursor:pointer;
+      position: relative;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    .time-box:hover, .date-box:hover{
+      background: rgba(56,189,248,.06);
+      border-color: rgba(79,70,229,.25);
+    }
+    .time-box span, .date-box span{
+      font-size: 13px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    .hidden-picker{
+      position:absolute;
+      opacity:0;
+      width:100%;
+      height:100%;
+      left:0;
+      top:0;
+      cursor:pointer;
+    }
+    .icon{ width: 18px; height:18px; opacity:.75; }
+
+    .account-type-a, .account-type-b{
+      flex:1;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(79,70,229,.03);
+      font-weight: 900;
+      transition: border-color .18s ease, background .18s ease;
+      outline: none;
+    }
+    .account-type-a:focus, .account-type-b:focus{
+      border-color: rgba(79,70,229,.45);
+      background: rgba(79,70,229,.06);
     }
 
-    .row-line-type {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 15px;
+    .amount-section{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      align-items:center;
+      margin-bottom: 12px;
+    }
+    .amount-section label{
+      font-weight: 900;
+      color: rgba(15,23,42,.70);
+      font-size: 12px;
     }
 
-    .account-type-a, .account-type-b {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-        background-color: #f9f9f9;
+    .taka-input, .charge-input{ width:100%; max-width: 280px; }
+    .taka-input input, .charge-input input{
+      width:100%;
+      padding: 12px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 900;
+      text-align:center;
+      outline: none;
+      border: 2px solid rgba(79,70,229,.28);
+      background:#fff;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .taka-input input:focus, .charge-input input:focus{
+      border-color: rgba(79,70,229,.62);
+      box-shadow: 0 10px 22px rgba(79,70,229,.14);
+      transform: translateY(-1px);
+    }
+    .charge-input input{ border-color: rgba(239,68,68,.28); }
+    .charge-input input:focus{
+      border-color: rgba(239,68,68,.62);
+      box-shadow: 0 10px 22px rgba(239,68,68,.12);
     }
 
-    .amount-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
+    #inDescription, #outDescription, #cDescription, #b2bDescription{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(79,70,229,.03);
+      margin-bottom: 12px;
+      box-sizing:border-box;
+      font-weight: 800;
+      outline:none;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    #inDescription:focus, #outDescription:focus, #cDescription:focus, #b2bDescription:focus{
+      border-color: rgba(79,70,229,.45);
+      background: rgba(56,189,248,.06);
     }
 
-    .taka-input {
-        width: 100%;
-        max-width: 250px;
+    .button-row{
+      display:flex;
+      gap: 10px;
     }
-     .charge-input {
-       width: 100%;
-      max-width: 180px;
-     }
-
-
-    .taka-input input {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #007bff;
-        border-radius: 8px;
-        font-size: 20px;
-        text-align: center;
-        font-weight: bold;
+    .button-row button{
+      flex:1;
+      padding: 11px 10px;
+      border:none;
+      border-radius: 16px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .18s ease, filter .18s ease;
+      position: relative;
+      overflow:hidden;
     }
-    
-  .charge-input input {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid red;
-        border-radius: 8px;
-        font-size: 20px;
-        text-align: center;
-        font-weight: bold;
+    .button-row button::after{
+      content:"";
+      position:absolute;
+      inset:-50px -50px auto auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: rgba(255,255,255,.22);
     }
+    .button-row button > *{ position:relative; z-index:1; }
+    .button-row button:hover{ filter: brightness(1.04); transform: translateY(-1px); }
+    .button-row button:active{ transform: scale(.99); }
 
-    #inDescription, #outDescription, #cDescription, #b2bDescription {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        box-sizing: border-box;
-    }
+    .cancel-btn{ background: linear-gradient(135deg, #ef4444, #b91c1c); color:#fff; }
+    .save-btn{ background: linear-gradient(135deg, #2563eb, #4f46e5); color:#fff; }
 
-    .button-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
+    /* ✅ Table container */
+    .show-box{
+      width: min(1040px, 100%);
+      margin: 14px auto 0 auto;
+      padding: 0;
+      border-radius: 20px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      box-shadow: var(--shadow2);
+      overflow-x:auto;
     }
 
-    .button-row button {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
+    /* ✅ UPDATED: extra column */
+    .table-wrapper{ width:100%; min-width: 940px; }
+
+    .transaction-table-header{
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      background: linear-gradient(90deg, rgba(79,70,229,.28), rgba(6,182,212,.22), rgba(34,197,94,.22), rgba(245,158,11,.20), rgba(236,72,153,.20)); /* ✅ stronger */
+      color: #0b1220; /* ✅ darker */
+      font-size: 13px;
+      font-weight: 900;
+      position: relative;
+      overflow:hidden;
+      border-bottom: 1px solid rgba(15,23,42,.18); /* ✅ darker */
+    }
+    .transaction-table-header::after{
+      content:"";
+      position:absolute;
+      inset:-80px -80px auto auto;
+      width:200px;height:200px;
+      border-radius:999px;
+      background: rgba(255,255,255,.55);
+      opacity:.9;
+      transform: rotate(12deg);
+    }
+    .transaction-table-header > div{ position:relative; z-index:1; }
+
+    /* ✅ more spacing (height কমানো) */
+    .transaction-table-header div,
+    .transaction-item div{
+      display: table-cell;
+      padding: 10px 14px; /* ✅ reduced height + slightly less padding */
+      white-space: nowrap;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(15,23,42,.18); /* ✅ darker */
+      color: rgba(11,18,32,.92); /* ✅ darker text */
+      font-weight: 800; /* ✅ stronger */
     }
 
-    .cancel-btn { background-color: red; color: white; }
-    .save-btn { background-color: #007bff; color: white; }
-    
-    
- .show-box {
-   padding: 0px;
-   height: auto;
-   width: 95%;
-   max-width: 580px;
-   margin: 15px auto 0 auto; 
-   border-radius: 10px;
-   background-color: #ffffff;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-   font-size: 18px;
-   font-weight: bold;
-   color: #00796b;
-   text-align: center;
-   overflow-x: auto;
-   overflow-y: visible;
-}
+    /* ✅ column widths */
+    .col-serial{ width: 64px; text-align:center; font-weight:900; color: rgba(15,23,42,.80); }
+    .col-date{ width: 140px; }
+    .col-time{ width: 110px; }
+    .col-cat{ width: 160px; }
+    .col-ac{ width: 140px; }
+    .col-amt{ width: 120px; }
+    .col-det{ width: 220px; }
+    .col-act{ width: 120px; }
 
-.table-wrapper {
-    display: block;
-    border-collapse: collapse;
-    width: 100%; 
-    border-radius: 8px;
-}
+    #transactionBody{
+      display: table-row-group;
+      height:auto !important;
+      max-height:none;
+      overflow-y:visible;
+    }
 
-#transactionBody {
-    display: table-row-group;
-    height: auto !important;
-    max-height: none;
-    overflow-y: visible;
-}
+    .transaction-item{
+      display: table;
+      width:100%;
+      table-layout: fixed;
+      font-size: 13px;
+      color: rgba(11,18,32,.95); /* ✅ darker */
+      background: #ffffff;
+      transition: background .18s ease;
+    }
 
-.transaction-table-header {
-    display: table-row;
-    background-color: #1a4e69;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    z-index: 9;
-}
+    /* ✅ Zebra (stronger) */
+    .transaction-item:nth-child(odd){
+      background: linear-gradient(90deg, rgba(79,70,229,.08), rgba(56,189,248,.05), rgba(34,197,94,.05), rgba(255,255,255,0));
+    }
+    .transaction-item:nth-child(even){
+      background: linear-gradient(90deg, rgba(236,72,153,.08), rgba(245,158,11,.05), rgba(6,182,212,.05), rgba(255,255,255,0));
+    }
+    .transaction-item:hover{
+      background: linear-gradient(90deg, rgba(236,72,153,.10), rgba(245,158,11,.08), rgba(56,189,248,.08), rgba(255,255,255,.92));
+    }
 
-.transaction-table-header div,
-.transaction-item div {
-    display: table-cell; 
-    padding: 18px 15px; 
-    white-space: nowrap;
-    vertical-align: middle;
-    height: auto;
-    border-bottom: 1px solid #ddd;
-}
+    .action-buttons{
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      justify-content:center;
+    }
+    .action-buttons button{
+      border:none;
+      padding: 7px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 15px;
+      font-weight: 900;
+      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      box-shadow: 0 10px 18px rgba(15,23,42,.10);
+      transition: transform .16s ease, filter .16s ease;
+      background: #fff;
+    }
+    .action-buttons button:hover{ filter: brightness(1.04); transform: translateY(-1px); }
+    .action-buttons button:active{ transform: scale(.98); }
 
-.transaction-item {
-    display: table-row; 
-    font-size: 14px;
-    color: #000;
-}
+    .edit-btn{ background: linear-gradient(135deg, #2563eb, #4f46e5); color:#fff; border-color: rgba(79,70,229,.22); }
+    .delete-btn{ background: linear-gradient(135deg, #ef4444, #b91c1c); color:#fff; border-color: rgba(239,68,68,.22); }
 
-.transaction-item:nth-child(even) { background-color: #e9ecef; }
-.transaction-item:nth-child(odd) { background-color: #ffffff; }
+    /* Pagination */
+    .page-size-area{
+      width: min(1040px, 100%);
+      margin: 10px auto 18px auto;
+      padding: 12px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(15,23,42,.16); /* ✅ darker */
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow:hidden;
+    }
+    .page-size-area::after{
+      content:"";
+      position:absolute;
+      inset:auto -90px -90px auto;
+      width:220px;height:220px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(79,70,229,.12), rgba(6,182,212,.10), rgba(34,197,94,.10), rgba(236,72,153,.10));
+      opacity:.95;
+    }
+    .page-size-area > *{ position:relative; z-index:1; }
 
-.action-buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
+    .pagination-controls{
+      display:flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pagination-controls .page-link{
+      display:inline-block;
+      padding: 8px 10px;
+      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      border-radius: 14px;
+      text-decoration:none;
+      color: rgba(11,18,32,.82); /* ✅ darker */
+      font-size: 13px;
+      font-weight: 900;
+      background: rgba(255,255,255,.96);
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      cursor:pointer;
+      min-width: 38px;
+      text-align:center;
+      box-shadow: 0 8px 16px rgba(15,23,42,.06);
+      position: relative;
+      overflow:hidden;
+    }
+    .pagination-controls .page-link::after{
+      content:"";
+      position:absolute;
+      inset:-50px -50px auto auto;
+      width:120px;height:120px;
+      border-radius:999px;
+      background: rgba(79,70,229,.10);
+      opacity:.8;
+    }
+    .pagination-controls .page-link > *{ position:relative; z-index:1; }
+    .pagination-controls .page-link:hover{
+      transform: translateY(-1px);
+      background: #ffffff;
+      border-color: rgba(15,23,42,.24); /* ✅ darker */
+    }
+    .pagination-controls .page-link.active-page{
+      background: linear-gradient(135deg, rgba(37,99,235,.95), rgba(79,70,229,.92)) !important;
+      color: #fff !important;
+      border-color: rgba(79,70,229,.22) !important;
+      transform:none !important;
+      cursor: default;
+      box-shadow: 0 12px 22px rgba(79,70,229,.18);
+    }
+    .pagination-controls .page-link.disabled-nav{
+      opacity: .45;
+      pointer-events:none;
+    }
 
-.action-buttons button {
-    border: none;
-    padding: 6px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
+    .page-size-control{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      color: rgba(11,18,32,.72); /* ✅ darker */
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    #rowsPerPageSelect{
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.14); /* ✅ darker */
+      background: rgba(255,255,255,.96);
+      color: rgba(11,18,32,.90); /* ✅ darker */
+      font-weight: 900;
+      outline:none;
+    }
+    #rowsPerPageSelect option{ color:#0f172a; }
 
-.edit-btn { background: #007bff; color: #fff; }
-.delete-btn { background: #dc3545; color: #fff; }
+    /* Loader small (cards) */
+    .loader-small{
+      border: 3px solid rgba(15,23,42,.14);
+      border-top: 3px solid rgba(79,70,229,.65);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
 
-.page-size-area {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px 15px; 
-    margin: 10px auto 20px auto; 
-    width: 95%; 
-    max-width: 580px; 
-    box-sizing: border-box;
-    background-color: #ffffff; 
-    border-radius: 0 0 10px 10px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-}
-
-.pagination-controls {
-    text-align: left; 
-    padding: 0;
-    margin: 0; 
-    display: flex; 
-    gap: 3px;
-    flex-wrap: wrap; 
-}
-
-.pagination-controls .page-link {
-    display: inline-block;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #444;
-    font-size: 14px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    min-width: 15px; 
-    text-align: center;
-}
-
-.pagination-controls .page-link.active-page {
-    background-color: #007bff !important; 
-    color: white !important; 
-    border-color: #007bff !important;
-    font-weight: bold !important;
-    transform: scale(1.05) !important; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
-    cursor: default; 
-}
-
-.pagination-controls .page-link.disabled-nav {
-    color: #ccc !important; 
-    background-color: #f7f7f7 !important; 
-    border-color: #ddd !important;
-    cursor: default; 
-    pointer-events: none; 
-}
-
-
-/* লোডিং স্পিনার ডিজাইন */
-.loader-small {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3498db;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-
-</style>
+    /* Responsive */
+    @media (max-width: 980px){
+      .cards-container{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px){
+      .nav-title h1{ font-size: 17px; }
+      .nav-badge{ display:none; }
+      .cards-container{ gap: 10px; }
+      .card{ min-height: 84px; padding: 12px; border-radius: 18px; }
+      .card p{ font-size: 18px; }
+      .cash-buttons{ gap: 8px; }
+      .cash-buttons button{ font-size: 10px; padding: 12px 8px; border-radius: 14px; }
+    }
+  </style>
 </head>
+
 <body onload="initializeData()">
-  
-<div class="navbar">
-    <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
-    <h1>টাকার হিসাব</h1>
-</div>
-  
+
+  <div class="navbar">
+    <div class="nav-inner">
+      <span class="menu-icon" onclick="toggleSidebar(event)">☰</span>
+
+      <div class="nav-title">
+        <h1>টাকার হিসাব</h1>
+        <small>Balance & Transactions</small>
+      </div>
+
+      <div class="nav-badge">
+        <span class="dot"></span>
+        <span>Realtime Firebase</span>
+      </div>
+    </div>
+  </div>
 
   <div id="sidebar" class="sidebar">
+    <div class="sb-card">
+      <h3>📌 Quick Menu</h3>
+      <p>আপনার হিসাবগুলো দ্রুত দেখুন এবং আপডেট করুন।</p>
+    </div>
     <a href="index.html">🏠 Dashboard</a>
-    <a href="Dollar.html">💰 ডলার হিসা</a>
+    <a href="Dollar.html">💰 ডলার হিসাব</a>
     <a href="Taka.html">💵 টাকার হিসাব</a>
   </div>
 
-
-
   <div class="main-content">
     <div class="cards-container">
-        <div class="card card1"><p id="val-1"><span class="loader-small"></span></p><h3>মোট ব্যালেন্স</h3></div>
-        <div class="card card2"><p id="val-2"><span class="loader-small"></span></p><h3>Bank🏛️Transfer </h3></div>
-        <div class="card card3"><p id="val-3"><span class="loader-small"></span></p><h3>B2B</h3></div>
-        <div class="card card4"><p id="val-4"><span class="loader-small"></span></p><h3>আজকে ডুকছে</h3></div>
-        <div class="card card5"><p id="val-5"><span class="loader-small"></span></p><h3>বিকাশ</h3></div>
-        <div class="card card6"><p id="val-6"><span class="loader-small"></span></p><h3>নগদ</h3></div>
-        <div class="card card7"><p id="val-7"><span class="loader-small"></span></p><h3>রকেট</h3></div>
-        <div class="card card8"><p id="val-8"><span class="loader-small"></span></p><h3>Today Charge</h3></div>
+      <div class="card card1"><p id="val-1"><span class="loader-small"></span></p><h3>ব্যালেন্স</h3></div>
+      <div class="card card2"><p id="val-2"><span class="loader-small"></span></p><h3>Bank🏛️Transfer</h3></div>
+      <div class="card card3"><p id="val-3"><span class="loader-small"></span></p><h3>কমিশন প্রফিট </h3></div>
+      <div class="card card4"><p id="val-4"><span class="loader-small"></span></p><h3>আজকে ডুকছে</h3></div>
+      <div class="card card5"><p id="val-5"><span class="loader-small"></span></p><h3>বিকাশ</h3></div>
+      <div class="card card6"><p id="val-6"><span class="loader-small"></span></p><h3>নগদ</h3></div>
+      <div class="card card7"><p id="val-7"><span class="loader-small"></span></p><h3>রকেট</h3></div>
+      <div class="card card8"><p id="val-8"><span class="loader-small"></span></p><h3>Today Charge</h3></div>
     </div>
-</div>
+  </div>
 
-
-<div class="cash-buttons">
+  <div class="cash-buttons">
     <button class="cash-in-btn" onclick="openForm('in')">টাকা ডুকানো➕</button>
     <button class="cash-out-btn" onclick="openForm('out')">ট্রান্সফার 🏢</button>
     <button class="c-convert" onclick="openForm('c-out')">Convert💱</button>
-    <button class="t-b2b" onclick="openForm('b2b')">B2B-করা</button>
-</div>
+    <button class="t-b2b" onclick="openForm('b2b')">প্রফিট +</button>
+  </div>
 
-<div id="formContainer" class="popup-form" style="display:none;">
+  <div id="formContainer" class="popup-form" style="display:none;">
     <div id="formIn" class="form-content" style="display:none;">
-        <h1 class="takad-text">টাকা ডুকানো</h1>
-        <div class="row-line-time">
-            <div class="time-box">
-                <span id="showTimeIn">--:-- AM</span>
-                <input type="time" id="timePickerIn" class="hidden-picker" onchange="updateTime('In')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
-            </div>
-            <div class="date-box">
-                <span id="showDateIn">--/--/----</span>
-                <input type="date" id="datePickerIn" class="hidden-picker" onchange="updateDate('In')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
-            </div>
+      <h1 class="takad-text">টাকা ডুকানো</h1>
+      <div class="row-line-time">
+        <div class="time-box">
+          <span id="showTimeIn">--:-- AM</span>
+          <input type="time" id="timePickerIn" class="hidden-picker" onchange="updateTime('In')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
         </div>
-        <div class="row-line-type">
-            <select class="account-type-a" id="incategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
-            <select class="account-type-b" id="type-ac"><option>পার্সোনাল</option><option>এজেন্ট B2B</option><option>মার্চেন্ট</option></select>
+        <div class="date-box">
+          <span id="showDateIn">--/--/----</span>
+          <input type="date" id="datePickerIn" class="hidden-picker" onchange="updateDate('In')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
         </div>
-        <div class="amount-section">
-            <label>পরিমান</label>
-            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f"></div>
-        </div>
-        <input type="text" id="inDescription" placeholder="বিবরণ দিন">
-        <div class="button-row">
-            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-            <button class="save-btn" onclick="saveIn()">Save</button>
-        </div>
+      </div>
+      <div class="row-line-type">
+        <select class="account-type-a" id="incategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+        <select class="account-type-b" id="type-ac"><option>পার্সোনাল</option><option>এজেন্ট B2B</option><option>মার্চেন্ট</option></select>
+      </div>
+      <div class="amount-section">
+        <label>পরিমান</label>
+        <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f"></div>
+      </div>
+      <input type="text" id="inDescription" placeholder="বিবরণ দিন">
+      <div class="button-row">
+        <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+        <button class="save-btn" onclick="saveIn()">Save</button>
+      </div>
     </div>
 
     <div id="formOut" class="form-content" style="display:none;">
-        <h1 class="takad-text">ট্রান্সফার 🏢</h1>
-        <div class="row-line-time">
-            <div class="time-box">
-                <span id="showTimeOut">--:-- AM</span>
-                <input type="time" id="timePickerOut" class="hidden-picker" onchange="updateTime('Out')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
-            </div>
-            <div class="date-box">
-                <span id="showDateOut">--/--/----</span>
-                <input type="date" id="datePickerOut" class="hidden-picker" onchange="updateDate('Out')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
-            </div>
+      <h1 class="takad-text">ট্রান্সফার 🏢</h1>
+      <div class="row-line-time">
+        <div class="time-box">
+          <span id="showTimeOut">--:-- AM</span>
+          <input type="time" id="timePickerOut" class="hidden-picker" onchange="updateTime('Out')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
         </div>
-        <div class="row-line-type">
-            <select class="account-type-a" id="outcategory"><option>Bank Transfer</option><option>হেন্ড ক্যাশ</option></select>
-            <select class="account-type-b" id="type-ac-out"><option>Brack Bank</option><option>City Bank</option><option>Hand Cash</option></select>
+        <div class="date-box">
+          <span id="showDateOut">--/--/----</span>
+          <input type="date" id="datePickerOut" class="hidden-picker" onchange="updateDate('Out')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
         </div>
-        <div class="amount-section">
-            <label>পরিমান</label>
-            <div class="taka-input"><input type="number" placeholder="৳0.00" id="outtaka-f"></div>
-        </div>
-        <input type="text" id="outDescription" placeholder="বিবরণ দিন">
-        <div class="button-row">
-            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-            <button class="save-btn" onclick="saveOut()">Save</button>
-        </div>
+      </div>
+      <div class="row-line-type">
+        <select class="account-type-a" id="outcategory"><option>Bank Transfer</option><option>হেন্ড ক্যাশ</option></select>
+        <select class="account-type-b" id="type-ac-out"><option>Brack Bank</option><option>City Bank</option><option>Hand Cash</option></select>
+      </div>
+      <div class="amount-section">
+        <label>পরিমান</label>
+        <div class="taka-input"><input type="number" placeholder="৳0.00" id="outtaka-f"></div>
+      </div>
+      <input type="text" id="outDescription" placeholder="বিবরণ দিন">
+      <div class="button-row">
+        <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+        <button class="save-btn" onclick="saveOut()">Save</button>
+      </div>
     </div>
-    
+
     <div id="formCOut" class="form-content" style="display:none;">
-        <h1 class="takad-text">Convert💱</h1>
-        <div class="row-line-time">
-            <div class="time-box">
-                <span id="showTimeCOut">--:-- AM</span>
-                <input type="time" id="timePickerCOut" class="hidden-picker" onchange="updateTime('COut')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
-            </div>
-            <div class="date-box">
-                <span id="showDateCOut">--/--/----</span>
-                <input type="date" id="datePickerCOut" class="hidden-picker" onchange="updateDate('COut')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
-            </div>
+      <h1 class="takad-text">Convert💱</h1>
+      <div class="row-line-time">
+        <div class="time-box">
+          <span id="showTimeCOut">--:-- AM</span>
+          <input type="time" id="timePickerCOut" class="hidden-picker" onchange="updateTime('COut')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
         </div>
-        <div class="row-line-type">
-            <select class="account-type-a" id="ccategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
-            <select class="account-type-b" id="type-ac-c"><option>মোট ব্যালেন্স</option></select>
+        <div class="date-box">
+          <span id="showDateCOut">--/--/----</span>
+          <input type="date" id="datePickerCOut" class="hidden-picker" onchange="updateDate('COut')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
         </div>
-        <div class="amount-section">
-            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-c"></div>
-            <div class="charge-section" style="margin-top:10px;">
-                <div class="charge-input"><input type="number" placeholder="charge 0" id="charge-c"></div>
-            </div>
+      </div>
+      <div class="row-line-type">
+        <select class="account-type-a" id="ccategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+        <select class="account-type-b" id="type-ac-c"><option>মোট ব্যালেন্স</option></select>
+      </div>
+      <div class="amount-section">
+        <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-c"></div>
+        <div class="charge-section" style="margin-top:10px;">
+          <div class="charge-input"><input type="number" placeholder="charge 0" id="charge-c"></div>
         </div>
-        <input type="text" id="cDescription" placeholder="বিবরণ দিন">
-        <div class="button-row">
-            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-            <button class="save-btn" onclick="saveCOut()">Save</button>
-        </div>
+      </div>
+      <input type="text" id="cDescription" placeholder="বিবরণ দিন">
+      <div class="button-row">
+        <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+        <button class="save-btn" onclick="saveCOut()">Save</button>
+      </div>
     </div>
 
     <div id="formB2B" class="form-content" style="display:none;">
-        <h1 class="takad-text">B2B-করা</h1>
-        <div class="row-line-time">
-            <div class="time-box">
-                <span id="showTimeB2B">--:-- AM</span>
-                <input type="time" id="timePickerB2B" class="hidden-picker" onchange="updateTime('B2B')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
-            </div>
-            <div class="date-box">
-                <span id="showDateB2B">--/--/----</span>
-                <input type="date" id="datePickerB2B" class="hidden-picker" onchange="updateDate('B2B')"> 
-                <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
-            </div>
+      <h1 class="takad-text">প্রফিট +</h1>
+      <div class="row-line-time">
+        <div class="time-box">
+          <span id="showTimeB2B">--:-- AM</span>
+          <input type="time" id="timePickerB2B" class="hidden-picker" onchange="updateTime('B2B')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2088/2088617.png" class="icon">
         </div>
-        <div class="row-line-type">
-            <select class="account-type-a" id="b2bcategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
-            <select class="account-type-b" id="type-ac-b2b"><option>টাকা In</option><option>টাকা Out</option></select>
+        <div class="date-box">
+          <span id="showDateB2B">--/--/----</span>
+          <input type="date" id="datePickerB2B" class="hidden-picker" onchange="updateDate('B2B')">
+          <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" class="icon">
         </div>
-        <div class="amount-section">
-            <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-b2b"></div>
-        </div>
-        <input type="text" id="b2bDescription" placeholder="বিবরণ দিন">
-        <div class="button-row">
-            <button class="cancel-btn" onclick="closeForm()">Cancel</button>
-            <button class="save-btn" onclick="saveB2B()">Save</button>
-        </div>
+      </div>
+      <div class="row-line-type">
+        <select class="account-type-a" id="b2bcategory"><option>বিকাশ</option><option>নগদ</option><option>রকেট</option></select>
+        <select class="account-type-b" id="type-ac-b2b"><option>টাকা In</option><option>টাকা Out</option></select>
+      </div>
+      <div class="amount-section">
+        <div class="taka-input"><input type="number" placeholder="৳0.00" id="intaka-f-b2b"></div>
+      </div>
+      <input type="text" id="b2bDescription" placeholder="বিবরণ দিন">
+      <div class="button-row">
+        <button class="cancel-btn" onclick="closeForm()">Cancel</button>
+        <button class="save-btn" onclick="saveB2B()">Save</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="show-box">
+  <div class="show-box">
     <div class="table-wrapper">
-        <div class="transaction-table-header">
-            <div>Date</div>
-            <div>Time</div>
-            <div>Category</div>
-            <div>D. A/C</div>
-            <div>Amount</div>
-            <div>Details</div>
-            <div>Action</div>
+      <div class="transaction-table-header">
+        <div class="col-serial">#</div>
+        <div class="col-date">Date</div>
+        <div class="col-time">Time</div>
+        <div class="col-cat">Category</div>
+        <div class="col-ac">D. A/C</div>
+        <div class="col-amt">Amount</div>
+        <div class="col-det">Details</div>
+        <div class="col-act">Action</div>
+      </div>
+
+      <div id="transactionBody">
+        <div style="text-align:center; padding:20px; display:table; width:100%; table-layout:fixed;">
+          <div style="display:table-cell; padding:18px; color:rgba(15,23,42,.65); font-weight:900;">
+            ডাটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...
+          </div>
         </div>
-
-<div id="transactionBody">
-    <div style="text-align:center; padding:20px;">
-        <div class="loader"></div>
-        <p class="loading-text">ডাটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</p>
+      </div>
     </div>
-</div>
+  </div>
 
-
-
-
-    </div>
-</div>
-
-<div class="page-size-area">
+  <div class="page-size-area">
     <div class="pagination-controls"></div>
     <div class="page-size-control">
-        <label for="rowsPerPageSelect">লাইন সংখ্যা:</label>
-        <select id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
-            <option value="10" selected>10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
+      <label for="rowsPerPageSelect">লাইন সংখ্যা:</label>
+      <select id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
     </div>
-</div>
+  </div>
 
-
-
-<script type="module">
+  <script type="module">
     import { db } from './firebase-config.js';
     import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -671,376 +1047,489 @@
     const transactionsRef = ref(db, 'takaTransactions');
 
     let balances = {
-        total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US')
+      total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US')
     };
     let transactions = [];
     let currentPage = 1;
     let currentRowsPerPage = 10;
     let currentEditId = null;
 
+    // ✅ NEW: ট্রানজ্যাকশন লোড হয়েছে কিনা (কার্ডে ভুল ডাটা দেখানো বন্ধ করার জন্য)
+    let transactionsLoaded = false;
+
+    // ✅ NEW: card money formatter (comma system only for cards)
+    function formatCardMoney(n) {
+      const num = Number(n || 0);
+      return num.toLocaleString('en-US');
+    }
+
     // --- গ্লোবাল ফাংশন সেটআপ ---
     window.initializeData = function() {
-        loadDataFromFirebase();
-        initializeDateTime();
+      loadDataFromFirebase();
+      initializeDateTime();
     };
 
     window.toggleSidebar = function(event) {
-        if (event) event.stopPropagation();
-        document.getElementById('sidebar').classList.toggle('open');
+      if (event) event.stopPropagation();
+      document.getElementById('sidebar').classList.toggle('open');
     };
 
     window.openForm = function(type) {
-        // Form খোলার সময় currentEditId যদি null থাকে তবে এটি নতুন এন্ট্রি
-        document.querySelectorAll('.form-content').forEach(f => f.style.display = 'none');
-        document.getElementById('formContainer').style.display = 'flex';
-        
-        if (type === 'in') document.getElementById('formIn').style.display = 'block';
-        else if (type === 'out') document.getElementById('formOut').style.display = 'block';
-        else if (type === 'c-out') document.getElementById('formCOut').style.display = 'block';
-        else if (type === 'b2b') document.getElementById('formB2B').style.display = 'block';
+      document.querySelectorAll('.form-content').forEach(f => f.style.display = 'none');
+      document.getElementById('formContainer').style.display = 'flex';
+
+      if (type === 'in') document.getElementById('formIn').style.display = 'block';
+      else if (type === 'out') document.getElementById('formOut').style.display = 'block';
+      else if (type === 'c-out') document.getElementById('formCOut').style.display = 'block';
+      else if (type === 'b2b') document.getElementById('formB2B').style.display = 'block';
     };
 
-    window.closeForm = function() { 
-        document.getElementById('formContainer').style.display = 'none'; 
-        currentEditId = null; // ফর্ম বন্ধ করলে আইডি রিসেট হবে
-        resetFormFields();
+    window.closeForm = function() {
+      document.getElementById('formContainer').style.display = 'none';
+      currentEditId = null;
+      resetFormFields();
     };
 
     window.updateDate = function(type) {
-        const val = document.getElementById(`datePicker${type}`).value;
-        if (val) {
-            const d = new Date(val);
-            const formattedDate = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
-            document.getElementById(`showDate${type}`).textContent = formattedDate;
-        }
+      const val = document.getElementById(`datePicker${type}`).value;
+      if (val) {
+        const d = new Date(val);
+        const formattedDate = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+        document.getElementById(`showDate${type}`).textContent = formattedDate;
+      }
     };
 
     window.updateTime = function(type) {
-        const val = document.getElementById(`timePicker${type}`).value;
-        if (val) {
-            const [h, m] = val.split(':');
-            const d = new Date(); d.setHours(h); d.setMinutes(m);
-            document.getElementById(`showTime${type}`).textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-        }
+      const val = document.getElementById(`timePicker${type}`).value;
+      if (val) {
+        const [h, m] = val.split(':');
+        const d = new Date(); d.setHours(h); d.setMinutes(m);
+        document.getElementById(`showTime${type}`).textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      }
     };
 
     window.saveIn = function() {
-        saveTransaction('in', {
-            date: document.getElementById('showDateIn').textContent,
-            time: document.getElementById('showTimeIn').textContent,
-            cat: document.getElementById('incategory').value,
-            account: document.getElementById('type-ac').value,
-            amount: parseFloat(document.getElementById('intaka-f').value) || 0,
-            details: document.getElementById('inDescription').value
-        });
+      saveTransaction('in', {
+        date: document.getElementById('showDateIn').textContent,
+        time: document.getElementById('showTimeIn').textContent,
+        cat: document.getElementById('incategory').value,
+        account: document.getElementById('type-ac').value,
+        amount: parseFloat(document.getElementById('intaka-f').value) || 0,
+        details: document.getElementById('inDescription').value
+      });
     };
 
     window.saveOut = function() {
-        saveTransaction('out', {
-            date: document.getElementById('showDateOut').textContent,
-            time: document.getElementById('showTimeOut').textContent,
-            cat: document.getElementById('outcategory').value,
-            account: document.getElementById('type-ac-out').value,
-            amount: -(parseFloat(document.getElementById('outtaka-f').value) || 0),
-            details: document.getElementById('outDescription').value
-        });
+      saveTransaction('out', {
+        date: document.getElementById('showDateOut').textContent,
+        time: document.getElementById('showTimeOut').textContent,
+        cat: document.getElementById('outcategory').value,
+        account: document.getElementById('type-ac-out').value,
+        amount: -(parseFloat(document.getElementById('outtaka-f').value) || 0),
+        details: document.getElementById('outDescription').value
+      });
     };
 
     window.saveCOut = function() {
-        saveTransaction('convert', {
-            date: document.getElementById('showDateCOut').textContent,
-            time: document.getElementById('showTimeCOut').textContent,
-            cat: document.getElementById('ccategory').value,
-            account: "Convert",
-            amount: parseFloat(document.getElementById('intaka-f-c').value) || 0,
-            charge: parseFloat(document.getElementById('charge-c').value) || 0,
-            details: document.getElementById('cDescription').value
-        });
+      saveTransaction('convert', {
+        date: document.getElementById('showDateCOut').textContent,
+        time: document.getElementById('showTimeCOut').textContent,
+        cat: document.getElementById('ccategory').value,
+        account: "Convert",
+        amount: parseFloat(document.getElementById('intaka-f-c').value) || 0,
+        charge: parseFloat(document.getElementById('charge-c').value) || 0,
+        details: document.getElementById('cDescription').value
+      });
     };
 
     window.saveB2B = function() {
-        const amt = parseFloat(document.getElementById('intaka-f-b2b').value) || 0;
-        const bType = document.getElementById('type-ac-b2b').value;
-        saveTransaction('b2b', {
-            date: document.getElementById('showDateB2B').textContent,
-            time: document.getElementById('showTimeB2B').textContent,
-            cat: document.getElementById('b2bcategory').value,
-            account: "B2B " + bType,
-            amount: bType === "টাকা In" ? amt : -amt,
-            details: document.getElementById('b2bDescription').value
-        });
+      const amt = parseFloat(document.getElementById('intaka-f-b2b').value) || 0;
+      const bType = document.getElementById('type-ac-b2b').value;
+      saveTransaction('b2b', {
+        date: document.getElementById('showDateB2B').textContent,
+        time: document.getElementById('showTimeB2B').textContent,
+        cat: document.getElementById('b2bcategory').value,
+        account: "B2B " + bType,
+        amount: bType === "টাকা In" ? amt : -amt,
+        details: document.getElementById('b2bDescription').value
+      });
     };
 
     window.deleteTransaction = function(id) {
-        if(confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) {
-            const idx = transactions.findIndex(t => t.id == id);
-            if (idx > -1) {
-                adjustBalances(transactions[idx], true);
-                transactions.splice(idx, 1);
-                updateFirebase();
-            }
+      if(confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) {
+        const idx = transactions.findIndex(t => t.id == id);
+        if (idx > -1) {
+          adjustBalances(transactions[idx], true);
+          transactions.splice(idx, 1);
+          updateFirebase();
         }
+      }
     };
 
     window.editTransaction = function(id) {
-        const t = transactions.find(x => x.id == id);
-        if(!t) return;
-        currentEditId = id; // এখানে আইডি সেট করা হচ্ছে যেন সেভ করার সময় এটি আপডেট হয়
-        const dateParts = t.date.split('/');
-        const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-        
-        if(t.type === 'in') {
-            window.openForm('in');
-            document.getElementById('datePickerIn').value = formattedDate;
-            window.updateDate('In');
-            document.getElementById('incategory').value = t.cat;
-            document.getElementById('type-ac').value = t.account;
-            document.getElementById('intaka-f').value = t.amount;
-            document.getElementById('inDescription').value = t.details;
-        } else if(t.type === 'out') {
-            window.openForm('out');
-            document.getElementById('datePickerOut').value = formattedDate;
-            window.updateDate('Out');
-            document.getElementById('outcategory').value = t.cat;
-            document.getElementById('type-ac-out').value = t.account;
-            document.getElementById('outtaka-f').value = Math.abs(t.amount);
-            document.getElementById('outDescription').value = t.details;
-        } else if(t.type === 'convert') {
-            window.openForm('c-out');
-            document.getElementById('datePickerCOut').value = formattedDate;
-            window.updateDate('COut');
-            document.getElementById('ccategory').value = t.cat;
-            document.getElementById('intaka-f-c').value = t.amount;
-            document.getElementById('charge-c').value = t.charge;
-            document.getElementById('cDescription').value = t.details;
-        } else if(t.type === 'b2b') {
-            window.openForm('b2b');
-            document.getElementById('datePickerB2B').value = formattedDate;
-            window.updateDate('B2B');
-            document.getElementById('b2bcategory').value = t.cat;
-            document.getElementById('intaka-f-b2b').value = Math.abs(t.amount);
-            document.getElementById('type-ac-b2b').value = t.amount >= 0 ? "টাকা In" : "টাকা Out";
-            document.getElementById('b2bDescription').value = t.details;
-        }
+      const t = transactions.find(x => x.id == id);
+      if(!t) return;
+      currentEditId = id;
+
+      const safeDate = (t.date || "").includes('/') ? t.date : "01/01/1970";
+      const dateParts = safeDate.split('/');
+      const formattedDate = `${dateParts[2] || "1970"}-${(dateParts[1] || "01")}-${(dateParts[0] || "01")}`;
+
+      if(t.type === 'in') {
+        window.openForm('in');
+        document.getElementById('datePickerIn').value = formattedDate;
+        window.updateDate('In');
+        document.getElementById('incategory').value = t.cat;
+        document.getElementById('type-ac').value = t.account;
+        document.getElementById('intaka-f').value = t.amount;
+        document.getElementById('inDescription').value = t.details;
+      } else if(t.type === 'out') {
+        window.openForm('out');
+        document.getElementById('datePickerOut').value = formattedDate;
+        window.updateDate('Out');
+        document.getElementById('outcategory').value = t.cat;
+        document.getElementById('type-ac-out').value = t.account;
+        document.getElementById('outtaka-f').value = Math.abs(t.amount);
+        document.getElementById('outDescription').value = t.details;
+      } else if(t.type === 'convert') {
+        window.openForm('c-out');
+        document.getElementById('datePickerCOut').value = formattedDate;
+        window.updateDate('COut');
+        document.getElementById('ccategory').value = t.cat;
+        document.getElementById('intaka-f-c').value = t.amount;
+        document.getElementById('charge-c').value = t.charge;
+        document.getElementById('cDescription').value = t.details;
+      } else if(t.type === 'b2b') {
+        window.openForm('b2b');
+        document.getElementById('datePickerB2B').value = formattedDate;
+        window.updateDate('B2B');
+        document.getElementById('b2bcategory').value = t.cat;
+        document.getElementById('intaka-f-b2b').value = Math.abs(t.amount);
+        document.getElementById('type-ac-b2b').value = t.amount >= 0 ? "টাকা In" : "টাকা Out";
+        document.getElementById('b2bDescription').value = t.details;
+      }
     };
 
     window.changeRowsPerPage = function(val) {
-        currentRowsPerPage = parseInt(val);
-        currentPage = 1;
-        displayTransactions();
-        setupPagination();
+      currentRowsPerPage = parseInt(val);
+      currentPage = 1;
+      displayTransactions();
+      setupPagination();
     };
 
     window.changePage = function(page) {
-        const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
-        if (page >= 1 && page <= totalPages) {
-            currentPage = page;
-            displayTransactions();
-            setupPagination();
-        }
+      const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
+      if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        displayTransactions();
+        setupPagination();
+      }
     };
+
+    // --- ✅ NEW: এই পেজের টাকার হিসাব থেকে শুধু "ব্যালেন্স (val-1)" হিসাব ---
+    function computeTakaOnlyTotal() {
+      let total = 0;
+      for (const t of transactions) {
+        if (!t) continue;
+        const type = t.type;
+        const amt = Number(t.amount || 0);
+
+        if (type === 'in') {
+          // আগের লজিক অনুযায়ী: "পার্সোনাল" হলে total এ যোগ হয় না
+          if (t.account !== "পার্সোনাল") total += amt;
+        } else if (type === 'out') {
+          total -= Math.abs(amt);
+        } else if (type === 'convert') {
+          total += amt;
+        }
+        // b2b -> total এ ধরা হয় না (আগের মতোই)
+      }
+      return total;
+    }
 
     // --- ইন্টারনাল লজিক ফাংশন ---
     function loadDataFromFirebase() {
-        onValue(balancesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) { 
-                balances = data; 
-                checkDailyReset(); 
-                refreshUI(); 
-            } else {
-                // ডাটা না থাকলে জিরো সেট করবে
-                balances = { total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US') };
-                refreshUI();
-            }
-        });
-        onValue(transactionsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                transactions = Array.isArray(data) ? data : Object.values(data);
-            } else { transactions = []; }
-            sortTransactions();
-            displayTransactions();
-            setupPagination();
-        });
+      onValue(balancesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          balances = data;
+          checkDailyReset();
+          refreshUI();
+        } else {
+          balances = { total: 0, bank: 0, b2b: 0, todayIn: 0, bkash: 0, nagad: 0, rocket: 0, todayCharge: 0, lastUpdateDate: new Date().toLocaleDateString('en-US') };
+          refreshUI();
+        }
+      });
+
+      onValue(transactionsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          if (Array.isArray(data)) {
+            transactions = data.filter(Boolean).map((t, i) => ({ id: t?.id ?? (t?.id === 0 ? 0 : (Date.now() + i)), ...t }));
+          } else {
+            transactions = Object.entries(data)
+              .filter(([_, v]) => v)
+              .map(([key, v]) => ({ id: v.id ?? key, ...v }));
+          }
+        } else {
+          transactions = [];
+        }
+
+        transactionsLoaded = true;
+        sortTransactions();
+
+        const totalPages = Math.max(1, Math.ceil(transactions.length / currentRowsPerPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        // ✅ NEW: এই পেজের ট্রানজ্যাকশন থেকে total re-sync (Dollar.html মিশবে না)
+        balances.total = computeTakaOnlyTotal();
+
+        displayTransactions();
+        setupPagination();
+        refreshUI();
+      });
     }
 
     function updateFirebase() {
-        set(balancesRef, balances);
-        set(transactionsRef, transactions);
+      set(balancesRef, balances);
+      set(transactionsRef, transactions);
     }
 
     function checkDailyReset() {
-        const today = new Date().toLocaleDateString('en-US');
-        if (balances.lastUpdateDate !== today) {
-            balances.bank = 0; balances.todayIn = 0; balances.todayCharge = 0;
-            balances.lastUpdateDate = today; 
-            updateFirebase();
-        }
+      const today = new Date().toLocaleDateString('en-US');
+      if (balances.lastUpdateDate !== today) {
+        balances.bank = 0; balances.todayIn = 0; balances.todayCharge = 0;
+        balances.lastUpdateDate = today;
+        updateFirebase();
+      }
     }
 
     function initializeDateTime() {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        const hh = String(today.getHours()).padStart(2, '0');
-        const min = String(today.getMinutes()).padStart(2, '0');
-        ['In', 'Out', 'COut', 'B2B'].forEach(type => {
-            const dp = document.getElementById(`datePicker${type}`);
-            const tp = document.getElementById(`timePicker${type}`);
-            if(dp) dp.value = `${yyyy}-${mm}-${dd}`;
-            if(tp) tp.value = `${hh}:${min}`;
-            window.updateDate(type); window.updateTime(type);
-        });
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const hh = String(today.getHours()).padStart(2, '0');
+      const min = String(today.getMinutes()).padStart(2, '0');
+
+      ['In', 'Out', 'COut', 'B2B'].forEach(type => {
+        const dp = document.getElementById(`datePicker${type}`);
+        const tp = document.getElementById(`timePicker${type}`);
+        if(dp) dp.value = `${yyyy}-${mm}-${dd}`;
+        if(tp) tp.value = `${hh}:${min}`;
+        window.updateDate(type);
+        window.updateTime(type);
+      });
     }
 
+    // ✅ CHANGED: কার্ডে শুধু comma system (টেবিলে নয়)
     function refreshUI() {
-        document.getElementById('val-1').innerText = `৳ ${balances.total || 0}`;
-        document.getElementById('val-2').innerText = `৳ ${balances.bank || 0}`;
-        document.getElementById('val-3').innerText = `৳ ${balances.b2b || 0}`;
-        document.getElementById('val-4').innerText = `৳ ${balances.todayIn || 0}`;
-        document.getElementById('val-5').innerText = `৳ ${balances.bkash || 0}`;
-        document.getElementById('val-6').innerText = `৳ ${balances.nagad || 0}`;
-        document.getElementById('val-7').innerText = `৳ ${balances.rocket || 0}`;
-        document.getElementById('val-8').innerText = `৳ ${balances.todayCharge || 0}`;
+      if (!transactionsLoaded) return;
+
+      if (transactions.length === 0) {
+        document.getElementById('val-1').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-2').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-3').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-4').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-5').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-6').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-7').innerText = `৳ ${formatCardMoney(0)}`;
+        document.getElementById('val-8').innerText = `৳ ${formatCardMoney(0)}`;
+        return;
+      }
+
+      // ✅ Only this page total (no Dollar.html mix)
+      const takaOnlyTotal = computeTakaOnlyTotal();
+      document.getElementById('val-1').innerText = `৳ ${formatCardMoney(takaOnlyTotal || 0)}`;
+
+      // বাকিগুলো আগের মতোই থাকবে (শুধু কার্ডে comma)
+      document.getElementById('val-2').innerText = `৳ ${formatCardMoney(balances.bank || 0)}`;
+      document.getElementById('val-3').innerText = `৳ ${formatCardMoney(balances.b2b || 0)}`;
+      document.getElementById('val-4').innerText = `৳ ${formatCardMoney(balances.todayIn || 0)}`;
+      document.getElementById('val-5').innerText = `৳ ${formatCardMoney(balances.bkash || 0)}`;
+      document.getElementById('val-6').innerText = `৳ ${formatCardMoney(balances.nagad || 0)}`;
+      document.getElementById('val-7').innerText = `৳ ${formatCardMoney(balances.rocket || 0)}`;
+      document.getElementById('val-8').innerText = `৳ ${formatCardMoney(balances.todayCharge || 0)}`;
     }
 
     function sortTransactions() {
-        transactions.sort((a, b) => {
-            const dateA = a.date.split('/').reverse().join('-');
-            const dateB = b.date.split('/').reverse().join('-');
-            if (dateA > dateB) return -1;
-            if (dateA < dateB) return 1;
-            const timeA = convertTo24Hour(a.time);
-            const timeB = convertTo24Hour(b.time);
-            return timeB.localeCompare(timeA);
-        });
+      transactions.sort((a, b) => {
+        const aDate = (a?.date && typeof a.date === 'string') ? a.date : "01/01/1970";
+        const bDate = (b?.date && typeof b.date === 'string') ? b.date : "01/01/1970";
+
+        const dateA = aDate.split('/').reverse().join('-');
+        const dateB = bDate.split('/').reverse().join('-');
+        if (dateA > dateB) return -1;
+        if (dateA < dateB) return 1;
+
+        const timeA = convertTo24Hour(a?.time);
+        const timeB = convertTo24Hour(b?.time);
+        return timeB.localeCompare(timeA);
+      });
     }
 
     function convertTo24Hour(timeStr) {
-        if(!timeStr) return "00:00";
-        const [time, modifier] = timeStr.split(' ');
-        let [hours, minutes] = time.split(':');
-        if (hours === '12') hours = '00';
-        if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
-        return `${String(hours).padStart(2, '0')}:${minutes}`;
+      if(!timeStr || typeof timeStr !== 'string') return "00:00";
+      const parts = timeStr.split(' ');
+      const time = parts[0] || "00:00";
+      const modifier = parts[1] || "AM";
+      let [hours, minutes] = time.split(':');
+      hours = hours || "00"; minutes = minutes || "00";
+      if (hours === '12') hours = '00';
+      if (modifier === 'PM') hours = String(parseInt(hours, 10) + 12);
+      return `${String(hours).padStart(2, '0')}:${minutes}`;
     }
 
     function resetFormFields() {
-        document.querySelectorAll('#formContainer input[type="number"], #formContainer input[type="text"]').forEach(i => i.value = "");
-        document.querySelectorAll('#formContainer select').forEach(s => { if(s.id !== 'rowsPerPageSelect') s.selectedIndex = 0; });
-        initializeDateTime();
+      document.querySelectorAll('#formContainer input[type="number"], #formContainer input[type="text"]').forEach(i => i.value = "");
+      document.querySelectorAll('#formContainer select').forEach(s => { if(s.id !== 'rowsPerPageSelect') s.selectedIndex = 0; });
+      initializeDateTime();
     }
 
     function adjustBalances(t, reverse = false) {
-        const factor = reverse ? -1 : 1;
-        const amount = t.amount;
-        const charge = t.charge || 0;
-        const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '/'); 
-        const isToday = (t.date === today);
-        if (t.type === 'in') {
-            if (t.account === "পার্সোনাল") {
-                if (t.cat === "বিকাশ") balances.bkash += (amount * factor);
-                else if (t.cat === "নগদ") balances.nagad += (amount * factor);
-                else if (t.cat === "রকেট") balances.rocket += (amount * factor);
-            } else { balances.total += (amount * factor); }
-            if(isToday) balances.todayIn += (amount * factor);
-        } else if (t.type === 'out') {
-            const absAmt = Math.abs(amount);
-            balances.total -= (absAmt * factor); 
-            if (t.cat === "Bank Transfer" && isToday) balances.bank += (absAmt * factor); 
-        } else if (t.type === 'convert') {
-            const totalOut = amount + charge;
-            if (t.cat === "বিকাশ") balances.bkash -= (totalOut * factor);
-            else if (t.cat === "নগদ") balances.nagad -= (totalOut * factor);
-            else if (t.cat === "রকেট") balances.rocket -= (totalOut * factor);
-            balances.total += (amount * factor);
-            if(isToday) balances.todayCharge += (charge * factor);
-        } else if (t.type === 'b2b') {
-            balances.b2b += (amount * factor);
-        }
+      const factor = reverse ? -1 : 1;
+      const amount = t.amount;
+      const charge = t.charge || 0;
+      const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '/');
+      const isToday = (t.date === today);
+
+      if (t.type === 'in') {
+        if (t.account === "পার্সোনাল") {
+          if (t.cat === "বিকাশ") balances.bkash += (amount * factor);
+          else if (t.cat === "নগদ") balances.nagad += (amount * factor);
+          else if (t.cat === "রকেট") balances.rocket += (amount * factor);
+        } else { balances.total += (amount * factor); }
+        if(isToday) balances.todayIn += (amount * factor);
+      } else if (t.type === 'out') {
+        const absAmt = Math.abs(amount);
+        balances.total -= (absAmt * factor);
+        if (t.cat === "Bank Transfer" && isToday) balances.bank += (absAmt * factor);
+      } else if (t.type === 'convert') {
+        const totalOut = amount + charge;
+        if (t.cat === "বিকাশ") balances.bkash -= (totalOut * factor);
+        else if (t.cat === "নগদ") balances.nagad -= (totalOut * factor);
+        else if (t.cat === "রকেট") balances.rocket -= (totalOut * factor);
+        balances.total += (amount * factor);
+        if(isToday) balances.todayCharge += (charge * factor);
+      } else if (t.type === 'b2b') {
+        balances.b2b += (amount * factor);
+      }
     }
 
     function saveTransaction(type, data) {
-        if(currentEditId) {
-            // যদি এডিট মোড হয়, তবে পুরনো ট্রানজ্যাকশনটি খুঁজে বের করে ব্যালেন্স রিভার্স করে মুছে ফেলুন
-            const oldIdx = transactions.findIndex(t => t.id == currentEditId);
-            if (oldIdx !== -1) { 
-                adjustBalances(transactions[oldIdx], true); 
-                transactions.splice(oldIdx, 1); 
-            }
+      if(currentEditId) {
+        const oldIdx = transactions.findIndex(t => t.id == currentEditId);
+        if (oldIdx !== -1) {
+          adjustBalances(transactions[oldIdx], true);
+          transactions.splice(oldIdx, 1);
         }
-        // নতুন আইডি বা আগের এডিট করা আইডি ব্যবহার করে ট্রানজ্যাকশন পুশ করুন
-        const entry = { id: currentEditId || Date.now(), ...data, type };
-        adjustBalances(entry, false);
-        transactions.push(entry);
-        sortTransactions(); 
-        updateFirebase(); 
-        closeForm();
+      }
+      const entry = { id: currentEditId || Date.now(), ...data, type };
+      adjustBalances(entry, false);
+      transactions.push(entry);
+      sortTransactions();
+
+      // ✅ NEW: save করার পরেও total এই পেজের ট্রানজ্যাকশন থেকে sync
+      balances.total = computeTakaOnlyTotal();
+
+      updateFirebase();
+      closeForm();
     }
 
     function displayTransactions() {
-        const body = document.getElementById('transactionBody');
-        if(!body) return;
-        body.innerHTML = "";
-        const start = (currentPage - 1) * currentRowsPerPage;
-        const end = start + currentRowsPerPage;
-        const paginated = transactions.slice(start, end);
-        
-        if(paginated.length === 0) {
-            body.innerHTML = "<div></div><div></div><div></div><div>কোন তথ্য নেই</div>";
-            return;
-        }
+      const body = document.getElementById('transactionBody');
+      if(!body) return;
+      body.innerHTML = "";
 
-        paginated.forEach(t => {
-            const row = document.createElement('div');
-            row.className = "transaction-item";
-            row.innerHTML = `
-                <div>${t.date}</div><div>${t.time}</div><div>${t.cat}</div><div>${t.account}</div>
-                <div style="color: ${t.amount >= 0 ? 'green' : 'red'}">${t.amount}</div><div>${t.details || ''}</div>
-                <div class="action-buttons">
-                    <button class="edit-btn" onclick="window.editTransaction(${t.id})">✏️</button>
-                    <button class="delete-btn" onclick="window.deleteTransaction(${t.id})">🗑️</button>
-                </div>`;
-            body.appendChild(row);
-        });
+      const start = (currentPage - 1) * currentRowsPerPage;
+      const end = start + currentRowsPerPage;
+      const paginated = transactions.slice(start, end);
+
+      if(paginated.length === 0) {
+        body.innerHTML = `
+          <div class="transaction-item">
+            <div class="col-serial">—</div>
+            <div class="col-date">—</div>
+            <div class="col-time">—</div>
+            <div class="col-cat">—</div>
+            <div class="col-ac">—</div>
+            <div class="col-amt" style="color:rgba(15,23,42,.65)">কোন তথ্য নেই</div>
+            <div class="col-det">—</div>
+            <div class="col-act">—</div>
+          </div>`;
+        return;
+      }
+
+      /* ✅ FIX: Serial number should always increase based on full list (oldest=1, newest=last) */
+      const totalLen = transactions.length;
+
+      paginated.forEach((t, idx) => {
+        const row = document.createElement('div');
+        row.className = "transaction-item";
+
+        // transactions array is sorted newest first.
+        // So serial = totalLen - (index_in_full_sorted_list)
+        const fullIndex = start + idx; 
+        const serial = totalLen - fullIndex;
+
+        row.innerHTML = `
+          <div class="col-serial">${serial}</div>
+          <div class="col-date">${t.date ?? ''}</div>
+          <div class="col-time">${t.time ?? ''}</div>
+          <div class="col-cat">${t.cat ?? ''}</div>
+          <div class="col-ac">${t.account ?? ''}</div>
+          <div class="col-amt" style="color: ${Number(t.amount) >= 0 ? '#16a34a' : '#ef4444'}; font-weight:900;">
+            ${t.amount ?? 0}
+          </div>
+          <div class="col-det">${t.details || ''}</div>
+          <div class="col-act">
+            <div class="action-buttons">
+              <button class="edit-btn" onclick="window.editTransaction('${t.id}')">✏️</button>
+              <button class="delete-btn" onclick="window.deleteTransaction('${t.id}')">🗑️</button>
+            </div>
+          </div>`;
+        body.appendChild(row);
+      });
     }
 
     function setupPagination() {
-        const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
-        const container = document.querySelector('.pagination-controls');
-        if (!container) return;
-        container.innerHTML = '';
-        if (totalPages <= 1) return;
-        const maxPages = 5;
-        let start = Math.max(1, currentPage - 2);
-        let end = Math.min(totalPages, start + maxPages - 1);
-        const prev = createPaginationButton('<<', currentPage - 1);
-        if (currentPage === 1) prev.classList.add('disabled-nav');
-        container.appendChild(prev);
-        for (let i = start; i <= end; i++) {
-            const btn = createPaginationButton(i, i);
-            if (i === currentPage) btn.classList.add('active-page');
-            container.appendChild(btn);
-        }
-        const next = createPaginationButton('>>', currentPage + 1);
-        if (currentPage === totalPages) next.classList.add('disabled-nav');
-        container.appendChild(next);
+      const totalPages = Math.ceil(transactions.length / currentRowsPerPage);
+      const container = document.querySelector('.pagination-controls');
+      if (!container) return;
+      container.innerHTML = '';
+      if (totalPages <= 1) return;
+
+      const maxPages = 5;
+      let start = Math.max(1, currentPage - 2);
+      let end = Math.min(totalPages, start + maxPages - 1);
+
+      const prev = createPaginationButton('<<', currentPage - 1);
+      if (currentPage === 1) prev.classList.add('disabled-nav');
+      container.appendChild(prev);
+
+      for (let i = start; i <= end; i++) {
+        const btn = createPaginationButton(i, i);
+        if (i === currentPage) btn.classList.add('active-page');
+        container.appendChild(btn);
+      }
+
+      const next = createPaginationButton('>>', currentPage + 1);
+      if (currentPage === totalPages) next.classList.add('disabled-nav');
+      container.appendChild(next);
     }
 
     function createPaginationButton(text, page) {
-        const link = document.createElement('a');
-        link.innerText = text; link.href = '#'; link.className = 'page-link';
-        link.onclick = (e) => { e.preventDefault(); window.changePage(page); };
-        return link;
+      const link = document.createElement('a');
+      link.innerText = text;
+      link.href = '#';
+      link.className = 'page-link';
+      link.onclick = (e) => { e.preventDefault(); window.changePage(page); };
+      return link;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        window.initializeData();
+      window.initializeData();
     });
-</script>
-
+  </script>
 </body>
 </html>
-
