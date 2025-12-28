@@ -989,11 +989,11 @@
     .transaction-table-header div,
     .transaction-item div {
       display: table-cell;
-      padding: 14px 14px;              /* আগে 12px 10px ছিল */
+      padding: 14px 14px;
       white-space: nowrap;
       vertical-align: middle;
       height: 34px;
-      letter-spacing: .25px;           /* লেখা ফাঁক */
+      letter-spacing: .25px;
     }
 
     .transaction-item {
@@ -1577,7 +1577,6 @@
   </div>
 
   <div class="row-line-show">
-
     <div class="date-boxs">
       <div id="dateFilterWrapper" class="date-filter-group">
         <button id="dateFilterBtn" class="filter-button" onclick="openDateRangeModal()">📅</button>
@@ -1656,7 +1655,6 @@
         <div class="th-action">Action</div>
       </div>
 
-      <!-- ✅ Old loader removed -->
       <div id="transactionBody"></div>
     </div>
   </div>
@@ -1676,13 +1674,11 @@
   </div>
 
   <script type="module">
-    // ফায়ারবেস ফাংশন এবং ডাটাবেস ইমপোর্ট
     import { db } from './firebase-config.js';
     import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const transRef = ref(db, 'transactions');
 
-    // গ্লোবাল স্টেট ভ্যারিয়েবল
     let isEditingIndex = null;
     let binanceDollar = 0;
     let redotDollar = 0;
@@ -1706,21 +1702,14 @@
     let dateFilterStart = null; 
     let dateFilterEnd = null;
 
-    // ✅ NEW: loader control
     let _firstLoadDone = false;
 
-    // =======================================================
-    // ✅ সাইডবার ফাংশন (নতুন যুক্ত করা হয়েছে)
-    // =======================================================
     window.toggleSidebar = function(event) {
       if (event) event.stopPropagation();
       const sidebar = document.getElementById('sidebar');
       if (sidebar) sidebar.classList.toggle('open');
     }
 
-    // =======================================================
-    // ✅ ফর্ম রিসেট ফাংশন (নতুন যুক্ত করা হয়েছে)
-    // =======================================================
     function resetAllForms() {
       const forms = ["formIn", "formOut", "formConvert", "formt-out"];
       forms.forEach(formId => {
@@ -1788,11 +1777,10 @@
         sortTransactionsByDateTime();
         recalculateBalances();
         displayTransactions();
-        finishPageLoadingOnce();  // ✅ NEW: hide loader + highlight
+        finishPageLoadingOnce();
       });
     }
 
-    // ✅ NEW: number format with commas (5,000.00)
     const _fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     function comma2(n){
       const x = Number(n);
@@ -1826,11 +1814,18 @@
           const cosg = t.costOfSoldGoods || 0;
           if (t.dollarAccount === 'Binance') binanceDollar -= t.dollarAmount;
           else if (t.dollarAccount === 'Redot-pay') redotDollar -= t.dollarAmount;
+
           totalDollarInventory -= t.dollarAmount;
           totalPurchaseCostInTaka -= cosg;
-          totalCash += t.totalTakaReceived;
-          totalCharge += t.charge;
-          if (t.date === today) { dailyProfitLoss += t.profitLoss; dollarOutToday += t.dollarAmount; takaOutToday += t.totalTakaReceived; }
+
+          totalCash += (t.totalTakaReceived + (t.charge || 0));  // ✅ CHANGE: চার্জও মোট ক্যাশে জমা হবে
+          totalCharge += t.charge;                               // ✅ চার্জ আলাদা থাকবে
+
+          if (t.date === today) {
+            dailyProfitLoss += t.profitLoss;    // ✅ profitLoss এখন চার্জ বাদ না দিয়ে হবে
+            dollarOutToday += t.dollarAmount;
+            takaOutToday += t.totalTakaReceived;
+          }
         } else if (t.type === 'convert') {
           const ded = t.takaAmount + t.charge;
           if (t.fromAccount === 'মোট ক্যাশ' || (t.fromAccount !== 'আফ্রিদি পাবে' && t.fromAccount !== 'Bank🏦Transfer')) totalCash -= ded;
@@ -1842,6 +1837,7 @@
           if (t.date === today) bankTransferToday += t.takaAmount;
         }
       });
+
       updateDashboardCards();
       updateTableResultDisplay();
     }
@@ -1965,7 +1961,6 @@
       if (page >= 1 && page <= total) { currentPage = page; displayTransactions(); }
     }
 
-    // Window Functions
     window.editTransaction = (index) => editTransaction(index);
     window.deleteTransaction = (index) => deleteTransaction(index);
     window.saveIn = () => saveIn();
@@ -2059,17 +2054,41 @@
       saveTransactions(); closeForm();
     }
 
+    // =======================================================
+    // ✅ ONLY CHANGE #1: saveOut profit formula updated
+    // Profit = TotalReceived - CostOfSoldGoods  (charge আলাদা থাকবে)
+    // =======================================================
     function saveOut() {
       const dol = parseFloat(document.getElementById('out_dollar').value) || 0;
       const rat = parseFloat(document.getElementById('out_rate').value) || 0;
-      const tot = parseFloat(document.getElementById('totalOutDisplay').value) || 0;
+      const tot = parseFloat(document.getElementById('totalOutDisplay').value) || 0; // ✅ আপনার Total (যেমন 6300)
       const chg = parseFloat(document.getElementById('out_charge').value) || 0;
       if (dol <= 0 || rat <= 0) return alert("মান দিন");
+
       let tDol = totalDollarInventory, tCos = totalPurchaseCostInTaka;
-      if (isEditingIndex !== null && transactions[isEditingIndex].type === 'out') { tCos += transactions[isEditingIndex].costOfSoldGoods; tDol += transactions[isEditingIndex].dollarAmount; }
+      if (isEditingIndex !== null && transactions[isEditingIndex].type === 'out') {
+        tCos += transactions[isEditingIndex].costOfSoldGoods;
+        tDol += transactions[isEditingIndex].dollarAmount;
+      }
       const avg = tDol > 0 ? tCos / tDol : 0;
       const cosg = dol * avg;
-      const nt = { type: 'out', date: document.getElementById('datePickerOut').value, time: document.getElementById('showTimeOut').textContent, dollarAccount: document.getElementById('out_dollar_source').value, takaAccount: document.getElementById('out_taka_destination').value, mobileNumber: document.getElementById('out_mobile_number').value, dollarAmount: dol, rate: rat, charge: chg, totalTakaReceived: tot, profitLoss: (tot - chg) - cosg, costOfSoldGoods: cosg, description: document.getElementById('outDescription').value.trim() };
+
+      const nt = {
+        type: 'out',
+        date: document.getElementById('datePickerOut').value,
+        time: document.getElementById('showTimeOut').textContent,
+        dollarAccount: document.getElementById('out_dollar_source').value,
+        takaAccount: document.getElementById('out_taka_destination').value,
+        mobileNumber: document.getElementById('out_mobile_number').value,
+        dollarAmount: dol,
+        rate: rat,
+        charge: chg,
+        totalTakaReceived: tot,
+        profitLoss: (tot) - cosg,      // ✅ CHANGE: চার্জ বাদ না দিয়ে প্রফিট
+        costOfSoldGoods: cosg,
+        description: document.getElementById('outDescription').value.trim()
+      };
+
       if (isEditingIndex !== null) transactions[isEditingIndex] = nt; else transactions.push(nt);
       saveTransactions(); closeForm();
     }
@@ -2119,11 +2138,14 @@
       inp.onchange = () => document.getElementById('showDate' + type).textContent = inp.value;
     }
 
+    // =======================================================
+    // ✅ ONLY CHANGE #2: Dollar calculation updated
+    // Dollar = Total / Rate  (চার্জ বাদ না দিয়ে)
+    // =======================================================
     function calculateDollarAmount() {
       const tot = parseFloat(document.getElementById('totalOutDisplay').value) || 0,
-            rat = parseFloat(document.getElementById('out_rate').value) || 0,
-            chg = parseFloat(document.getElementById('out_charge').value) || 0;
-      document.getElementById('out_dollar').value = (rat > 0 ? (tot - chg) / rat : 0).toFixed(2);
+            rat = parseFloat(document.getElementById('out_rate').value) || 0;
+      document.getElementById('out_dollar').value = (rat > 0 ? (tot) / rat : 0).toFixed(2); // ✅ CHANGE
     }
 
     function calculateTotalConvertTaka() {
@@ -2159,7 +2181,6 @@
       currentPage = 1; displayTransactions();
     }
 
-    // ✅ Column toggle UI (safe)
     function setupColumnToggle(){
       const btn = document.getElementById('toggleColumnsBtn');
       const dd = document.getElementById('columnDropdown');
@@ -2192,4 +2213,3 @@
 
 </body>
 </html>
-
