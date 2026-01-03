@@ -1801,6 +1801,11 @@
       });
     }
 
+    // ✅ FIX: daily reset এ যেন transactions overwrite না হয়
+    function updateBalancesOnly() {
+      set(balancesRef, balances);
+    }
+
     function updateFirebase() {
       set(balancesRef, balances);
       set(transactionsRef, transactions);
@@ -1811,7 +1816,9 @@
       if (balances.lastUpdateDate !== today) {
         balances.bank = 0; balances.todayIn = 0; balances.todayCharge = 0;
         balances.lastUpdateDate = today;
-        updateFirebase();
+
+        // ✅ FIX: আগে updateFirebase() ছিল (transactions empty থাকলে wipe হতো)
+        updateBalancesOnly();
       }
     }
 
